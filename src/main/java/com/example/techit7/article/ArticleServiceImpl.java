@@ -9,25 +9,24 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public List<Article> getArticles() {
-
         return null;
     }
 
     @Override
-    public Article getArticleById() {
-
+    public Article getArticleById(Long id) {
         return null;
     }
 
     @Override
-    public void updateArticleById() {
+    public void updateArticleById(Long id) {
 
     }
 
     @Override
-    public void deleteArticleById() {
+    public void deleteArticleById(Long id) {
 
     }
+
 
     @Override
     public void postArticle() {
