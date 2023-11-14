@@ -1,6 +1,7 @@
 package com.example.techit7.domain;
 
 
+import com.example.techit7.article.Article;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

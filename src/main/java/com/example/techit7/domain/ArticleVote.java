@@ -1,5 +1,6 @@
 package com.example.techit7.domain;
 
+import com.example.techit7.article.Article;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
