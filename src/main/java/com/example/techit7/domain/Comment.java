@@ -26,6 +26,7 @@ public class Comment {
     @JoinColumn(name = "article_id")
     private Article article;
 
+
     @Column(name = "comment_content")
     private String content;
 
@@ -33,5 +34,6 @@ public class Comment {
     private Date regDate;
 
     @Column(name = "comment_moddate")
+
     private Date modDate;
 }
