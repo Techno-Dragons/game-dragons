@@ -1,12 +1,11 @@
-package com.example.techit7.comment;
+package com.example.techit7.comment.entity;
 
 
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.user.User;
-import lombok.*;
 import jakarta.persistence.*;
-
 import java.util.Date;
+import lombok.*;
 
 @Entity @Getter @Setter
 @AllArgsConstructor

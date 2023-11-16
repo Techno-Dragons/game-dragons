@@ -1,6 +1,6 @@
 package com.example.techit7.article.entity;
 
-import com.example.techit7.comment.Comment;
+import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.user.User;
 import com.example.techit7.util.DateTime;
 import jakarta.persistence.*;
