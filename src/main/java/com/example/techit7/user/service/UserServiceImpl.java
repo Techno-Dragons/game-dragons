@@ -1,11 +1,12 @@
 package com.example.techit7.user.service;
 
-import com.example.techit7.global.exception.DuplicateNicknameException;
+
 import com.example.techit7.user.dto.UserRequestDto;
 import com.example.techit7.user.entity.User;
 import com.example.techit7.user.repository.UserRepository;
 import com.example.techit7.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +27,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void postUser(UserRequestDto userRequestDto) {
+    public boolean login(UserRequestDto userRequestDto){
+        User user = userRepository.findByLoginId(userRequestDto.getLoginId())
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        return true;
+    }
+    @Override
+    public boolean postUser(UserRequestDto userRequestDto) {
         //닉네임 중복체크
         userRepository.findByNickname(userRequestDto.getNickName()).ifPresent(user -> {
             throw new RuntimeException();
@@ -47,5 +55,7 @@ public class UserServiceImpl implements UserService {
                         .nickname(userRequestDto.getNickName())
                         .email(userRequestDto.getEmail())
                         .build());
+
+        return true;
     }
 }
