@@ -4,15 +4,18 @@ import com.example.techit7.comment.Comment;
 import com.example.techit7.user.User;
 import com.example.techit7.util.DateTime;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import lombok.*;
 
 @Entity
-@Getter @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Article extends DateTime{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +52,7 @@ public class Article extends DateTime{
     private String category;
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
-    private List<Comment> commentList;
+    private List<Comment> commentList = new ArrayList<>();
+
 
 }

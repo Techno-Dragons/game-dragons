@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArticleRequestDto {
 
-    private String title;
-    private String content;
-    private String category;
+    private String title;   //제목
+    private String content; //내용
+    private String category;    //카테고리
 }

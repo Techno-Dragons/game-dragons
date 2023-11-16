@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 public class ArticleController {
@@ -15,7 +17,9 @@ public class ArticleController {
     private final ArticleServiceImpl articleService;
 
     @PostMapping("/article")
-    public void createArticle(@RequestBody ArticleRequestDto articleRequestDto){
-        articleService.postArticle();
+    public void createArticle(@RequestBody ArticleRequestDto articleRequestDto,
+                              Principal principal){
+
+        return;
     }
 }
