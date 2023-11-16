@@ -1,4 +1,6 @@
-package com.example.techit7.article;
+package com.example.techit7.article.service;
+
+import com.example.techit7.article.entity.Article;
 
 import java.util.List;
 

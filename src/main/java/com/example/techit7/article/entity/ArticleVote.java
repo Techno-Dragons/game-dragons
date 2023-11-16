@@ -1,6 +1,6 @@
-package com.example.techit7.article;
+package com.example.techit7.article.entity;
 
-import com.example.techit7.article.Article;
+import com.example.techit7.article.entity.Article;
 import com.example.techit7.user.User;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,7 +1,7 @@
-package com.example.techit7.article;
+package com.example.techit7.article.entity;
 
 
-import com.example.techit7.article.Article;
+import com.example.techit7.article.entity.Article;
 import lombok.*;
 import jakarta.persistence.*;
 

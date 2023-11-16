@@ -1,11 +1,13 @@
-package com.example.techit7.article;
+package com.example.techit7.article.service;
 
+import com.example.techit7.article.entity.Article;
+import com.example.techit7.article.service.ArticleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ArticleServiceImpl implements ArticleService{
+public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> getArticles() {
