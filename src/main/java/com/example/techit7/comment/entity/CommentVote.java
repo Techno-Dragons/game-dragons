@@ -1,6 +1,6 @@
-package com.example.techit7.comment;
+package com.example.techit7.comment.entity;
 
-import com.example.techit7.comment.Comment;
+import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.user.User;
 import lombok.*;
 import jakarta.persistence.*;

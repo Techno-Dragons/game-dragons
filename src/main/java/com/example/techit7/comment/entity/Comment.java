@@ -1,16 +1,15 @@
-package com.example.techit7.domain;
+package com.example.techit7.comment.entity;
 
 
 import com.example.techit7.article.Article;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.example.techit7.user.User;
 import jakarta.persistence.*;
-
 import java.util.Date;
+import lombok.*;
 
 @Entity @Getter @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -26,7 +25,6 @@ public class Comment {
     @JoinColumn(name = "article_id")
     private Article article;
 
-
     @Column(name = "comment_content")
     private String content;
 
@@ -34,6 +32,5 @@ public class Comment {
     private Date regDate;
 
     @Column(name = "comment_moddate")
-
     private Date modDate;
 }

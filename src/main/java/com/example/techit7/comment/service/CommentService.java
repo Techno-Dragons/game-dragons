@@ -1,4 +1,6 @@
-package com.example.techit7.comment;
+package com.example.techit7.comment.service;
+
+import com.example.techit7.comment.entity.Comment;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ public interface CommentService {
      * @PARAM X
      * @RETURN List<Comment>
      */
-    List<Comment> getComments();
+    List<Comment> getComments(Long id);
 
     /**
      * 댓글 작성

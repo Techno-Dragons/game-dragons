@@ -1,4 +1,4 @@
-package com.example.techit7.comment;
+package com.example.techit7.comment.controller;
 
 
 import org.springframework.stereotype.Controller;
