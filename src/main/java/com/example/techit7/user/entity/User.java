@@ -1,4 +1,4 @@
-package com.example.techit7.user;
+package com.example.techit7.user.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

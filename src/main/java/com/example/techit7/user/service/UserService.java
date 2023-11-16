@@ -1,6 +1,10 @@
-package com.example.techit7.user;
+package com.example.techit7.user.service;
+
+import com.example.techit7.user.dto.UserRequestDto;
+import com.example.techit7.user.entity.User;
 
 public interface UserService {
+
     /**
      * 아이디로 유저 조회
      * @PARAM Long id
@@ -20,7 +24,7 @@ public interface UserService {
      * @PARAM Long id
      * @RETURN X
      */
-    void postUser(Long id, String password, String nickname, String email);
+    void postUser(UserRequestDto userRequestDto);
 
     
 }
