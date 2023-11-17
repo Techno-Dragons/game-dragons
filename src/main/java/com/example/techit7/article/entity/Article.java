@@ -1,5 +1,6 @@
 package com.example.techit7.article.entity;
 
+import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.comment.Comment;
 import com.example.techit7.user.User;
 import com.example.techit7.util.DateTime;
@@ -71,6 +72,13 @@ public class Article extends DateTime{
         }
 
         likeCount++;
+    }
+
+    //게시글 수정
+    public void modifiyArticle(ArticleRequestDto articleRequestDto) {
+        this.title = articleRequestDto.getTitle();
+        this.content = articleRequestDto.getContent();
+        this.category = articleRequestDto.getCategory();
     }
 
 }
