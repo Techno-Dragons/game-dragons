@@ -111,7 +111,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     private ArticleResponseDto getArticleResponse(Article article) {
-        ArticleResponseDto articleResponseDto = ArticleResponseDto.builder()
+        return ArticleResponseDto.builder()
                 .author(article.getAuthor())
                 .title(article.getTitle())
                 .content(article.getContent())
@@ -119,6 +119,5 @@ public class ArticleServiceImpl implements ArticleService {
                 .commentList(article.getCommentList())
                 .build();
 
-        return articleResponseDto;
     }
 }
