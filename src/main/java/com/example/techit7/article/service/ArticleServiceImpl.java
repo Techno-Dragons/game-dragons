@@ -54,9 +54,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
 
-        ArticleResponseDto articleResponseDto = getArticleResponse(article.get());
-
-        return articleResponseDto;
+        return getArticleResponse(article.get());
     }
 
     /**
