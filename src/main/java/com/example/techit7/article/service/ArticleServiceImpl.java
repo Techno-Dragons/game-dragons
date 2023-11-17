@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +28,22 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public List<ArticleResponseDto> getArticles() {
-        List<Article> article = articleRepository.findAll();
-        //유저에게 어디까지 보여주느냐에 따라 코드를 짤 예정
-        return null;
+        List<Article> articles = articleRepository.findAll();
+
+        List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
+        for (Article article : articles) {
+            ArticleResponseDto articleResponseDto = ArticleResponseDto.builder()
+                    .author(article.getAuthor())
+                    .title(article.getTitle())
+                    .content(article.getContent())
+                    .category(article.getCategory())
+                    .commentList(article.getCommentList())
+                    .build();
+
+            articleResponseDtos.add(articleResponseDto);
+        }
+
+        return articleResponseDtos;
     }
 
     /**
@@ -43,8 +57,16 @@ public class ArticleServiceImpl implements ArticleService {
         if (article.isEmpty()) {
             throw new EntityNotFoundException("Entity not found with id" + id);
         }
-        //유저에게 어디까지 보여주느냐에 따라 코드를 짤 예정
-        return null;
+
+        ArticleResponseDto articleResponseDto = ArticleResponseDto.builder()
+                .author(article.get().getAuthor())
+                .title(article.get().getTitle())
+                .content(article.get().getContent())
+                .category(article.get().getCategory())
+                .commentList(article.get().getCommentList())
+                .build();
+
+        return articleResponseDto;
     }
 
     /**

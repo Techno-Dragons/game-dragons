@@ -17,7 +17,6 @@ import java.util.List;
 //뭘 보여줄 지 몰라서 골라내야함
 public class ArticleResponseDto {
 
-    private Long id;    //articleId
     private User author;    //글쓴이
     private String title;   //제목
     private String content; //내용
