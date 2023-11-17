@@ -75,7 +75,7 @@ public class Article extends DateTime{
     }
 
     //게시글 수정
-    public void modifiyArticle(ArticleRequestDto articleRequestDto) {
+    public void modifyArticle(ArticleRequestDto articleRequestDto) {
         this.title = articleRequestDto.getTitle();
         this.content = articleRequestDto.getContent();
         this.category = articleRequestDto.getCategory();
