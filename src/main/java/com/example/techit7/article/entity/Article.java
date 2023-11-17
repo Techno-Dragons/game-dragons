@@ -55,4 +55,13 @@ public class Article extends DateTime{
     private List<Comment> commentList = new ArrayList<>();
 
 
+    //view카운트 증가
+    public void incrementViewCount() {
+        if (viewCount == null) {
+            viewCount = 0L;
+        }
+        
+        viewCount++;
+    }
+
 }
