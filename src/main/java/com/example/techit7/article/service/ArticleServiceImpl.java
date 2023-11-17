@@ -32,13 +32,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
         for (Article article : articles) {
-            ArticleResponseDto articleResponseDto = ArticleResponseDto.builder()
-                    .author(article.getAuthor())
-                    .title(article.getTitle())
-                    .content(article.getContent())
-                    .category(article.getCategory())
-                    .commentList(article.getCommentList())
-                    .build();
+            ArticleResponseDto articleResponseDto = getArticleResponse(article);
 
             articleResponseDtos.add(articleResponseDto);
         }
@@ -58,13 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotFoundException("Entity not found with id" + id);
         }
 
-        ArticleResponseDto articleResponseDto = ArticleResponseDto.builder()
-                .author(article.get().getAuthor())
-                .title(article.get().getTitle())
-                .content(article.get().getContent())
-                .category(article.get().getCategory())
-                .commentList(article.get().getCommentList())
-                .build();
+        ArticleResponseDto articleResponseDto = getArticleResponse(article.get());
 
         return articleResponseDto;
     }
