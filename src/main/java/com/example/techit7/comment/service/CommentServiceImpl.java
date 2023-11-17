@@ -1,26 +1,34 @@
 package com.example.techit7.comment.service;
 
+import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.comment.repository.CommentRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-
     @Override
-    public List<Comment> getComments(Long articleId) {
-        return this.commentRepository.findByArticleId(articleId);
+    public Comment getComment(Long id) {
+        Optional<Comment> comment = this.commentRepository.findById(id);
+        if (comment.isPresent()){
+            return comment.get();
+        }
+        else {
+            throw new IllegalArgumentException("COMMENT NOT FOUND");
+        }
     }
 
     @Override
-    public void postComment() {
-
+    public void postComment(CommentRequestDto commentRequestDto) {
+        Comment comment = Comment.builder()
+                .content(commentRequestDto.getContent())
+                .build();
+        commentRepository.save(comment);
     }
 
     @Override
