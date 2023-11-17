@@ -1,21 +1,18 @@
 package com.example.techit7.user.service;
 
 
+import com.example.techit7.global.exception.DuplicateException;
 import com.example.techit7.user.dto.UserRequestDto;
 import com.example.techit7.user.entity.User;
 import com.example.techit7.user.repository.UserRepository;
-import com.example.techit7.user.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.net.http.HttpResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean login(UserRequestDto userRequestDto, HttpServletRequest request, HttpServletResponse response){
+
 
         // id, password 확인 과정
         User user = userRepository.findByLoginId(userRequestDto.getLoginId())
@@ -65,15 +63,18 @@ public class UserServiceImpl implements UserService {
 
         //닉네임 중복체크
         userRepository.findByNickname(userRequestDto.getNickName()).ifPresent(user -> {
-            throw new RuntimeException();
+            throw new DuplicateException("닉네임 중복입니다.");
         });
 
         // 아이디 중복체크
         userRepository.findByLoginId(userRequestDto.getLoginId()).ifPresent(user -> {
-            throw new RuntimeException();
+            throw new DuplicateException("아이디 중복입니다.");
         });
 
         // 이메일 인증 (추후 추가)
+
+
+
         // 저장
         User user = userRepository.save(
                 User.builder()
