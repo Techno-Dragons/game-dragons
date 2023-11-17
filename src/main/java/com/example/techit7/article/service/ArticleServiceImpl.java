@@ -121,4 +121,16 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.save(article);
     }
 
+
+    private ArticleResponseDto getArticleResponse(Article article) {
+        ArticleResponseDto articleResponseDto = ArticleResponseDto.builder()
+                .author(article.getAuthor())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .category(article.getCategory())
+                .commentList(article.getCommentList())
+                .build();
+
+        return articleResponseDto;
+    }
 }
