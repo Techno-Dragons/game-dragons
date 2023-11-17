@@ -64,6 +64,7 @@ public class Article extends DateTime{
         viewCount++;
     }
 
+    //like카운트 증가
     public void incrementLikeCount() {
         if (likeCount == null) {
             likeCount = 0L;
