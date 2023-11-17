@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.techit7.article.errormessage.ErrorMessage.ENTITY_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -49,7 +51,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleResponseDto getArticleById(Long id) {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isEmpty()) {
-            throw new EntityNotFoundException("Entity not found with id" + id);
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
 
         ArticleResponseDto articleResponseDto = getArticleResponse(article.get());
@@ -68,7 +70,7 @@ public class ArticleServiceImpl implements ArticleService {
         Optional<Article> article = articleRepository.findById(id);
 
         if (article.isEmpty()) {
-            throw new EntityNotFoundException("Entity not found with id " + id);
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
 
         articleRepository.save(article.get());
@@ -84,7 +86,7 @@ public class ArticleServiceImpl implements ArticleService {
         Optional<Article> article = articleRepository.findById(id);
 
         if (article.isEmpty()) {
-            throw new EntityNotFoundException("Entity not found With id " + id);
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
         articleRepository.delete(article.get());
     }
