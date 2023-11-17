@@ -37,6 +37,11 @@ public class Comment {
     @Column(name = "comment_moddate")
     private DateTime modDate;
 
+    // content update
+    public void modify(String content) {
+        this.content = content;
+    }
+
     public void addComment(Article article) {
         this.article = article;
         article.getCommentList().add(this);
