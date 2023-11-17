@@ -26,7 +26,7 @@ public interface CommentService {
      * @PARAM Long Id
      * @RETURN X
      */
-    void updateComment(Long id);
+    void updateComment(Long id, CommentRequestDto commentRequestDto);
 
     /**
      * 댓글 삭제
