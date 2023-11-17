@@ -64,4 +64,12 @@ public class Article extends DateTime{
         viewCount++;
     }
 
+    public void incrementLikeCount() {
+        if (likeCount == null) {
+            likeCount = 0L;
+        }
+
+        likeCount++;
+    }
+
 }
