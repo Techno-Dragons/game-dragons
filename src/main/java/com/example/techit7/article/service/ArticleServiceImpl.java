@@ -70,6 +70,8 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
 
+        article.get().modifyArticle(articleRequestDto);
+
         articleRepository.save(article.get());
     }
 
