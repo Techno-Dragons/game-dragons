@@ -2,6 +2,8 @@ package com.example.techit7.user.service;
 
 import com.example.techit7.user.dto.UserRequestDto;
 import com.example.techit7.user.entity.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface UserService {
 
@@ -31,6 +33,6 @@ public interface UserService {
      * @PARAM UserRequestDto
      * @RETURN X
      */
-    boolean login(UserRequestDto userRequestDto);
+    boolean login(UserRequestDto userRequestDto, HttpServletRequest request, HttpServletResponse response);
     
 }
