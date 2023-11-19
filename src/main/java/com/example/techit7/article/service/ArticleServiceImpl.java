@@ -71,8 +71,6 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         article.get().modifyArticle(articleRequestDto);
-
-        articleRepository.save(article.get());
     }
 
     /**
