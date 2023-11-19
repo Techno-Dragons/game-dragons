@@ -33,16 +33,6 @@ public class Article extends DateTime{
     @Column
     private String content;
 
-//    @Column
-//    private Date regDate;
-
-//    @Column
-//    private Date modDate;
-
-//    @Column
-//    @Embedded
-//    private DateTime regDate;
-
     @Column
     private Long viewCount;
 
