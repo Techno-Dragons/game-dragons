@@ -1,5 +1,8 @@
-/*package com.example.techit7.comment.dto;
+package com.example.techit7.comment.dto;
 
-public class CommentResponseDto {
-    private String comment;
-}*/
+import com.example.techit7.comment.entity.Comment;
+import com.example.techit7.global.response.GlobalResponseDto;
+
+public class CommentResponseDto extends GlobalResponseDto<Comment> {
+
+}

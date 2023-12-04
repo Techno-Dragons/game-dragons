@@ -1,8 +1,12 @@
 package com.example.techit7.comment.service;
 
+import com.example.techit7.article.entity.Article;
 import com.example.techit7.comment.dto.CommentRequestDto;
+import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.comment.repository.CommentRepository;
+import com.example.techit7.global.response.GlobalResponseDto;
+import com.example.techit7.user.User;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,34 +17,40 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     @Override
-    public Comment getComment(Long id) {
-        return getValidateComment(id);
+    public Comment get(Long id) {
+        return validate(id);
     }
 
     @Override
-    public void postComment(CommentRequestDto commentRequestDto) {
+    public GlobalResponseDto<Comment> post(User user, Article article, CommentRequestDto req) {
         Comment comment = Comment.builder()
-                .content(commentRequestDto.getContent())
+                .author(user)
+                .article(article)
+                .content(req.getContent())
                 .build();
 
-        // comment.addComment(); ? DDD 방식 설계와 충돌, ArticleRepository 의존 필요
         commentRepository.save(comment);
+        return CommentResponseDto.of("200", "정상");
     }
 
     @Override
-    public void updateComment(Long id, CommentRequestDto rq) {
-        Comment comment = getValidateComment(id);
-        comment.modify(rq.getContent());
+    public GlobalResponseDto<Comment> update(Long id, CommentRequestDto req) {
+        Comment comment = validate(id);
+        comment = comment.toBuilder()
+                .content(req.getContent())
+                .build();
+        commentRepository.save(comment);
+        return CommentResponseDto.of("200", "정상");
     }
 
     @Override
-    public void deleteComment(Long id) {
-        getValidateComment(id);
-        commentRepository.deleteById(id);
+    public GlobalResponseDto<Comment> delete(Long id) {
+        validate(id);
+        return CommentResponseDto.of("200", "정상");
     }
 
-    public Comment getValidateComment(Long id) {
-        Optional<Comment> comment = this.commentRepository.findById(id);
+    public Comment validate(Long id) {
+        Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isPresent()){
             return comment.get();
         }
