@@ -2,25 +2,25 @@ package com.example.techit7.comment.entity;
 
 
 import com.example.techit7.article.entity.Article;
+import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.User;
-import com.example.techit7.util.DateTime;
-import jakarta.persistence.*;
-import java.util.Date;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity @Getter @Builder
+@Entity @Getter @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long id;
+public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "User_id")
+    @JoinColumn(name = "user_id")
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,20 +30,4 @@ public class Comment {
     @Column(name = "comment_content")
     private String content;
 
-    @CreatedDate
-    @Column(name = "comment_regdate")
-    private Date regDate;
-
-    @Column(name = "comment_moddate")
-    private DateTime modDate;
-
-    // content update
-    public void modify(String content) {
-        this.content = content;
-    }
-
-    public void addComment(Article article) {
-        this.article = article;
-        article.getCommentList().add(this);
-    }
 }

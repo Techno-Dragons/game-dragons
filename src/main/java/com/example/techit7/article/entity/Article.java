@@ -1,10 +1,10 @@
 package com.example.techit7.article.entity;
 
 import com.example.techit7.comment.entity.Comment;
+import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.User;
-import com.example.techit7.util.DateTime;
+import com.example.techit7.global.entity.DateTime;
 import jakarta.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 import lombok.*;
@@ -13,7 +13,7 @@ import lombok.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article extends DateTime{
+public class Article extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
