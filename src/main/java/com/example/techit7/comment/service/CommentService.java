@@ -1,38 +1,22 @@
 package com.example.techit7.comment.service;
 
+import com.example.techit7.article.entity.Article;
 import com.example.techit7.comment.dto.CommentRequestDto;
+import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.comment.entity.Comment;
 
+import com.example.techit7.global.response.GlobalResponseDto;
+import com.example.techit7.user.User;
 import java.util.List;
 
 public interface CommentService {
 
-    /**
-     * 댓글 조회
-     * @PARAM Long id
-     * @RETURN Comment
-     */
-    Comment getComment(Long id);
+    Comment get(Long id);
 
-    /**
-     * 댓글 작성
-     * @PARAM CommentRequestDto
-     * @RETURN X
-     */
-    void postComment(CommentRequestDto commentRequestDto);
+    GlobalResponseDto<Comment> post(User user, Article article, CommentRequestDto req);
 
-    /**
-     * 댓글 수정
-     * @PARAM Long Id
-     * @RETURN X
-     */
-    void updateComment(Long id, CommentRequestDto commentRequestDto);
+    GlobalResponseDto<Comment> update(Long id, CommentRequestDto req);
 
-    /**
-     * 댓글 삭제
-     * @PARAM Long Id
-     * @RETURN X
-     */
-    void deleteComment(Long id);
+    GlobalResponseDto<Comment> delete(Long id);
 
 }
