@@ -1,24 +1,23 @@
 package com.example.techit7.article.service;
 
+import static com.example.techit7.article.errormessage.ErrorMessage.ENTITY_NOT_FOUND;
+
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.user.User;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static com.example.techit7.article.errormessage.ErrorMessage.ENTITY_NOT_FOUND;
-
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -95,7 +94,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public void postArticle(ArticleRequestDto articleRequestDto, User author) {
+    public Long postArticle(ArticleRequestDto articleRequestDto, User author) {
         Article article = Article.builder()
                 .author(author)
                 .title(articleRequestDto.getTitle())
@@ -103,9 +102,11 @@ public class ArticleServiceImpl implements ArticleService {
                 .category(articleRequestDto.getCategory())
                 .likeCount(0L)
                 .viewCount(0L)
+                .commentList(new ArrayList<>())
                 .build();
 
         articleRepository.save(article);
+        return article.getId();
     }
 
 

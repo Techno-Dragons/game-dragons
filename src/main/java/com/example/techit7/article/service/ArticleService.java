@@ -2,9 +2,7 @@ package com.example.techit7.article.service;
 
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
-import com.example.techit7.article.entity.Article;
 import com.example.techit7.user.User;
-
 import java.util.List;
 
 public interface ArticleService{
@@ -42,5 +40,5 @@ public interface ArticleService{
      * @PARAM X
      * @RETURN X
      */
-    void postArticle(ArticleRequestDto articleRequestDto, User user);
+    Long postArticle(ArticleRequestDto articleRequestDto, User user);
 }
