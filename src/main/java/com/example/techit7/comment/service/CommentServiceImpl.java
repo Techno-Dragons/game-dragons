@@ -5,7 +5,7 @@ import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.comment.repository.CommentRepository;
-import com.example.techit7.global.response.GlobalResponseDto;
+import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.User;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
