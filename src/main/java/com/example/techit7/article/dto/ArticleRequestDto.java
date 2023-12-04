@@ -1,11 +1,13 @@
 package com.example.techit7.article.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @Getter
 @NoArgsConstructor
+@Data
 public class ArticleRequestDto {
 
     private String title;       //제목

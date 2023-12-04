@@ -2,13 +2,12 @@ package com.example.techit7.article.dto;
 
 import com.example.techit7.comment.Comment;
 import com.example.techit7.user.User;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
