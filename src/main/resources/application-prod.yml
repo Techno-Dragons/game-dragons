@@ -1,0 +1,28 @@
+server:
+  shutdown: graceful
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  datasource:
+    url: jdbc:mysql://172.17.0.1:3306/demo_prod
+    username: lldjlocal
+    password: 1234
+    driver-class-name:
+  jpa:
+    hibernate:
+      ddl-auto: update
+logging:
+  level:
+    com.ll.medium: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.orm.jdbc.bind: INFO
+    org.hibernate.orm.jdbc.extract: INFO
+    org.springframework.transaction.interceptor: INFO
+custom:
+  tempDirPath: /gen/temp
+  site:
+    baseUrl:
+  genFile:
+    dirPath: /gen
