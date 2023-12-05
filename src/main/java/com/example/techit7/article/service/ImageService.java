@@ -38,6 +38,20 @@ public class ImageService {
         imageRepository.save(image);
     }
 
+    @Transactional
+    public void update(MultipartFile multipartFile, Long articleId) throws IOException {
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            return;
+        }
+
+        Optional<Image> image = imageRepository.findByArticleId(articleId);
+        if (image.isEmpty()) {
+            throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
+        }
+
+        image.get().updateImage(fileStore.storeFile(multipartFile));
+    }
+
     // 이미지 삭제
     @Transactional
     public void delete(Long articleId) {
