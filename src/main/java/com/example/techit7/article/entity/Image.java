@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity @Getter
 @AllArgsConstructor
@@ -29,4 +30,9 @@ public class Image {
     private Article article;
 
     private String storeFilename;
+
+
+    public void updateImage(String storeFilename) {
+        this.storeFilename = storeFilename;
+    }
 }
