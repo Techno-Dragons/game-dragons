@@ -12,7 +12,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Getter @Setter~
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Article extends BaseEntity {
