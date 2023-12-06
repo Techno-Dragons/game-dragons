@@ -1,9 +1,7 @@
 package com.example.techit7.user.service;
 
-import com.example.techit7.user.dto.UserRequestDto;
-import com.example.techit7.user.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.dto.UserCreateForm;
 
 public interface UserService {
 
@@ -12,7 +10,7 @@ public interface UserService {
      * @PARAM Long id
      * @RETURN User
      */
-    User getUserById(Long id);
+    SiteUser getUserById(Long id);
 
     /**
      * 유저 정보 변경
@@ -26,13 +24,13 @@ public interface UserService {
      * @PARAM userRequestDto
      * @RETURN X
      */
-    boolean postUser(UserRequestDto userRequestDto);
+    void postUser(UserCreateForm userCreateForm);
 
     /**
      * 로그인
      * @PARAM UserRequestDto
      * @RETURN X
      */
-    boolean login(UserRequestDto userRequestDto, HttpServletRequest request, HttpServletResponse response);
+    void login();
     
 }

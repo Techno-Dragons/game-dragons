@@ -1,24 +1,22 @@
 package com.example.techit7.user.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.*;
-import lombok.Setter;
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
 @Entity
-@Getter @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class User {
+public class SiteUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String loginId;
+    @Column(unique = true)
+    private String username;
 
     @Column
     private String password;
@@ -26,7 +24,7 @@ public class User {
     @Column
     private String nickname;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
 }
