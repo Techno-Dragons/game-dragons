@@ -3,14 +3,16 @@ package com.example.techit7.article.entity;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.User;
-import com.example.techit7.global.entity.DateTime;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
-import lombok.*;
-
 @Entity
-@Getter @Setter
+@Getter @Setter~
 @AllArgsConstructor
 @NoArgsConstructor
 public class Article extends BaseEntity {
