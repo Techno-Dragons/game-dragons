@@ -1,9 +1,10 @@
-package com.example.techit7.article;
+package com.example.techit7.article.entity;
 
-import com.example.techit7.domain.Comment;
-import com.example.techit7.domain.User;
+import com.example.techit7.comment.entity.Comment;
+import com.example.techit7.global.entity.BaseEntity;
+import com.example.techit7.user.User;
+import com.example.techit7.global.entity.DateTime;
 import jakarta.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 import lombok.*;
@@ -12,7 +13,7 @@ import lombok.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article  {
+public class Article extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
@@ -28,11 +29,15 @@ public class Article  {
     @Column
     private String content;
 
-    @Column
-    private Date regDate;
+//    @Column
+//    private Date regDate;
 
-    @Column
-    private Date modDate;
+//    @Column
+//    private Date modDate;
+
+//    @Column
+//    @Embedded
+//    private DateTime regDate;
 
     @Column
     private Long viewCount;

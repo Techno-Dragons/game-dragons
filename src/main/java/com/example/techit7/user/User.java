@@ -1,16 +1,17 @@
-package com.example.techit7.domain;
+package com.example.techit7.user;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.Setter;
 import jakarta.persistence.*;
 
 @Entity
 @Getter @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
-  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

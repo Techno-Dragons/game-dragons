@@ -1,4 +1,6 @@
-package com.example.techit7.article;
+package com.example.techit7.article.service;
+
+import com.example.techit7.article.entity.Article;
 
 import java.util.List;
 
@@ -16,21 +18,21 @@ public interface ArticleService{
      * @PARAM Long Id
      * @RETURN Article
      */
-    Article getArticleById();
+    Article getArticleById(Long id);
 
     /**
      * 게시글 수정
      * @PARAM Long Id
      * @RETURN X
      */
-    void updateArticleById();
+    void updateArticleById(Long id);
 
     /**
      * 게시글 삭제
      * @PARAM Long Id
      * @RETURN X
      */
-    void deleteArticleById();
+    void deleteArticleById(Long id);
 
     /**
      * 게시글 작성
