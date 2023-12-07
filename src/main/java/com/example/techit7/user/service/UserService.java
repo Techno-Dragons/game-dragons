@@ -1,5 +1,6 @@
 package com.example.techit7.user.service;
 
+import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.SiteUser;
 
@@ -21,10 +22,12 @@ public interface UserService {
 
     /**
      * 회원가입
+     *
+     * @return
      * @PARAM userRequestDto
      * @RETURN X
      */
-    void postUser(UserCreateRequestDto userCreateRequestDto);
+    GlobalResponseDto postUser(UserCreateRequestDto userCreateRequestDto);
 
     /**
      * 로그인
