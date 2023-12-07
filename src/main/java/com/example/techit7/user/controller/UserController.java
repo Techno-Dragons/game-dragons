@@ -1,10 +1,13 @@
 package com.example.techit7.user.controller;
 
 import com.example.techit7.user.dto.UserCreateRequestDto;
+import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.service.UserService;
 import jakarta.validation.Valid;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @Controller
@@ -54,6 +59,19 @@ public class UserController {
         }
 
         return "redirect:/";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypage")
+    public String mypage(Principal principal, Model model){
+        try {
+            String loginedUsername = principal.getName();
+            SiteUser user = userService.findByUsername(loginedUsername);
+            model.addAttribute("user", user);
+        } catch (Exception e){
+            return "redirect:/";
+        }
+        return "mypage_form";
     }
 
 }
