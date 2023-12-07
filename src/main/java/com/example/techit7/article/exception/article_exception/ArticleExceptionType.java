@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ArticleExceptionType implements BaseExceptionType {
-    ARTICLE_ENTITY_NOT_FOUND_EXCEPTION(
+    NOT_FOUND_ARTICLE_ENTITY(
             HttpStatus.BAD_REQUEST,
             ErrorMessage.ENTITY_NOT_FOUND
     );
