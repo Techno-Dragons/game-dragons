@@ -5,8 +5,6 @@ import com.example.techit7.user.dto.UserCreateForm;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.classfile.Module;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
