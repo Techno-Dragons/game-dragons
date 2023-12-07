@@ -11,10 +11,10 @@ public interface CommentService {
 
     Comment get(Long id);
 
-    GlobalResponseDto<Comment> post(User user, Article article, CommentRequestDto req);
+    GlobalResponseDto<Comment> post(SiteUser siteUser, Article article, CommentRequestDto req);
 
-    GlobalResponseDto<Comment> update(Long id, CommentRequestDto req);
+    GlobalResponseDto<Comment> update(SiteUser siteUser, Long id, CommentRequestDto req);
 
-    GlobalResponseDto<Comment> delete(Long id);
+    GlobalResponseDto<Comment> delete(SiteUser siteUser, Long id);
 
 }
