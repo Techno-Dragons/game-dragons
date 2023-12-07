@@ -2,6 +2,7 @@ package com.example.techit7.article.service;
 
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
+import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.User;
 import java.util.List;
 
@@ -12,14 +13,14 @@ public interface ArticleService{
      * @PARAM X
      * @RETURN List<Article>
      */
-    List<ArticleResponseDto> getArticles();
+    List<GlobalResponseDto<ArticleResponseDto>> getArticles();
 
     /**
      * 게시글 단일조회
      * @PARAM Long Id
      * @RETURN Article
      */
-    ArticleResponseDto getArticleById(Long id);
+    GlobalResponseDto<ArticleResponseDto> getArticleById(Long id);
 
     /**
      * 게시글 수정

@@ -6,6 +6,7 @@ import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.repository.ArticleRepository;
+import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class ArticleServiceImpl implements ArticleService {
      * @return List<ArticleResponseDto>
      */
     @Override
-    public List<ArticleResponseDto> getArticles() {
+    public List<GlobalResponseDto<ArticleResponseDto>> getArticles() {
         List<Article> articles = articleRepository.findAll();
 
-        List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
+        List<GlobalResponseDto<ArticleResponseDto>> articleResponseDtos = new ArrayList<>();
         for (Article article : articles) {
             ArticleResponseDto articleResponseDto = getArticleResponse(article);
 
@@ -46,7 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @return ArticleResponseDto
      */
     @Override
-    public ArticleResponseDto getArticleById(Long id) {
+    public GlobalResponseDto<ArticleResponseDto> getArticleById(Long id) {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isEmpty()) {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);

@@ -9,7 +9,8 @@ public class GlobalResponseDto<T> {
 
     private String resultCode;
     private String msg;
-    private T data;
+    private T
+            data;
 
     public static<T> GlobalResponseDto<T> of(String resultCode, String msg){
         GlobalResponseDto<T> globalResponseDto = new GlobalResponseDto<T>();

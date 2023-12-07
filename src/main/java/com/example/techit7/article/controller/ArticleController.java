@@ -5,6 +5,7 @@ import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.article.service.ImageService;
+import com.example.techit7.global.dto.GlobalResponseDto;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
@@ -14,6 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,12 +38,14 @@ public class ArticleController {
     @GetMapping("/article")
     public String articleAll(ArticleResponseDto articleResponseDto,
                              @RequestBody(required = false) ArticleRequestDto articleRequestDto,
-                             @RequestParam String mode) {
+                             @RequestParam String mode,
+                             Model model) {
 
         if (mode.equals("write")) {
             return "writeArticleForm";
         }
-        List<ArticleResponseDto> articleResponseDtos = articleService.getArticles();
+        List<GlobalResponseDto<ArticleResponseDto>> articleResponseDtos = articleService.getArticles();
+        model.addAttribute(articleResponseDtos);
 
         return "listArticles";
     }
@@ -64,7 +68,7 @@ public class ArticleController {
                                 @RequestParam String mode,
                                 ArticleRequestDto articleRequestDto) {
 
-        ArticleResponseDto articleResponseDto = articleService.getArticleById(id);
+        GlobalResponseDto<ArticleResponseDto> articleResponseDto = articleService.getArticleById(id);
 
         if (mode.equals("modify")) {
             articleService.updateArticleById(id, articleRequestDto);

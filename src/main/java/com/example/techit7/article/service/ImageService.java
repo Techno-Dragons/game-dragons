@@ -6,6 +6,7 @@ import com.example.techit7.article.entity.Image;
 import com.example.techit7.article.errormessage.ErrorMessage;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.article.repository.ImageRepository;
+import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.util.file.FileStore;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class ImageService {
     }
 
     // Article ID로 연결된 Image 얻기
-    public ImageResponseDto getByArticleId(Long articleId) {
+    public GlobalResponseDto<ImageResponseDto> getByArticleId(Long articleId) {
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
             throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
@@ -80,7 +81,7 @@ public class ImageService {
 
     //이미지 Path 얻기
     public String getFullPathStoreFilenameByArticleId(Long articleId) {
-        String storeFilename = getByArticleId(articleId).getStoreFilename();
+        String storeFilename = getByArticleId(articleId).getData().getStoreFilename();
         return fileStore.getFullPath(storeFilename);
     }
 }
