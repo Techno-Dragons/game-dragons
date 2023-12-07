@@ -1,14 +1,14 @@
-package com.example.techit7.domain;
+package com.example.techit7.article.entity;
 
-import com.example.techit7.article.Article;
+import com.example.techit7.article.entity.Article;
+import com.example.techit7.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArticleVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

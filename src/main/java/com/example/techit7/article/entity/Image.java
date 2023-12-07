@@ -1,13 +1,13 @@
-package com.example.techit7.domain;
+package com.example.techit7.article.entity;
 
-import com.example.techit7.article.Article;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+
+import com.example.techit7.article.entity.Article;
+import lombok.*;
 import jakarta.persistence.*;
 
 @Entity @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Image {
     @Id

@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: dev
+    include: secret
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  datasource:
+    url: jdbc:h2:./demo_dev;MODE=MYSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+logging:
+  level:
+    com.ll.medium: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.orm.jdbc.extract: TRACE
+    org.springframework.transaction.interceptor: TRACE
+custom:
+  site:
+    name: demo
+    baseUrl: "http://localhost:${server.port}"
+  tempDirPath: c:/temp/demo_dev/temp
+  genFile:
+    dirPath: c:/temp/demo_dev

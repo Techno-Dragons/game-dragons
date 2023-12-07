@@ -1,13 +1,14 @@
-package com.example.techit7.domain;
+package com.example.techit7.comment.entity;
 
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.example.techit7.comment.entity.Comment;
+import com.example.techit7.user.User;
+import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
