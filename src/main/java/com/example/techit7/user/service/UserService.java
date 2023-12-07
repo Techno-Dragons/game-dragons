@@ -1,9 +1,7 @@
 package com.example.techit7.user.service;
 
+import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.SiteUser;
-import com.example.techit7.user.dto.UserCreateForm;
-
-import java.util.Optional;
 
 public interface UserService {
 
@@ -26,7 +24,7 @@ public interface UserService {
      * @PARAM userRequestDto
      * @RETURN X
      */
-    void postUser(UserCreateForm userCreateForm);
+    void postUser(UserCreateRequestDto userCreateRequestDto);
 
     /**
      * 로그인

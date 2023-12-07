@@ -1,7 +1,7 @@
 package com.example.techit7.user.service;
 
 
-import com.example.techit7.user.dto.UserCreateForm;
+import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +31,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void postUser(UserCreateForm userCreateForm){
+    public void postUser(UserCreateRequestDto userCreateRequestDto){
         SiteUser siteUser = SiteUser.builder()
-                .username(userCreateForm.getUsername())
-                .password(userCreateForm.getPassword1())
-                .nickname(userCreateForm.getNickname())
-                .email(userCreateForm.getEmail())
+                .username(userCreateRequestDto.getUsername())
+                .password(userCreateRequestDto.getPassword1())
+                .nickname(userCreateRequestDto.getNickname())
+                .email(userCreateRequestDto.getEmail())
                 .build();
 
         userRepository.save(siteUser);

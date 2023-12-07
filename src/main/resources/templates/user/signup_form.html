@@ -7,7 +7,7 @@
     <div>
         <h4>회원가입</h4>
     </div>
-    <form th:action="@{/member/signup}" th:object="${userCreateForm}"  method="post">
+    <form th:action="@{/member/signup}" th:object="${userCreateRequestDto}"  method="post">
         <div>
             <label for="username">사용자ID</label>
             <input type="text" th:field="*{username}" class="form-control">

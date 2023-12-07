@@ -1,6 +1,6 @@
 package com.example.techit7.user.controller;
 
-import com.example.techit7.user.dto.UserCreateForm;
+import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.service.UserService;
 import jakarta.validation.Valid;
 
@@ -26,23 +26,23 @@ public class UserController {
     }
 
     @GetMapping("/signup")
-    public String signup(UserCreateForm userCreateForm) {
+    public String signup(UserCreateRequestDto userCreateRequestDto) {
         return "signup_form";
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+    public String signup(@Valid UserCreateRequestDto userCreateRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "signup_form";
         }
 
-        if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
+        if (!userCreateRequestDto.getPassword1().equals(userCreateRequestDto.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
             return "signup_form";
         }
         try {
-            userService.postUser(userCreateForm);
+            userService.postUser(userCreateRequestDto);
         }catch(DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
