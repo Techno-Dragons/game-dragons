@@ -1,6 +1,5 @@
 package com.example.techit7.user.controller;
 
-import com.example.techit7.user.dto.UserRequestDto;
 import com.example.techit7.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
