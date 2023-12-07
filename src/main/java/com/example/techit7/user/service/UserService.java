@@ -3,12 +3,14 @@ package com.example.techit7.user.service;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.dto.UserCreateForm;
 
+import java.util.Optional;
+
 public interface UserService {
 
     /**
      * 유저 조회
      * @PARAM Long id
-     * @RETURN User
+     * @RETURN SiteUser
      */
     SiteUser getUserById(Long id);
 
@@ -32,5 +34,12 @@ public interface UserService {
      * @RETURN X
      */
     void login();
-    
+
+    /**
+     * 유저 찾기
+     * @PARAM String username
+     * @RETURN SiteUser
+     */
+    SiteUser findByUsername(String username);
+
 }

@@ -5,7 +5,11 @@ import com.example.techit7.user.dto.UserCreateForm;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.classfile.Module;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +42,17 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         userRepository.save(siteUser);
+    }
+
+    @Override
+    public SiteUser findByUsername(String username) {
+        Optional<SiteUser> siteUserOp = userRepository.findByUsername(username);
+        if(!siteUserOp.isPresent()){
+            // 커스텀 예외 추가
+            throw new NullPointerException("일치하는 유저가 없습니다.");
+        }
+        return siteUserOp.get();
+
     }
 
 
