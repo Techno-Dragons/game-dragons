@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     public SiteUser getUserById(Long id) {
         return null;
     }
-    
+
     @Override
     public void login() {
 
