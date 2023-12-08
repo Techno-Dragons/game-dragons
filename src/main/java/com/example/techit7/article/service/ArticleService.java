@@ -3,8 +3,8 @@ package com.example.techit7.article.service;
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.global.dto.GlobalResponseDto;
-import com.example.techit7.user.User;
-import java.util.List;
+import com.example.techit7.user.entity.SiteUser;
+import org.springframework.data.domain.Page;
 
 public interface ArticleService{
 
@@ -13,7 +13,7 @@ public interface ArticleService{
      * @PARAM X
      * @RETURN List<Article>
      */
-    List<GlobalResponseDto<ArticleResponseDto>> getArticles();
+    GlobalResponseDto<Page<ArticleResponseDto>> getArticles(int page);
 
     /**
      * 게시글 단일조회
@@ -41,5 +41,5 @@ public interface ArticleService{
      * @PARAM X
      * @RETURN X
      */
-    Long postArticle(ArticleRequestDto articleRequestDto, User user);
+    Long postArticle(ArticleRequestDto articleRequestDto, SiteUser user);
 }

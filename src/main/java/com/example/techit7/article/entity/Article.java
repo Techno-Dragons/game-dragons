@@ -2,7 +2,7 @@ package com.example.techit7.article.entity;
 
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.comment.entity.Comment;
-import com.example.techit7.user.User;
+import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.util.DateTime;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,17 +25,17 @@ import org.springframework.util.StringUtils;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class Article extends DateTime{
+@NoArgsConstructor
+public class Article extends DateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
     private Long id;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = SiteUser.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User author;
+    private SiteUser author;
 
     @Column
     private String title;
