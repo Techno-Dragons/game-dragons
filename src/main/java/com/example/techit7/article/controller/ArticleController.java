@@ -72,8 +72,7 @@ public class ArticleController {
     @GetMapping("/article/{id}")
     public String detailArticle(@PathVariable Long id,
                                 @RequestParam(defaultValue = "") String mode,
-                                ArticleRequestDto articleRequestDto,
-                                CommentResponseDto commentResponseDto,
+                                @ModelAttribute("commentResponseDto") CommentResponseDto commentResponseDto,
                                 Principal principal,
                                 Model model) {
 
@@ -89,7 +88,6 @@ public class ArticleController {
                 return "redirect:/article/{id}";
             }
 
-            articleService.updateArticleById(id, articleRequestDto);
             return "modifyForm";
         }
         if (mode.equals("delete")) {

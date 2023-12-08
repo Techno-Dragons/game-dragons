@@ -29,11 +29,11 @@
 <!--	            </a>-->
 	            <a th:href="@{|/article/${article.id}?mode=modify|}" class="btn btn-sm btn-outline-secondary"
 	                sec:authorize="isAuthenticated()"
-	                th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.nickname}"
+	                th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.username}"
 	                th:text="수정"></a>
 	            <a href="javascript:void(0);" th:data-uri="@{|/article/${article.id}?mode=delete|}"
 	                class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-	                th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.nickname}"
+	                th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.username}"
 	                th:text="삭제"></a>
 	        </div>
         </div>
@@ -67,18 +67,18 @@
 <!--	            </a>-->
 	            <a th:href="@{|/answer/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
 	                sec:authorize="isAuthenticated()"
-	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.nickname}"
+	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
 	                th:text="수정"></a>
 	            <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${comment.id}|}"
 	                class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.nickname}"
+	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
 	                th:text="삭제"></a>
 	        </div>
         </div>
     </div>
     <!-- 답변 반복 끝  -->
     <!-- 답변 작성 -->
-    <form th:action="@{|/answer/create/${article.id}|}" th:object="${commentReonseDto}" method="post" class="my-3">
+    <form th:action="@{|/answer/create/${article.id}|}" th:object="${commentResponseDto}" method="post" class="my-3">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
         <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
