@@ -9,6 +9,7 @@ import com.example.techit7.article.service.ImageService;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.service.UserService;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequiredArgsConstructor
@@ -53,12 +55,12 @@ public class ArticleController {
     }
 
     // Article 저장
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/article")
-    public String createArticle(@ModelAttribute ArticleRequestDto articleRequestDto,
+    public String createArticle(@Valid @ModelAttribute ArticleRequestDto articleRequestDto,
                                 Principal principal) throws IOException {
 
-        principal.getName();
+
 
         Long articleId = articleService.postArticle(articleRequestDto, null);
 
@@ -67,7 +69,6 @@ public class ArticleController {
     }
 
     // Article 단일 출력
-    //@PreAuthorize("isAuthenticated()")
     @GetMapping("/article/{id}")
     public String detailArticle(@PathVariable Long id,
                                 @RequestParam(defaultValue = "") String mode,
@@ -83,13 +84,21 @@ public class ArticleController {
         model.addAttribute("imageResponseDto", imageResponseDto);
 
         if (mode.equals("modify")) {
+
+            if (!articleResponseDto.getData().getAuthor().getUsername().equals(principal.getName())) {
+                return "redirect:/article/{id}";
+            }
+
             articleService.updateArticleById(id, articleRequestDto);
             return "modifyForm";
         }
         if (mode.equals("delete")) {
+            if (!articleResponseDto.getData().getAuthor().getUsername().equals(principal.getName())) {
+                return "redirect:/article";
+            }
             imageService.delete(id);
             articleService.deleteArticleById(id);
-            return "redirect:/";
+            return "redirect:/article/{id}";
         }
 
         return "article/article_detail";
@@ -100,9 +109,15 @@ public class ArticleController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/article/{id}")
     public void modifyArticle(@PathVariable Long id,
-                              ArticleRequestDto articleRequestDto,
+                              @Valid ArticleRequestDto articleRequestDto,
                               CommentResponseDto commentResponseDto,
                               Principal principal) throws IOException {
+
+        GlobalResponseDto<ArticleResponseDto> articleResponseDto = articleService.getArticleById(id);
+
+        if (!articleResponseDto.getData().getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
 
         articleService.updateArticleById(id, articleRequestDto);
         imageService.update(articleRequestDto.getMultipartFile(), id);
