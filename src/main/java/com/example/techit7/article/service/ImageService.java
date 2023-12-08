@@ -26,6 +26,11 @@ public class ImageService {
     // 이미지 저장
     @Transactional
     public void save(MultipartFile multipartFile, Long articleId) throws IOException {
+
+        if (multipartFile == null) {
+            return;
+        }
+
         String storeFilename = fileStore.storeFile(multipartFile);
         Optional<Article> article = articleRepository.findById(articleId);
         if (article.isEmpty()) {
@@ -74,9 +79,9 @@ public class ImageService {
             throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
         }
 
-        return ImageResponseDto.builder()
+        return GlobalResponseDto.of("200", "200", ImageResponseDto.builder()
                 .storeFilename(image.get().getStoreFilename())
-                .build();
+                .build());
     }
 
     //이미지 Path 얻기
