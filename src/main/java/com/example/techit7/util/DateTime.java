@@ -17,8 +17,8 @@ public abstract class DateTime {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdTime;
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    private LocalDateTime modifiedTime;
+    private LocalDateTime modifyDate;
 }

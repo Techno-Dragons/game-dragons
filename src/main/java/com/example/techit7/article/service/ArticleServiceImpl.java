@@ -7,12 +7,16 @@ import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.global.dto.GlobalResponseDto;
-import com.example.techit7.user.User;
+import com.example.techit7.user.entity.SiteUser;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,18 +31,28 @@ public class ArticleServiceImpl implements ArticleService {
      * 게시글 전체조히
      * @return List<ArticleResponseDto>
      */
-    @Override
-    public List<GlobalResponseDto<ArticleResponseDto>> getArticles() {
-        List<Article> articles = articleRepository.findAll();
+//    @Override
+//    public List<GlobalResponseDto<ArticleResponseDto>> getArticles() {
+//        List<Article> articles = articleRepository.findAll();
+//
+//        List<GlobalResponseDto<ArticleResponseDto>> articleResponseDtos = new ArrayList<>();
+//        for (Article article : articles) {
+//            ArticleResponseDto articleResponseDto = getArticleResponse(article);
+//
+//            articleResponseDtos.add(articleResponseDto);
+//        }
+//
+//        return articleResponseDtos;
+//    }
 
-        List<GlobalResponseDto<ArticleResponseDto>> articleResponseDtos = new ArrayList<>();
-        for (Article article : articles) {
-            ArticleResponseDto articleResponseDto = getArticleResponse(article);
+    public GlobalResponseDto<Page<ArticleResponseDto>> getArticles(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
-            articleResponseDtos.add(articleResponseDto);
-        }
+        Page<Article> articles = articleRepository.findAll(pageable);
 
-        return articleResponseDtos;
+        return GlobalResponseDto.of("200", "success", articles.map(this::getArticleResponse));
     }
 
     /**
@@ -53,7 +67,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
 
-        return getArticleResponse(article.get());
+        return GlobalResponseDto.of("200", "success", getArticleResponse(article.get())) ;
     }
 
     /**
@@ -95,7 +109,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public Long postArticle(ArticleRequestDto articleRequestDto, User author) {
+    public Long postArticle(ArticleRequestDto articleRequestDto, SiteUser author) {
         Article article = Article.builder()
                 .author(author)
                 .title(articleRequestDto.getTitle())
@@ -113,11 +127,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     private ArticleResponseDto getArticleResponse(Article article) {
         return ArticleResponseDto.builder()
+                .id(article.getId())
                 .author(article.getAuthor())
                 .title(article.getTitle())
                 .content(article.getContent())
                 .category(article.getCategory())
                 .commentList(article.getCommentList())
+                .createDate(article.getcreateDate())
+                .modifyDate(article.getmodifyDate())
                 .build();
 
     }
