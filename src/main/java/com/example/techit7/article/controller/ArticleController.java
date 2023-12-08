@@ -106,7 +106,7 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/article/{id}")
-    public void modifyArticle(@PathVariable Long id,
+    public String modifyArticle(@PathVariable Long id,
                               @Valid ArticleRequestDto articleRequestDto,
                               CommentResponseDto commentResponseDto,
                               Principal principal) throws IOException {
@@ -119,6 +119,8 @@ public class ArticleController {
 
         articleService.updateArticleById(id, articleRequestDto);
         imageService.update(articleRequestDto.getMultipartFile(), id);
+
+        return "redirect:/article/{id}";
         //TODO 수정 view 구현 필요
     }
 
