@@ -133,8 +133,8 @@ public class ArticleServiceImpl implements ArticleService {
                 .content(article.getContent())
                 .category(article.getCategory())
                 .commentList(article.getCommentList())
-                .createDate(article.getcreateDate())
-                .modifyDate(article.getmodifyDate())
+                .createDate(article.getCreateDate())
+                .modifyDate(article.getModifyDate())
                 .build();
 
     }
