@@ -21,12 +21,7 @@ public class UserServiceImpl implements UserService {
     public SiteUser getUserById(Long id) {
         return null;
     }
-
-    @Override
-    public void updateUserById(Long id) {
-
-    }
-
+    
     @Override
     public void login() {
 
@@ -56,7 +51,30 @@ public class UserServiceImpl implements UserService {
         return siteUserOp.get();
 
     }
+    @Override
+    public GlobalResponseDto updateUserPassword(String username, UserCreateRequestDto dto) {
+        SiteUser siteUser = findByUsername(username);
+
+        userRepository.save(
+                siteUser.toBuilder()
+                        .password(dto.getPassword1())
+                        .build());
+
+        return GlobalResponseDto.of("200","유저 비밀번호 변경 성공");
+    }
 
 
+    @Override
+    public GlobalResponseDto updateUser(String username, UserCreateRequestDto dto) {
+        SiteUser siteUser = findByUsername(username);
+
+        userRepository.save(
+                siteUser.toBuilder()
+                        .nickname(dto.getNickname())
+                        .email(dto.getEmail())
+                        .build());
+
+        return GlobalResponseDto.of("200","유저정보 변경 성공");
+    }
 
 }

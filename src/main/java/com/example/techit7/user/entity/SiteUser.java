@@ -6,7 +6,7 @@ import lombok.*;
 
 @Getter
 @Entity
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class SiteUser {

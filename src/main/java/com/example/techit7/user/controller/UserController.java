@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 
+import java.lang.reflect.Member;
 import java.security.Principal;
 
 @RequiredArgsConstructor
@@ -61,6 +62,7 @@ public class UserController {
         return "redirect:/";
     }
 
+    // TODO: 비밀번호 변경 경로와 다른 데이터 변경 경로 다르게 설정하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
     public String mypage(Principal principal, Model model){
@@ -73,5 +75,26 @@ public class UserController {
         }
         return "mypage_form";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/mypage/modify")
+    public String modify(UserCreateRequestDto dto, Principal principal, BindingResult bindingResult){
+        userService.updateUser(principal.getName(), dto);
+        return "redirect:/member/mypage";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/mypage/modifyPassword")
+    public String modifyPassword(UserCreateRequestDto dto, Principal principal, BindingResult bindingResult){
+        if (!dto.getPassword1().equals(dto.getPassword2())) {
+            bindingResult.rejectValue("password2", "passwordInCorrect",
+                    "2개의 패스워드가 일치하지 않습니다.");
+            return "redirect:/member/mypage";
+        }
+        userService.updateUserPassword(principal.getName(), dto);
+
+        return "redirect:/member/mypage";
+    }
+
 
 }

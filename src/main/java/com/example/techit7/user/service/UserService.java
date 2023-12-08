@@ -14,11 +14,20 @@ public interface UserService {
     SiteUser getUserById(Long id);
 
     /**
-     * 유저 정보 변경
+     * 유저 패스워드 변경
+     * @PARAM String username, userCreateRequestDto
+     * @RETURN X
+     */
+
+    GlobalResponseDto updateUserPassword(String username, UserCreateRequestDto userCreateRequestDto);
+
+    /**
+     * 유저 닉네임,이메일 변경
      * @PARAM Long id
      * @RETURN X
      */
-    void updateUserById(Long id);
+
+    GlobalResponseDto updateUser(String username, UserCreateRequestDto userCreateRequestDto);
 
     /**
      * 회원가입
@@ -28,6 +37,8 @@ public interface UserService {
      * @RETURN X
      */
     GlobalResponseDto postUser(UserCreateRequestDto userCreateRequestDto);
+
+
 
     /**
      * 로그인
