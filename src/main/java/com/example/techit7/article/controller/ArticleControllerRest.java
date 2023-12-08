@@ -1,10 +1,11 @@
-//package com.example.techit7.article.controller;
+package com.example.techit7.article.controller;//package com.example.techit7.article.controller;//package com.example.techit7.article.controller;
 //
 //
 //import com.example.techit7.article.dto.ArticleRequestDto;
 //import com.example.techit7.article.dto.ArticleResponseDto;
 //import com.example.techit7.article.service.ArticleServiceImpl;
 //import com.example.techit7.article.service.ImageService;
+//import com.example.techit7.global.dto.GlobalResponseDto;
 //import java.io.IOException;
 //import java.net.MalformedURLException;
 //import java.security.Principal;
@@ -35,14 +36,14 @@
 //
 //    // Article 전체 출력
 //    @GetMapping("/article")
-//    public ResponseEntity<List<ArticleResponseDto>> articleAll(ArticleResponseDto articleResponseDto
+//    public ResponseEntity<List<GlobalResponseDto<ArticleResponseDto>>> articleAll(ArticleResponseDto articleResponseDto
 ////                                                               @RequestBody(required = false) ArticleRequestDto articleRequestDto,
 ////                                                               @RequestParam String mode
 //    ) {
 ////        if (mode.equals("write")) {
 ////
 ////        }
-//        List<ArticleResponseDto> articleResponseDtos = articleService.getArticles();
+//        List<GlobalResponseDto<ArticleResponseDto>> articleResponseDtos = articleService.getArticles();
 //        return ResponseEntity.ok(articleResponseDtos);
 //    }
 //
@@ -60,7 +61,7 @@
 //
 //    // Article 단일 출력
 //    @GetMapping("/article/{id}")
-//    public ResponseEntity<ArticleResponseDto> detailArticle(@PathVariable Long id,
+//    public ResponseEntity<GlobalResponseDto<ArticleResponseDto>> detailArticle(@PathVariable Long id,
 //                                                            @RequestParam String mode,
 //                                                            ArticleRequestDto articleRequestDto) {
 ////        if (mode.equals("modify")) {
@@ -70,8 +71,8 @@
 ////            articleService.deleteArticleById(id);
 ////            return ResponseEntity.noContent()
 ////        }
-//
-//        ArticleResponseDto articleResponseDto = articleService.getArticleById(id);
+////
+//        GlobalResponseDto<ArticleResponseDto> articleResponseDto = articleService.getArticleById(id);
 //
 //        return ResponseEntity.ok(articleResponseDto);
 //    }
