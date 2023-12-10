@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     public void validateByUser(SiteUser siteUser, Comment comment) {
-        if (siteUser.getUsername().equals(comment.getAuthor())){
+        if (siteUser.getUsername().equals(comment.getAuthor().getUsername())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다");
         }
     }
