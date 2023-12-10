@@ -47,7 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     public GlobalResponseDto<Page<ArticleResponseDto>> getArticles(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        sorts.add(Sort.Order.desc("createdTime"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
         Page<Article> articles = articleRepository.findAll(pageable);
@@ -133,8 +133,8 @@ public class ArticleServiceImpl implements ArticleService {
                 .content(article.getContent())
                 .category(article.getCategory())
                 .commentList(article.getCommentList())
-                .createDate(article.getCreateDate())
-                .modifyDate(article.getModifyDate())
+                .createdTime(article.getCreatedTime())
+                .modifiedTime(article.getModifiedTime())
                 .build();
 
     }

@@ -25,8 +25,9 @@ public class ArticleResponseDto extends GlobalResponseDto<ArticleResponseDto> {
     private Long viewCount; //조회수
     private Long likeCount; //좋아요 수
     private String category;//카테고리
-    private LocalDateTime createDate;
-    private LocalDateTime modifyDate;
+    private LocalDateTime createdTime;
+    private LocalDateTime modifiedTime;
+    @Builder.Default
     private List<Comment> commentList = new ArrayList<>();  //댓글리스트
 
 }

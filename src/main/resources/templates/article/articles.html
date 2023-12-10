@@ -30,7 +30,7 @@
 <!--			        </span>-->
 			    </td>
 			    <td><span th:if="${article.author != null}" th:text="${article.author.nickname}"></span></td>
-			    <td th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+			    <td th:text="${#temporals.format(article.createdTime, 'yyyy-MM-dd HH:mm')}"></td>
 			</tr>
         </tbody>
     </table>

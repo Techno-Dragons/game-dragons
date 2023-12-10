@@ -2,8 +2,8 @@ package com.example.techit7.article.entity;
 
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.comment.entity.Comment;
+import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.entity.SiteUser;
-import com.example.techit7.util.DateTime;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,14 +20,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
-public class Article extends DateTime {
+@SuperBuilder(toBuilder = true)
+public class Article extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
@@ -53,6 +54,7 @@ public class Article extends DateTime {
     private String category;
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
 
