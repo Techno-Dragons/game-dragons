@@ -4,8 +4,10 @@ import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.service.CommentServiceImpl;
-import com.example.techit7.user.UserServiceImpl;
+import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.service.UserServiceImpl;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-
-import java.security.Principal;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -37,8 +37,8 @@ public class CommentController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        Article article = articleServiceImpl.getArticleById(articleId);
-        SiteUser siteUser = userServiceImpl.getUserByUsername(principal.getName());
+        Article article = articleServiceImpl.findArticleById(articleId);
+        SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
         if (bindingResult.hasErrors()){
             model.addAttribute("article", article);
@@ -59,8 +59,8 @@ public class CommentController {
             Principal principal,
             Model model
     ){
-        Article article = articleServiceImpl.getArticleById(articleId);
-        SiteUser siteUser = userServiceImpl.getUserByUsername(principal.getName());
+        Article article = articleServiceImpl.findArticleById(articleId);
+        SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
         if(bindingResult.hasErrors()){
             model.addAttribute("article", article);
@@ -77,7 +77,7 @@ public class CommentController {
             Principal principal,
             Model model
     ) {
-        SiteUser siteUser = userServiceImpl.getUserByUsername(principal.getName());
+        SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
         model.addAttribute("commentResponse", commentServiceImpl.delete(siteUser, commentId));
         return "article/article_detail";

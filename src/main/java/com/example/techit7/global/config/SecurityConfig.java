@@ -1,4 +1,4 @@
-package com.example.techit7;
+package com.example.techit7.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

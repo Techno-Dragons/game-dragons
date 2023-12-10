@@ -28,7 +28,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
 
     /**
-     * 게시글 전체조히
+     * 게시글 전체조회
      * @return List<ArticleResponseDto>
      */
 //    @Override
@@ -60,6 +60,14 @@ public class ArticleServiceImpl implements ArticleService {
      * @param id    조회할 게시글 ID
      * @return ArticleResponseDto
      */
+    public GlobalResponseDto<ArticleResponseDto> getArticleResponseById(Long id) {
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isEmpty()) {
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
+        }
+
+        return GlobalResponseDto.of("200", "success", getArticleResponse(article.get())) ;
+    }
     @Override
     public GlobalResponseDto<ArticleResponseDto> getArticleById(Long id) {
         Optional<Article> article = articleRepository.findById(id);
@@ -68,6 +76,14 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return GlobalResponseDto.of("200", "success", getArticleResponse(article.get())) ;
+    }
+
+    public Article findArticleById(Long id){
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isEmpty()) {
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
+        }
+        return article.get();
     }
 
     /**

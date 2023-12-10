@@ -3,8 +3,12 @@ package com.example.techit7.comment.entity;
 
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.global.entity.BaseEntity;
-import com.example.techit7.user.User;
-import jakarta.persistence.*;
+import com.example.techit7.user.entity.SiteUser;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +21,7 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User author;
+    private SiteUser author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
