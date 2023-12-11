@@ -10,7 +10,7 @@
     <form th:action="@{/member/signup}" th:object="${userCreateRequestDto}"  method="post">
         <div>
             <label for="username">사용자ID</label>
-            <input type="text" th:field="*{username}" class="form-control">
+            <input type="text" th:field="*{username}"  class="form-control">
         </div>
         <div>
             <label for="nickname" >닉네임</label>
