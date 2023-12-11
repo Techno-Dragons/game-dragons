@@ -105,7 +105,7 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/article/{id}")
-    public void modifyArticle(@PathVariable Long id,
+    public String modifyArticle(@PathVariable Long id,
                               ArticleRequestDto articleRequestDto,
                               CommentResponseDto commentResponseDto,
                               Principal principal) throws IOException {
@@ -113,6 +113,7 @@ public class ArticleController {
         articleService.updateArticleById(id, articleRequestDto);
         imageService.update(articleRequestDto.getMultipartFile(), id);
         //TODO 수정 view 구현 필요
+        return "redirect:/article/{id}";
     }
 
     // Image 출력
