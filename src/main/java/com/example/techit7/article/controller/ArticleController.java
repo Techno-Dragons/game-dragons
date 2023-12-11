@@ -55,7 +55,7 @@ public class ArticleController {
         GlobalResponseDto<Page<ArticleResponseDto>> articleResponseDtos = articleService.getArticles(page);
         model.addAttribute("paging", articleResponseDtos.getData());
 
-        return "articles";
+        return "article/articles";
     }
 
     // Article 저장
@@ -90,7 +90,7 @@ public class ArticleController {
 
         if (mode.equals("modify")) {
             articleService.updateArticleById(id, articleRequestDto);
-            return "modifyForm";
+            return "article/articleModifyForm";
         }
         if (mode.equals("delete")) {
             imageService.delete(id);
@@ -98,7 +98,7 @@ public class ArticleController {
             return "redirect:/";
         }
 
-        return "question_detail";
+        return "article/question_detail";
     }
 
     // Article 수정
