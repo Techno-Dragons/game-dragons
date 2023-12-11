@@ -8,7 +8,6 @@ import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.article.service.ImageService;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.global.dto.GlobalResponseDto;
-import com.example.techit7.user.service.UserService;
 import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -50,7 +49,7 @@ public class ArticleController {
                              Model model) {
 
         if (mode.equals("write")) {
-            return "article/articleForm";
+            return "/article/article_form";
         }
         GlobalResponseDto<Page<ArticleResponseDto>> articleResponseDtos = articleService.getArticles(page);
         model.addAttribute("paging", articleResponseDtos.getData());
@@ -90,7 +89,7 @@ public class ArticleController {
 
         if (mode.equals("modify")) {
             articleService.updateArticleById(id, articleRequestDto);
-            return "article/articleModifyForm";
+            return "article/article_modify_form";
         }
         if (mode.equals("delete")) {
             imageService.delete(id);
@@ -98,7 +97,7 @@ public class ArticleController {
             return "redirect:/";
         }
 
-        return "article/question_detail";
+        return "article/article_detail";
     }
 
     // Article 수정
