@@ -37,6 +37,11 @@ public class ArticleController {
     private final ImageService imageService;
     private final UserServiceImpl userService;
 
+    @GetMapping("/")
+    public String articleHome() {
+        return "redirect:/article";
+    }
+
     // Article 전체 출력
     @GetMapping("/article")
     public String articleAll(@ModelAttribute ArticleRequestDto articleRequestDto,
