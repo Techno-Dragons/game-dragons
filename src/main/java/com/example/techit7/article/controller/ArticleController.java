@@ -9,6 +9,7 @@ import com.example.techit7.article.service.ImageService;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.service.UserService;
+import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
@@ -34,7 +35,7 @@ public class ArticleController {
 
     private final ArticleServiceImpl articleService;
     private final ImageService imageService;
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     // Article 전체 출력
     @GetMapping("/article")
