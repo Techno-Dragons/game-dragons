@@ -45,7 +45,7 @@ public class ArticleController {
                              Model model) {
 
         if (mode.equals("write")) {
-            return "articleForm";
+            return "article/articleForm";
         }
         GlobalResponseDto<Page<ArticleResponseDto>> articleResponseDtos = articleService.getArticles(page);
         model.addAttribute("paging", articleResponseDtos.getData());
