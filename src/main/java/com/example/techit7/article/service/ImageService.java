@@ -7,7 +7,7 @@ import com.example.techit7.article.errormessage.ErrorMessage;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.article.repository.ImageRepository;
 import com.example.techit7.global.dto.GlobalResponseDto;
-import com.example.techit7.util.file.FileStore;
+import com.example.techit7.global.util.FileStore;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
