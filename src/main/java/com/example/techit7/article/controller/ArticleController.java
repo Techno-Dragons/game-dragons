@@ -6,7 +6,10 @@ import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.dto.ImageResponseDto;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.article.service.ImageService;
+import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.dto.CommentResponseDto;
+import com.example.techit7.comment.entity.Comment;
+import com.example.techit7.comment.service.CommentServiceImpl;
 import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
@@ -35,6 +38,7 @@ public class ArticleController {
     private final ArticleServiceImpl articleService;
     private final ImageService imageService;
     private final UserServiceImpl userService;
+    private final CommentServiceImpl commentService;
 
     @GetMapping("/")
     public String articleHome() {
@@ -76,8 +80,8 @@ public class ArticleController {
     @GetMapping("/article/{id}")
     public String detailArticle(@PathVariable Long id,
                                 @RequestParam(defaultValue = "") String mode,
-                                ArticleRequestDto articleRequestDto,
-                                CommentResponseDto commentResponseDto,
+                                @ModelAttribute("articleRequestDto") ArticleRequestDto articleRequestDto,
+                                @ModelAttribute("commentRequestDto") CommentRequestDto commentRequestDto,
                                 Principal principal,
                                 Model model) {
 
@@ -86,6 +90,8 @@ public class ArticleController {
 
         GlobalResponseDto<ImageResponseDto> imageResponseDto = imageService.getByArticleId(id);
         model.addAttribute("imageResponseDto", imageResponseDto);
+
+
 
         if (mode.equals("modify")) {
             articleService.updateArticleById(id, articleRequestDto);
