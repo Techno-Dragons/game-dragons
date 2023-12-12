@@ -65,7 +65,7 @@
 <!--	                추천-->
 <!--	                <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.voter)}"></span>-->
 <!--	            </a>-->
-	            <a th:href="@{|/answer/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+	            <a th:href="@{|/article/${article.id}/comment/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
 	                sec:authorize="isAuthenticated()"
 	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
 	                th:text="수정"></a>
