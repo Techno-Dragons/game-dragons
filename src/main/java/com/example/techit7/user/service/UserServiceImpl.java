@@ -7,6 +7,9 @@ import com.example.techit7.user.dto.UserCreateResponseDto;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,6 +19,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
     @Override
     public SiteUser getUserById(Long id) {
@@ -31,7 +35,7 @@ public class UserServiceImpl implements UserService {
     public GlobalResponseDto postUser(UserCreateRequestDto userCreateRequestDto){
         SiteUser siteUser = SiteUser.builder()
                 .username(userCreateRequestDto.getUsername())
-                .password(userCreateRequestDto.getPassword1())
+                .password(encoder.encode(userCreateRequestDto.getPassword1()))
                 .nickname(userCreateRequestDto.getNickname())
                 .email(userCreateRequestDto.getEmail())
                 .build();
