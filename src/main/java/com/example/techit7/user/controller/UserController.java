@@ -61,10 +61,9 @@ public class UserController {
         return "redirect:/";
     }
 
-    // TODO: 비밀번호 변경 경로와 다른 데이터 변경 경로 다르게 설정하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
-    public String mypage(Principal principal, Model model){
+    public String mypage(UserCreateRequestDto userCreateRequestDto, Principal principal, Model model){
         try {
             String loginedUsername = principal.getName();
             SiteUser user = userService.findByUsername(loginedUsername);
