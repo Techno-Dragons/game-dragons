@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile("!prod")
+@Profile("!dev")
 @Configuration
 @RequiredArgsConstructor
 public class InitData {
