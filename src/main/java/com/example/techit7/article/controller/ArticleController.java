@@ -109,7 +109,6 @@ public class ArticleController {
 
     // Article 수정
     @PreAuthorize("isAuthenticated()")
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/article/{id}")
     public String modifyArticle(@PathVariable Long id,
                               ArticleRequestDto articleRequestDto,
