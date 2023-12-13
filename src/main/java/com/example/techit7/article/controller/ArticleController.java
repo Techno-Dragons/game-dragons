@@ -54,7 +54,7 @@ public class ArticleController {
                              Model model) {
 
         if (mode.equals("write")) {
-            return "/article/article_form";
+            return "article/article_form";
         }
         GlobalResponseDto<Page<ArticleResponseDto>> articleResponseDtos = articleService.getArticles(page);
         model.addAttribute("paging", articleResponseDtos.getData());
@@ -63,7 +63,7 @@ public class ArticleController {
     }
 
     // Article 저장
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/article")
     public String createArticle(@ModelAttribute ArticleRequestDto articleRequestDto,
                                 Principal principal) throws IOException {
@@ -75,6 +75,7 @@ public class ArticleController {
         imageService.save(articleRequestDto.getMultipartFile(), articleId);
         return "redirect:/article";
     }
+
 
     // Article 단일 출력
     //@PreAuthorize("isAuthenticated()")
@@ -118,6 +119,7 @@ public class ArticleController {
         articleService.updateArticleById(id, articleRequestDto);
         imageService.update(articleRequestDto.getMultipartFile(), id);
         //TODO 수정 view 구현 필요
+
         return "redirect:/article/{id}";
     }
 
