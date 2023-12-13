@@ -1,37 +1,33 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>MyPage</title>
-    </head>
+<html layout:decorate="~{/global/layout}">
+<div layout:fragment="content" class="container my-3">
     <body>
         <div th:object="${user}">
             <span th:field="*{username}">username: </span>
         </div>
-<!--        TODO: submit 경로 다르게 설정하기 ex) th:action="@{|/qwer/qwer/${data}|}"-->
-        <form th:object="${user}" method="post" th:object="${userCreateRequestDto}" th:action="@{/mypage/modifyPassword}">
+        <form method="post" th:object="${userCreateRequestDto}" th:action="@{/member/mypage/modifyPassword}">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div>
-                <label for="password1">비밀번호</label>
-                <input type="text" th:field="*{password1}">
+                <label  class="form-label" for="password1">비밀번호</label>
+                <input type="text" class="form-control" th:field="*{password1}">
             </div>
             <div>
-                <label for="password2">비밀번호 확인</label>
-                <input type="text" th:field="*{password2}">
+                <label  class="form-label" for="password2">비밀번호 확인</label>
+                <input type="text" class="form-control" th:field="*{password2}">
             </div>
-            <input type="submit" value="비밀번호 변경">
+            <input type="submit" class="btn btn-primary" value="비밀번호 변경">
         </form>
-        <form th:object="${user}" method="post" th:object="${userCreateRequestDto}" th:action="@{|/qwer/qwer/${data}|}">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <form method="post" th:object="${userCreateRequestDto}" th:action="@{|/member/mypage/modify|}">
+            <input type="hidden" class="form-control" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div>
-                <label for="nickname">닉네임</label>
-                <input type="text" th:field="*{nickname}">
+                <label  class="form-label" for="nickname">닉네임</label>
+                <input type="text" class="form-control" th:field="*{nickname}">
             </div>
             <div>
-                <label for="email">이메일</label>
-                <input type="text" th:field="*{email}">
+                <label for="email" class="form-label">이메일</label>
+                <input type="text" class="form-control" th:field="*{email}">
             </div>
-            <input type="submit" value="수정하기">
+            <input type="submit" class="btn btn-primary" value="수정하기">
         </form>
     </body>
+</div>
 </html>
