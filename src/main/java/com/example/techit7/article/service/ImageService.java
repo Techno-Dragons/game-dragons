@@ -67,7 +67,7 @@ public class ImageService {
         }
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
-            throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
+            return;
         }
         imageRepository.delete(image.get());
     }
