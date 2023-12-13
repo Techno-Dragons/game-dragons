@@ -73,7 +73,7 @@ public class ArticleController {
         Long articleId = articleService.postArticle(articleRequestDto, userService.findByUsername(principal.getName()));
 
         imageService.save(articleRequestDto.getMultipartFile(), articleId);
-        return "redirect:/article";
+        return String.format("redirect:/article/%d", articleId);
     }
 
 
@@ -92,8 +92,6 @@ public class ArticleController {
 
         GlobalResponseDto<ImageResponseDto> imageResponseDto = imageService.getByArticleId(id);
         model.addAttribute("imageResponseDto", imageResponseDto);
-
-
 
         if (mode.equals("modify")) {
             return "article/article_modify_form";
