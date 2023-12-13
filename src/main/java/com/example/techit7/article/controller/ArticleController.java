@@ -8,7 +8,6 @@ import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.article.service.ImageService;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.global.dto.GlobalResponseDto;
-import com.example.techit7.user.service.UserService;
 import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -37,6 +36,11 @@ public class ArticleController {
     private final ImageService imageService;
     private final UserServiceImpl userService;
 
+    @GetMapping("/")
+    public String articleHome() {
+        return "redirect:/article";
+    }
+
     // Article 전체 출력
     @GetMapping("/article")
     public String articleAll(@ModelAttribute ArticleRequestDto articleRequestDto,
@@ -45,12 +49,12 @@ public class ArticleController {
                              Model model) {
 
         if (mode.equals("write")) {
-            return "articleForm";
+            return "/article/article_form";
         }
         GlobalResponseDto<Page<ArticleResponseDto>> articleResponseDtos = articleService.getArticles(page);
         model.addAttribute("paging", articleResponseDtos.getData());
 
-        return "articles";
+        return "article/articles";
     }
 
     // Article 저장
@@ -85,7 +89,7 @@ public class ArticleController {
 
         if (mode.equals("modify")) {
             articleService.updateArticleById(id, articleRequestDto);
-            return "modifyForm";
+            return "article/article_modify_form";
         }
         if (mode.equals("delete")) {
             imageService.delete(id);
@@ -93,14 +97,14 @@ public class ArticleController {
             return "redirect:/";
         }
 
-        return "question_detail";
+        return "article/article_detail";
     }
 
     // Article 수정
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/article/{id}")
-    public void modifyArticle(@PathVariable Long id,
+    public String modifyArticle(@PathVariable Long id,
                               ArticleRequestDto articleRequestDto,
                               CommentResponseDto commentResponseDto,
                               Principal principal) throws IOException {
@@ -108,6 +112,7 @@ public class ArticleController {
         articleService.updateArticleById(id, articleRequestDto);
         imageService.update(articleRequestDto.getMultipartFile(), id);
         //TODO 수정 view 구현 필요
+        return "redirect:/article/{id}";
     }
 
     // Image 출력
