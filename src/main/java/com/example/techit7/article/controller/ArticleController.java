@@ -11,6 +11,7 @@ import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.comment.service.CommentServiceImpl;
 import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.user.repository.UserRepository;
 import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -67,9 +68,9 @@ public class ArticleController {
     public String createArticle(@ModelAttribute ArticleRequestDto articleRequestDto,
                                 Principal principal) throws IOException {
 
-        principal.getName();
 
-        Long articleId = articleService.postArticle(articleRequestDto, null);
+
+        Long articleId = articleService.postArticle(articleRequestDto, userService.findByUsername(principal.getName()));
 
         imageService.save(articleRequestDto.getMultipartFile(), articleId);
         return "redirect:/article";
@@ -94,7 +95,6 @@ public class ArticleController {
 
 
         if (mode.equals("modify")) {
-            articleService.updateArticleById(id, articleRequestDto);
             return "article/article_modify_form";
         }
         if (mode.equals("delete")) {
