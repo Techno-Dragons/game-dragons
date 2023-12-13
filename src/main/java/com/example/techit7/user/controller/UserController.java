@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 
-import java.lang.reflect.Member;
 import java.security.Principal;
 
 @RequiredArgsConstructor
@@ -28,44 +27,43 @@ public class UserController {
 
     @GetMapping("/login")
     public String login() {
-        return "login_form";
+        return "user/login_form";
     }
 
     @GetMapping("/signup")
     public String signup(UserCreateRequestDto userCreateRequestDto) {
-        return "signup_form";
+        return "user/signup_form";
     }
 
     @PostMapping("/signup")
     public String signup(@Valid UserCreateRequestDto userCreateRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signup_form";
+            return "user/signup_form";
         }
 
         if (!userCreateRequestDto.getPassword1().equals(userCreateRequestDto.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "signup_form";
+            return "user/signup_form";
         }
         try {
             userService.postUser(userCreateRequestDto);
         }catch(DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            return "signup_form";
+            return "user/signup_form";
         }catch(Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
-            return "signup_form";
+            return "user/signup_form";
         }
 
         return "redirect:/";
     }
 
-    // TODO: 비밀번호 변경 경로와 다른 데이터 변경 경로 다르게 설정하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
-    public String mypage(Principal principal, Model model){
+    public String mypage(UserCreateRequestDto userCreateRequestDto, Principal principal, Model model){
         try {
             String loginedUsername = principal.getName();
             SiteUser user = userService.findByUsername(loginedUsername);
@@ -73,7 +71,7 @@ public class UserController {
         } catch (Exception e){
             return "redirect:/";
         }
-        return "mypage_form";
+        return "user/mypage_form";
     }
 
     @PreAuthorize("isAuthenticated()")
