@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(
                 siteUser.toBuilder()
-                        .password(dto.getPassword1())
+                        .password(encoder.encode(dto.getPassword1()))
                         .build());
 
         return GlobalResponseDto.of("200","유저 비밀번호 변경 성공");
