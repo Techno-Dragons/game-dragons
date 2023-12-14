@@ -7,7 +7,7 @@
 <!--            <div class="card-text" th:utext="${@commonUtil.markdown(article.content)}"></div>-->
 			<div class="card-text" th:text="${article.content}"></div>
 			<div class="text-center my-3">
-				<img th:if="${imageResponseDto.getData.storeFilename != null}" th:src="@{|/article/image?articleId=${article.id}|}" alt="Article Image" class="img-fluid">
+				<img th:if="${imageResponseDto != null}" th:src="@{|/article/image?articleId=${article.id}|}" alt="Article Image" class="img-fluid">
 			</div>
             <div class="d-flex justify-content-end">
 				<div th:if="${article.modifiedTime != null}" class="badge bg-light text-dark p-2 text-start mx-3">
@@ -65,11 +65,11 @@
 <!--	                추천-->
 <!--	                <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.voter)}"></span>-->
 <!--	            </a>-->
-	            <a th:href="@{|/answer/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+	            <a th:href="@{|/article/${article.id}/comment/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
 	                sec:authorize="isAuthenticated()"
 	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
 	                th:text="수정"></a>
-	            <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${comment.id}|}"
+	            <a href="javascript:void(0);" th:data-uri="@{|/article/${article.id}/comment/${comment.id}|}"
 	                class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
 	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
 	                th:text="삭제"></a>
@@ -78,8 +78,8 @@
     </div>
     <!-- 답변 반복 끝  -->
     <!-- 답변 작성 -->
-    <form th:action="@{|/answer/create/${article.id}|}" th:object="${commentResponseDto}" method="post" class="my-3">
-        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+    <form th:action="@{|/article/${article.id}/comment|}" th:object="${commentRequestDto}" method="post" class="my-3">
+        <div th:replace="~{article/form_errors :: formErrorsFragment}"></div>
         <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
         <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
         <input type="submit" value="답변등록" class="btn btn-primary my-2">

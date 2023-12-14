@@ -45,7 +45,8 @@ public class CommentController {
         }
 
         model.addAttribute("commentResponse", commentServiceImpl.post(siteUser, article, req));
-        return "redirect:/article/{id}";
+
+        return "redirect:/article/{articleId}";
     }
 
     //PUT :/article/{articleId}/comment/{commentId}
@@ -66,7 +67,7 @@ public class CommentController {
             model.addAttribute("article", article);
         }
         model.addAttribute("commentResponse", commentServiceImpl.update(siteUser, commentId, req));
-        return "redirect:/article/{id}";
+        return "redirect:/article/{articleId}";
     }
 
     //DELETE :/article/{articleId}/comment/{commentId}
@@ -80,6 +81,6 @@ public class CommentController {
         SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
         model.addAttribute("commentResponse", commentServiceImpl.delete(siteUser, commentId));
-        return "redirect:/article/{id}";
+        return "redirect:/article/{articleId}";
     }
 }
