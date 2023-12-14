@@ -45,7 +45,8 @@ public class CommentController {
         }
 
         model.addAttribute("commentResponse", commentServiceImpl.post(siteUser, article, req));
-        return "article/article_detail";
+        return "redirect:/article/{articleId}";
+        //
     }
 
     //PUT :/article/{articleId}/comment/{commentId}

@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileStore {
 
-    private final String DIR_PATH = "./";
+    private final String DIR_PATH = System.getenv("userprofile") + "/images/";
     public String getFullPath(String filename) {
 
         return DIR_PATH + filename;
