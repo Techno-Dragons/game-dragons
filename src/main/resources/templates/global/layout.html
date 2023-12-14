@@ -22,7 +22,7 @@
                 <div class="collapse navbar-collapse" id="navbarScroll">
                     <ul class="navbar-nav me-auto my-2 my-lg-0" style="--bs-scroll-height: 100px;">
                         <li class="nav-item">
-                            <a class="nav-link" href="/article" sec:authorize="isAnonymous()"> <i class="bi bi-list-task"></i> 글쓰기</a>
+                            <a class="nav-link" th:href="@{/article?mode=write}" sec:authorize="isAuthenticated()"> <i class="bi bi-list-task"></i> 글쓰기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/member/signup" sec:authorize="isAnonymous()"> <i class="bi bi-person-add"></i> 회원가입</a>
@@ -31,7 +31,10 @@
                             <a class="nav-link" href="/member/login" sec:authorize="isAnonymous()"> <i class="bi bi-door-open"></i> 로그인</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/member/mypage" sec:authorize="isAnonymous()"> <i class="bi bi-person-badge"></i> 마이페이지</a>
+                            <a class="nav-link" href="/member/mypage" sec:authorize="isAuthenticated()"> <i class="bi bi-person-badge"></i> 마이페이지</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/member/logout" sec:authorize="isAuthenticated()"> <i class="bi bi-door-closed"></i> 로그아웃</a>
                         </li>
                     </ul>
                 </div>
