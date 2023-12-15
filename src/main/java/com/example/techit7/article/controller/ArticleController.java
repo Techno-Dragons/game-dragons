@@ -16,6 +16,8 @@ import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -25,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,10 +68,13 @@ public class ArticleController {
     // Article 저장
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/article")
-    public String createArticle(@ModelAttribute ArticleRequestDto articleRequestDto,
+    public String createArticle(@Valid @ModelAttribute ArticleRequestDto articleRequestDto,
+                                BindingResult bindingResult,
                                 Principal principal) throws IOException {
 
-
+        if (bindingResult.hasErrors()) {
+            return "article/article_form";
+        }
 
         Long articleId = articleService.postArticle(articleRequestDto, userService.findByUsername(principal.getName()));
 
@@ -109,9 +115,13 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/article/{id}")
     public String modifyArticle(@PathVariable Long id,
-                              ArticleRequestDto articleRequestDto,
-                              CommentResponseDto commentResponseDto,
-                              Principal principal) throws IOException {
+                                @Valid @ModelAttribute("articleRequestDto") ArticleRequestDto articleRequestDto,
+                                BindingResult bindingResult,
+                                Principal principal) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            return "article/article_modify_form";
+        }
 
         articleService.updateArticleById(id, articleRequestDto);
         imageService.update(articleRequestDto.getMultipartFile(), id);
