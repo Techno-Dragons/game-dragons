@@ -1,7 +1,7 @@
 <html layout:decorate="~{global/layout}">
 <div layout:fragment="content" class="container my-3" th:with="article=${articleResponseDto.data}">
     <!-- 질문 -->
-    <h2 class="border-bottom py-2"></h2>
+	<h2 class="border-bottom py-2" th:text="${article.title}"></h2>
 	<div class="card my-3">
         <div class="card-body">
 <!--            <div class="card-text" th:utext="${@commonUtil.markdown(article.content)}"></div>-->
@@ -65,7 +65,7 @@
 <!--	                추천-->
 <!--	                <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.voter)}"></span>-->
 <!--	            </a>-->
-	            <a th:href="@{|/article/${article.id}/comment/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+	            <a class="btn btn-sm btn-outline-secondary"
 	                sec:authorize="isAuthenticated()"
 	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
 	                th:text="수정"
