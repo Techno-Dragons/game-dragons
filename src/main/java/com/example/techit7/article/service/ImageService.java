@@ -52,7 +52,9 @@ public class ImageService {
 
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
-            throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
+            save(multipartFile, articleId);
+            image = imageRepository.findByArticleId(articleId);
+            return;
         }
 
         image.get().updateImage(fileStore.storeFile(multipartFile));
