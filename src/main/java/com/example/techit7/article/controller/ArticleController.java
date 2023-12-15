@@ -53,7 +53,7 @@ public class ArticleController {
     @GetMapping("/article")
     public String articleAll(@ModelAttribute ArticleRequestDto articleRequestDto,
                              @RequestParam(defaultValue = "") String mode,
-                             @RequestParam(defaultValue = "0") Integer page,
+                             @RequestParam(value = "page", defaultValue = "0") int page,
                              Model model) {
 
         if (mode.equals("write")) {
