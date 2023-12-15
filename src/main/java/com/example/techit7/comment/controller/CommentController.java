@@ -68,7 +68,7 @@ public class CommentController {
 
     //DELETE :/article/{articleId}/comment/{commentId}
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/{commentId}")
+    @GetMapping("/{commentId}")
     public String delete(
             @PathVariable("commentId") Long commentId,
             Principal principal,
