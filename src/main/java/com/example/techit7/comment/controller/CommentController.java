@@ -4,18 +4,18 @@ import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.service.CommentServiceImpl;
+import com.example.techit7.global.dto.GlobalResponseDto;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.service.UserServiceImpl;
 import jakarta.validation.Valid;
-import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.security.Principal;
+
+@RestController
 @RequestMapping("/article/{articleId}/comment")
 @RequiredArgsConstructor
 public class CommentController {
@@ -26,57 +26,50 @@ public class CommentController {
     //POST :/article/{articleId}/comment
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public String write(
-            Model model,
+    public GlobalResponseDto write(
             @PathVariable("articleId") Long articleId,
-            @Valid CommentRequestDto req,
+            @RequestBody @Valid CommentRequestDto req,
             BindingResult bindingResult,
             Principal principal
     ) {
         Article article = articleServiceImpl.findArticleById(articleId);
         SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
-        if (bindingResult.hasErrors()){
-            model.addAttribute("article", article);
+        if (bindingResult.hasErrors()) {
+            return GlobalResponseDto.of("400", "error", bindingResult.getAllErrors());
         }
 
-        model.addAttribute("commentResponse", commentServiceImpl.post(siteUser, article, req));
-        return "redirect:/article/{articleId}";
-        //
+        return GlobalResponseDto.of("200", "success", commentServiceImpl.post(siteUser, article, req));
     }
 
     //PUT :/article/{articleId}/comment/{commentId}
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{commentId}")
-    public String modify(
-            @PathVariable("articleId") Long articleId,
+    @PutMapping("/{commentId}")
+    public GlobalResponseDto modify(
             @PathVariable("commentId") Long commentId,
-            @Valid CommentRequestDto req,
+            @RequestBody @Valid CommentRequestDto req,
             BindingResult bindingResult,
-            Principal principal,
-            Model model
-    ){
-        Article article = articleServiceImpl.findArticleById(articleId);
+            Principal principal
+    ) {
         SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
-        if(bindingResult.hasErrors()){
-            model.addAttribute("article", article);
+        if (bindingResult.hasErrors()) {
+            return GlobalResponseDto.of("400", "error", bindingResult.getAllErrors());
         }
-        model.addAttribute("commentResponse", commentServiceImpl.update(siteUser, commentId, req));
-        return "article/article_detail";
+
+        return GlobalResponseDto.of("200", "success", commentServiceImpl.update(siteUser, commentId, req));
     }
 
     //DELETE :/article/{articleId}/comment/{commentId}
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{commentId}")
-    public String delete(
+    @DeleteMapping("/{commentId}")
+    public GlobalResponseDto delete(
             @PathVariable("commentId") Long commentId,
-            Principal principal,
-            Model model
+            Principal principal
     ) {
         SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
-        model.addAttribute("commentResponse", commentServiceImpl.delete(siteUser, commentId));
-        return "article/article_detail";
+        commentServiceImpl.delete(siteUser, commentId);
+        return GlobalResponseDto.of("200", "success");
     }
 }
