@@ -5,28 +5,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class GlobalResponseDto<T> {
+public class GlobalResponse<T> {
 
     private String resultCode;
     private String msg;
     private T data;
 
-    public static<T> GlobalResponseDto<T> of(String resultCode, String msg){
-        GlobalResponseDto<T> globalResponseDto = new GlobalResponseDto<T>();
+    public static<T> GlobalResponse<T> of(String resultCode, String msg){
+        GlobalResponse<T> globalResponse = new GlobalResponse<T>();
 
-        globalResponseDto.setResultCode(resultCode);
-        globalResponseDto.setMsg(msg);
+        globalResponse.setResultCode(resultCode);
+        globalResponse.setMsg(msg);
 
-        return globalResponseDto;
+        return globalResponse;
     }
 
-    public static<T> GlobalResponseDto<T> of(String resultCode, String msg, T data){
-        GlobalResponseDto<T> globalResponseDto = new GlobalResponseDto<T>();
+    public static<T> GlobalResponse<T> of(String resultCode, String msg, T data){
+        GlobalResponse<T> globalResponse = new GlobalResponse<T>();
 
-        globalResponseDto.setResultCode(resultCode);
-        globalResponseDto.setMsg(msg);
-        globalResponseDto.setData(data);
+        globalResponse.setResultCode(resultCode);
+        globalResponse.setMsg(msg);
+        globalResponse.setData(data);
 
-        return globalResponseDto;
+        return globalResponse;
     }
 }
