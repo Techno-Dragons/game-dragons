@@ -1,8 +1,16 @@
 package com.example.techit7.comment.dto;
 
-import com.example.techit7.comment.entity.Comment;
-import com.example.techit7.global.dto.GlobalResponseDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CommentResponseDto extends GlobalResponseDto<Comment> {
-
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class CommentResponseDto {
+    private Long id;
+    private String content;
+    private String authorName;
 }

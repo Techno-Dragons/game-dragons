@@ -6,7 +6,6 @@ import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.comment.repository.CommentRepository;
-import com.example.techit7.global.dto.GlobalResponseDto;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,37 +23,49 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public GlobalResponseDto<Comment> post(SiteUser siteUser, Article article, CommentRequestDto req) {
+    public CommentResponseDto post(SiteUser user, Article article, CommentRequestDto req) {
 
         Comment comment = Comment.builder()
-                .author(siteUser)
+                .author(user)
                 .article(article)
                 .content(req.getContent())
                 .build();
 
         commentRepository.save(comment);
-        return CommentResponseDto.of("200", "정상");
+
+        return CommentResponseDto
+                .builder()
+                .id(comment.getId())
+                .authorName(user.getUsername())
+                .content(comment.getContent())
+                .build();
     }
 
     @Override
-    public GlobalResponseDto<Comment> update(SiteUser siteUser, Long id, CommentRequestDto req) {
+    public CommentResponseDto update(SiteUser siteUser, Long id, CommentRequestDto req) {
         Comment comment = validateById(id);
         validateByUser(siteUser, comment);
 
         comment = comment.toBuilder()
                 .content(req.getContent())
                 .build();
+
         commentRepository.save(comment);
-        return CommentResponseDto.of("200", "정상");
+
+        return CommentResponseDto
+                .builder()
+                .id(comment.getId())
+                .authorName(siteUser.getUsername())
+                .content(comment.getContent())
+                .build();
     }
 
     @Override
-    public GlobalResponseDto<Comment> delete(SiteUser siteUser, Long id) {
+    public void delete(SiteUser siteUser, Long id) {
         Comment comment = validateById(id);
         validateByUser(siteUser, comment);
 
         commentRepository.delete(comment);
-        return CommentResponseDto.of("200", "정상");
     }
 
     public Comment validateById(Long id) {
