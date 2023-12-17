@@ -6,7 +6,7 @@ import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.repository.ArticleRepository;
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.dto.GlobalResponse;
 import com.example.techit7.user.entity.SiteUser;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -20,22 +20,22 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @RequiredArgsConstructor
-
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    /**
-     * 게시글 전체조회
-     * @return List<ArticleResponseDto>
-     */
-//    @Override
-//    public List<GlobalResponseDto<ArticleResponseDto>> getArticles() {
+/**
+ //     * 게시글 전체조회
+ //     * @return List<ArticleResponseDto>
+ //     */
+    @Override
+//    public List<GlobalResponse<ArticleResponseDto>> getArticles() {
 //        List<Article> articles = articleRepository.findAll();
 //
-//        List<GlobalResponseDto<ArticleResponseDto>> articleResponseDtos = new ArrayList<>();
+//        List<GlobalResponse<ArticleResponseDto>> articleResponseDtos = new ArrayList<>();
 //        for (Article article : articles) {
 //            ArticleResponseDto articleResponseDto = getArticleResponse(article);
 //
@@ -45,14 +45,14 @@ public class ArticleServiceImpl implements ArticleService {
 //        return articleResponseDtos;
 //    }
 
-    public GlobalResponseDto<Page<ArticleResponseDto>> getArticles(int page) {
+    public Page<Article> getArticles(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createdTime"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
         Page<Article> articles = articleRepository.findAll(pageable);
 
-        return GlobalResponseDto.of("200", "success", articles.map(this::getArticleResponse));
+        return articles;
     }
 
     /**
@@ -60,23 +60,15 @@ public class ArticleServiceImpl implements ArticleService {
      * @param id    조회할 게시글 ID
      * @return ArticleResponseDto
      */
-    public GlobalResponseDto<ArticleResponseDto> getArticleResponseById(Long id) {
+    public GlobalResponse getArticleResponseById(Long id) {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isEmpty()) {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
 
-        return GlobalResponseDto.of("200", "success", getArticleResponse(article.get())) ;
+        return GlobalResponse.of("200", "success") ;
     }
-    @Override
-    public GlobalResponseDto<ArticleResponseDto> getArticleById(Long id) {
-        Optional<Article> article = articleRepository.findById(id);
-        if (article.isEmpty()) {
-            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
-        }
 
-        return GlobalResponseDto.of("200", "success", getArticleResponse(article.get())) ;
-    }
 
     public Article findArticleById(Long id){
         Optional<Article> article = articleRepository.findById(id);
@@ -154,4 +146,5 @@ public class ArticleServiceImpl implements ArticleService {
                 .build();
 
     }
+
 }
