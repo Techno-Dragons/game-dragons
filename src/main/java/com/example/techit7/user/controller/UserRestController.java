@@ -1,10 +1,8 @@
 package com.example.techit7.user.controller;
 
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.dto.GlobalResponse;
 import com.example.techit7.user.dto.UserCreateRequestDto;
-import com.example.techit7.user.dto.UserRequestTest;
 import com.example.techit7.user.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +21,8 @@ public class UserRestController {
     }
 
     @PostMapping("/test/signup")
-    public ResponseEntity<GlobalResponseDto> signup(@RequestBody UserCreateRequestDto userCreateRequestDto) {
-        GlobalResponseDto result = userService.postUser(userCreateRequestDto);
+    public ResponseEntity<GlobalResponse> signup(@RequestBody UserCreateRequestDto userCreateRequestDto) {
+        GlobalResponse result = userService.postUser(userCreateRequestDto);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
