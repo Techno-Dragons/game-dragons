@@ -27,7 +27,7 @@ public class ImageService {
     @Transactional
     public void save(MultipartFile multipartFile, Long articleId) throws IOException {
 
-        if (multipartFile == null) {
+        if (multipartFile == null || multipartFile.isEmpty()) {
             return;
         }
 
@@ -52,7 +52,9 @@ public class ImageService {
 
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
-            throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
+            save(multipartFile, articleId);
+            image = imageRepository.findByArticleId(articleId);
+            return;
         }
 
         image.get().updateImage(fileStore.storeFile(multipartFile));
@@ -67,7 +69,7 @@ public class ImageService {
         }
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
-            throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
+            return;
         }
         imageRepository.delete(image.get());
     }
@@ -76,7 +78,7 @@ public class ImageService {
     public GlobalResponseDto<ImageResponseDto> getByArticleId(Long articleId) {
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
-            throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
+            return null;
         }
 
         return GlobalResponseDto.of("200", "200", ImageResponseDto.builder()

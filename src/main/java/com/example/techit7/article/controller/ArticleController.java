@@ -6,12 +6,18 @@ import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.dto.ImageResponseDto;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.article.service.ImageService;
+import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.dto.CommentResponseDto;
+import com.example.techit7.comment.entity.Comment;
+import com.example.techit7.comment.service.CommentServiceImpl;
 import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.user.repository.UserRepository;
 import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +42,7 @@ public class ArticleController {
     private final ArticleServiceImpl articleService;
     private final ImageService imageService;
     private final UserServiceImpl userService;
+    private final CommentServiceImpl commentService;
 
     @GetMapping("/")
     public String articleHome() {
@@ -45,11 +53,11 @@ public class ArticleController {
     @GetMapping("/article")
     public String articleAll(@ModelAttribute ArticleRequestDto articleRequestDto,
                              @RequestParam(defaultValue = "") String mode,
-                             @RequestParam(defaultValue = "0") Integer page,
+                             @RequestParam(value = "page", defaultValue = "0") int page,
                              Model model) {
 
         if (mode.equals("write")) {
-            return "/article/article_form";
+            return "article/article_form";
         }
         GlobalResponseDto<Page<ArticleResponseDto>> articleResponseDtos = articleService.getArticles(page);
         model.addAttribute("paging", articleResponseDtos.getData());
@@ -58,26 +66,30 @@ public class ArticleController {
     }
 
     // Article 저장
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/article")
-    public String createArticle(@ModelAttribute ArticleRequestDto articleRequestDto,
+    public String createArticle(@Valid @ModelAttribute ArticleRequestDto articleRequestDto,
+                                BindingResult bindingResult,
                                 Principal principal) throws IOException {
 
-        principal.getName();
+        if (bindingResult.hasErrors()) {
+            return "article/article_form";
+        }
 
-        Long articleId = articleService.postArticle(articleRequestDto, null);
+        Long articleId = articleService.postArticle(articleRequestDto, userService.findByUsername(principal.getName()));
 
         imageService.save(articleRequestDto.getMultipartFile(), articleId);
-        return "redirect:/article";
+        return String.format("redirect:/article/%d", articleId);
     }
+
 
     // Article 단일 출력
     //@PreAuthorize("isAuthenticated()")
     @GetMapping("/article/{id}")
     public String detailArticle(@PathVariable Long id,
                                 @RequestParam(defaultValue = "") String mode,
-                                ArticleRequestDto articleRequestDto,
-                                CommentResponseDto commentResponseDto,
+                                @ModelAttribute("articleRequestDto") ArticleRequestDto articleRequestDto,
+                                @ModelAttribute("commentRequestDto") CommentRequestDto commentRequestDto,
                                 Principal principal,
                                 Model model) {
 
@@ -88,7 +100,6 @@ public class ArticleController {
         model.addAttribute("imageResponseDto", imageResponseDto);
 
         if (mode.equals("modify")) {
-            articleService.updateArticleById(id, articleRequestDto);
             return "article/article_modify_form";
         }
         if (mode.equals("delete")) {
@@ -102,16 +113,20 @@ public class ArticleController {
 
     // Article 수정
     @PreAuthorize("isAuthenticated()")
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/article/{id}")
     public String modifyArticle(@PathVariable Long id,
-                              ArticleRequestDto articleRequestDto,
-                              CommentResponseDto commentResponseDto,
-                              Principal principal) throws IOException {
+                                @Valid @ModelAttribute("articleRequestDto") ArticleRequestDto articleRequestDto,
+                                BindingResult bindingResult,
+                                Principal principal) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            return "article/article_modify_form";
+        }
 
         articleService.updateArticleById(id, articleRequestDto);
         imageService.update(articleRequestDto.getMultipartFile(), id);
         //TODO 수정 view 구현 필요
+
         return "redirect:/article/{id}";
     }
 

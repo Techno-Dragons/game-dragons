@@ -27,7 +27,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @Column(name = "comment_content")
+    @Column(columnDefinition = "TEXT", length = 500, name = "comment_content")
     private String content;
 
 }
