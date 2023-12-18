@@ -1,9 +1,7 @@
 package com.example.techit7.article.service;
 
 import com.example.techit7.article.dto.ArticleRequestDto;
-import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
-import com.example.techit7.global.dto.GlobalResponse;
 import com.example.techit7.user.entity.SiteUser;
 import org.springframework.data.domain.Page;
 

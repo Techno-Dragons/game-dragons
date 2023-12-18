@@ -4,12 +4,11 @@ package com.example.techit7.article.controller;//package com.example.techit7.art
 
 import com.example.techit7.article.dto.ArticleDetailResponseDto;
 import com.example.techit7.article.dto.ArticleRequestDto;
-import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.entity.Image;
 import com.example.techit7.article.service.ArticleService;
 import com.example.techit7.article.service.ImageService;
-import com.example.techit7.global.dto.GlobalResponse;
+import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.service.UserService;
 import java.io.IOException;
 import java.net.MalformedURLException;
