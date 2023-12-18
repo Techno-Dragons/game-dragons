@@ -7,11 +7,8 @@ import com.example.techit7.article.dto.ImageResponseDto;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.article.service.ImageService;
 import com.example.techit7.comment.dto.CommentRequestDto;
-import com.example.techit7.comment.dto.CommentResponseDto;
-import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.comment.service.CommentServiceImpl;
-import com.example.techit7.global.dto.GlobalResponseDto;
-import com.example.techit7.user.repository.UserRepository;
+import com.example.techit7.global.response.GlobalResponseDto;
 import com.example.techit7.user.service.UserServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,7 +29,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 @RequiredArgsConstructor

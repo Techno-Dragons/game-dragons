@@ -6,7 +6,7 @@ import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.repository.ArticleRepository;
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.response.GlobalResponseDto;
 import com.example.techit7.user.entity.SiteUser;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
