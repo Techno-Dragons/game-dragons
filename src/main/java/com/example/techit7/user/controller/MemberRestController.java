@@ -7,6 +7,8 @@ import com.example.techit7.user.dto.LoginResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.service.MemberRestServiceImpl;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -23,6 +26,7 @@ public class MemberRestController {
 
     private final MemberRestServiceImpl memberRestService;
     private final HttpServletResponse response;
+    private final HttpServletRequest request;
 
     @GetMapping("/test")
     public ResponseEntity<String> test1() {
@@ -76,6 +80,36 @@ public class MemberRestController {
         response.addHeader("Set-Cookie",cookie2.toString());
 
         return GlobalResponse.of("200","로그인 성공.",new LoginResponseDto(member,accessToken,refreshToken));
+    }
+
+    //TODO: 리프레시 토큰이 없는 경우, 멤버 객체를 찾을 수 없는 경우 예외처리 추가
+    @PostMapping("/logout")
+    public GlobalResponse logout(){
+        //http request에서 refresh token 쿠키 추출
+        Cookie refreshTokenCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("refreshToken"))
+                .findFirst().get();
+
+        // refresh token 쿠키 값을 이용해 멤버 객체 찾기
+        Member member = memberRestService.findMemberByRefreshToken(refreshTokenCookie.getValue()).get();
+
+        // 해당 멤버의 리프레시 토큰을 초기화해서 데이터베이스에 저장
+        memberRestService.setRefreshToken(member,"");
+
+        // response에 담아서 보낼 refresh token을 기한만료로 제거
+        ResponseCookie cookie = ResponseCookie.from(refreshTokenCookie.getName(), null)
+                .path("/")
+                .maxAge(0)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        // access token은 따로 제거할 필요?
+
+        return GlobalResponse.of("200","로그아웃 성공");
+        //로그아웃 테스트는 일단 성공
     }
 
 
