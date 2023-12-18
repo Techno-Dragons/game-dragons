@@ -28,11 +28,6 @@ public class MemberRestController {
     private final HttpServletResponse response;
     private final HttpServletRequest request;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test1() {
-        return new ResponseEntity<>("ok", HttpStatus.OK);
-    }
-
     @PostMapping("/signup")
     public GlobalResponse signup(@RequestBody UserCreateRequestDto userCreateRequestDto) {
         Member member = memberRestService.signup(userCreateRequestDto).getData();
