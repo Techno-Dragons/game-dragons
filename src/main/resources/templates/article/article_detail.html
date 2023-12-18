@@ -1,7 +1,7 @@
 <html layout:decorate="~{global/layout}">
 <div layout:fragment="content" class="container my-3" th:with="article=${articleResponseDto.data}">
     <!-- 질문 -->
-    <h2 class="border-bottom py-2"></h2>
+	<h2 class="border-bottom py-2" th:text="${article.title}"></h2>
 	<div class="card my-3">
         <div class="card-body">
 <!--            <div class="card-text" th:utext="${@commonUtil.markdown(article.content)}"></div>-->
@@ -65,23 +65,36 @@
 <!--	                추천-->
 <!--	                <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.voter)}"></span>-->
 <!--	            </a>-->
-	            <a th:href="@{|/article/${article.id}/comment/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+	            <a class="btn btn-sm btn-outline-secondary"
 	                sec:authorize="isAuthenticated()"
 	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
-	                th:text="수정"></a>
+	                th:text="수정"
+				    th:onclick="toggleCommentForm([[${comment.id}]])">
+				</a>
 	            <a href="javascript:void(0);" th:data-uri="@{|/article/${article.id}/comment/${comment.id}|}"
 	                class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
 	                th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
 	                th:text="삭제"></a>
+				<form th:action="@{|/article/${article.id}/comment/${comment.id}|}"
+					  th:object="${commentRequestDto}"
+					  th:id="'modifyCommentForm-'+${comment.id}"
+					  method="post"
+					  class="my-3 d-none">
+					<div>
+						<textarea sec:authorize="isAuthenticated()" class="form-control m-2" th:field="*{content}" rows="3"></textarea>
+						<input type="submit" value="답변수정" class="btn btn-primary my-2">
+					</div>
+				</form>
 	        </div>
         </div>
     </div>
     <!-- 답변 반복 끝  -->
     <!-- 답변 작성 -->
-    <form th:action="@{|/article/${article.id}/comment|}" th:object="${commentRequestDto}" method="post" class="my-3">
+    <form th:action="@{|/article/${article.id}/comment|}" th:object="${commentRequestDto}" method="post" class="my-3" sec:authorize="isAuthenticated()">
         <div th:replace="~{article/form_errors :: formErrorsFragment}"></div>
         <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
         <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
+
         <input type="submit" value="답변등록" class="btn btn-primary my-2">
     </form>
 </div>
@@ -102,5 +115,15 @@ Array.from(recommend_elements).forEach(function(element) {
         };
     });
 });
+
+// 수정 버튼 클릭 시 토글(숨김 / 표시)
+function toggleCommentForm(commentId) {
+	var formElement = document.getElementById('modifyCommentForm-' + commentId);
+	if (formElement) {
+		formElement.classList.toggle('d-none');
+	} else {
+		console.error('ID가 "modifyCommentForm-' + commentId + '"인 요소를 찾을 수 없습니다.');
+	}
+}
 </script>
 </html>

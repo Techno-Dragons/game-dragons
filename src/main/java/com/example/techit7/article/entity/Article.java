@@ -38,10 +38,10 @@ public class Article extends BaseEntity {
     @JoinColumn(name = "user_id")
     private SiteUser author;
 
-    @Column
+    @Column(columnDefinition = "TEXT", length = 20)
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT", length = 500)
     private String content;
 
     @Column
@@ -56,7 +56,6 @@ public class Article extends BaseEntity {
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
-
 
     //view카운트 증가
     public void incrementViewCount() {
