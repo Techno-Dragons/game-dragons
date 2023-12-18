@@ -1,14 +1,12 @@
 package com.example.techit7.user.service;
 
 
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.response.GlobalResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.dto.UserCreateResponseDto;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

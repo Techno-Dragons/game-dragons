@@ -1,4 +1,4 @@
-package com.example.techit7.global.dto;
+package com.example.techit7.global.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package com.example.techit7.article.dto;
 
 import com.example.techit7.comment.entity.Comment;
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.response.GlobalResponseDto;
 import com.example.techit7.user.entity.SiteUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

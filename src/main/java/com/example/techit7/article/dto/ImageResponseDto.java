@@ -1,7 +1,7 @@
 package com.example.techit7.article.dto;
 
 import com.example.techit7.article.entity.Article;
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.response.GlobalResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

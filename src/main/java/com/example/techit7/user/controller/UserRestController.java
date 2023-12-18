@@ -1,10 +1,8 @@
 package com.example.techit7.user.controller;
 
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.response.GlobalResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
-import com.example.techit7.user.dto.UserRequestTest;
 import com.example.techit7.user.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
