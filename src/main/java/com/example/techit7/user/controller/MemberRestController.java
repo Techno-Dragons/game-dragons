@@ -57,6 +57,7 @@ public class MemberRestController {
         );
         memberRestService.setRefreshToken(member, refreshToken);
 
+        // TODO: 중복된 코드, 리팩토링 필요?
         ResponseCookie cookie1 = ResponseCookie.from("accessToken",accessToken)
                 .httpOnly(true)
                 .path("/")
