@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,6 +46,7 @@ public class MemberRestController {
                         "authorities", member.getAuthoritiesAsStrList()
                 )
         );
+        // 기존에 사용하던 리프레시 토큰이 있으면 있는걸로 발급?
         String refreshToken = JwtUtil.encode(
                 60 * 60 * 24, //1 day
                 Map.of(
@@ -54,55 +56,83 @@ public class MemberRestController {
         );
         memberRestService.setRefreshToken(member, refreshToken);
 
-        // TODO: 중복된 코드, 리팩토링 필요?
-        ResponseCookie cookie1 = ResponseCookie.from("accessToken",accessToken)
-                .httpOnly(true)
-                .path("/")
-                .sameSite("None")
-                .secure(true)
-                .build();
-
-        ResponseCookie cookie2 = ResponseCookie.from("refreshToken",refreshToken)
-                .httpOnly(true)
-                .path("/")
-                .sameSite("None")
-                .secure(true)
-                .build();
-
-        response.addHeader("Set-Cookie",cookie1.toString());
-        response.addHeader("Set-Cookie",cookie2.toString());
+        addCrossDomainCookie(accessToken,refreshToken);
 
         return GlobalResponse.of("200","로그인 성공.",new LoginResponseDto(member,accessToken,refreshToken));
+    }
+
+    @PostMapping("/login/refresh")
+    public GlobalResponse refreshAccessToken(){
+        Optional<Cookie> refreshTokenCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("refreshToken"))
+                .findFirst();
+        if(refreshTokenCookie.isPresent()){
+            String refreshToken = refreshTokenCookie.get().getValue();
+            Member member = memberRestService.findMemberByRefreshToken(refreshToken).get();
+            String accessToken = JwtUtil.encode(
+                    60 * 10,
+                    Map.of(
+                            "id", member.getId().toString(),
+                            "username", member.getUsername(),
+                            "authorities", member.getAuthoritiesAsStrList()
+                    )
+            );
+            ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
+                    .path("/")
+                    .maxAge(60 * 10)
+                    .sameSite("None")
+                    .secure(true)
+                    .httpOnly(true)
+                    .build();
+            response.addHeader("Set-Cookie",accessCookie.toString());
+            return GlobalResponse.of("200","refresh accessToken complete");
+        }
+        return GlobalResponse.of("500","리프레시토큰을 찾을 수 없습니다.?");
     }
 
     //TODO: 리프레시 토큰이 없는 경우, 멤버 객체를 찾을 수 없는 경우 예외처리 추가
     @PostMapping("/logout")
     public GlobalResponse logout(){
-        //http request에서 refresh token 쿠키 추출
-        Cookie refreshTokenCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("refreshToken"))
-                .findFirst().get();
 
-        // refresh token 쿠키 값을 이용해 멤버 객체 찾기
-        Member member = memberRestService.findMemberByRefreshToken(refreshTokenCookie.getValue()).get();
+        removeCrossDomainCookie();
+        return GlobalResponse.of("200","로그아웃 성공");
+    }
 
-        // 해당 멤버의 리프레시 토큰을 초기화해서 데이터베이스에 저장
-        memberRestService.setRefreshToken(member,"");
-
-        // response에 담아서 보낼 refresh token을 기한만료로 제거
-        ResponseCookie cookie = ResponseCookie.from(refreshTokenCookie.getName(), null)
+    private void removeCrossDomainCookie(){
+        ResponseCookie cookie1 = ResponseCookie.from("accessToken", null)
                 .path("/")
                 .maxAge(0)
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
                 .build();
-        response.addHeader("Set-Cookie", cookie.toString());
-
-        // access token은 따로 제거할 필요?
-
-        return GlobalResponse.of("200","로그아웃 성공");
-        //로그아웃 테스트는 일단 성공
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", null)
+                .path("/")
+                .maxAge(0)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+        response.addHeader("Set-Cookie", cookie1.toString());
+        response.addHeader("Set-Cookie", cookie2.toString());
+    }
+    private void addCrossDomainCookie(String accessToken, String refreshToken){
+        ResponseCookie cookie1 = ResponseCookie.from("accessToken", accessToken)
+                .path("/")
+                .maxAge(60 * 10)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", refreshToken)
+                .path("/")
+                .maxAge(60 * 60 * 24)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+        response.addHeader("Set-Cookie", cookie1.toString());
+        response.addHeader("Set-Cookie", cookie2.toString());
     }
 
 
