@@ -90,7 +90,6 @@ public class MemberRestController {
         return GlobalResponse.of("500","리프레시토큰을 찾을 수 없습니다.?");
     }
 
-    //TODO: 리프레시 토큰이 없는 경우, 멤버 객체를 찾을 수 없는 경우 예외처리 추가
     @PostMapping("/logout")
     public GlobalResponse logout(){
 
