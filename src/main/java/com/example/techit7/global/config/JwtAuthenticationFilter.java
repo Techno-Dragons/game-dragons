@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @SneakyThrows
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         System.out.println("JwtAuthenticationFilter 실행");
-
+        // TODO: access, refresh token 갱신 자동화 과정 추가
         String apiKey = null;
         Cookie[] cookies = request.getCookies();
         if(cookies != null){
