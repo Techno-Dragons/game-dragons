@@ -35,13 +35,7 @@ public class MemberRestController {
         if (!userCreateRequestDto.getPassword1().equals(userCreateRequestDto.getPassword2())) {
             return GlobalResponse.of("500","비밀번호가 일치하지 않습니다");
         }
-        try {
-            memberRestService.signup(userCreateRequestDto);
-        }catch(DataIntegrityViolationException e) {
-            e.printStackTrace();
-            return GlobalResponse.of("500", "이미 등록된 사용자 입니다.");
-        }
-        return GlobalResponse.of("200","회원가입 완료.");
+        return memberRestService.signup(userCreateRequestDto);
     }
 
     @PostMapping("/login")

@@ -26,7 +26,10 @@ public class MemberRestServiceImpl {
     private final PasswordEncoder encoder;
 
 
-    public GlobalResponse<Member> signup(UserCreateRequestDto dto) {
+    public GlobalResponse signup(UserCreateRequestDto dto) {
+        if(!validDuplicationUsername(dto.getUsername())){
+            return GlobalResponse.of("500","중복된 이름입니다.");
+        }
         Member member = Member.builder()
                 .username(dto.getUsername())
                 .password(encoder.encode(dto.getPassword2()))
@@ -34,7 +37,10 @@ public class MemberRestServiceImpl {
                 .email(dto.getEmail()).build();
 
         memberRepository.save(member);
-        return GlobalResponse.of("200","회원가입 완료", member);
+        return GlobalResponse.of("200","회원가입 완료");
+    }
+    public boolean validDuplicationUsername(String username){
+        return memberRepository.findByUsername(username).isPresent() ? false : true;
     }
 
     public GlobalResponse<Member> checkUsernameAndPassword(String username, String password) {
