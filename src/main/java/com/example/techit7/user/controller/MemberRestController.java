@@ -66,8 +66,12 @@ public class MemberRestController {
     }
 
     @PostMapping("/login/refresh")
-    public GlobalResponse refreshAccessToken(){
-        Optional<Cookie> refreshTokenCookieOp = Arrays.stream(request.getCookies())
+    public GlobalResponse refreshAccessToken() {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return GlobalResponse.of("500", "cookies not exist.");
+        }
+        Optional<Cookie> refreshTokenCookieOp = Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals("refreshToken"))
                 .findFirst();
         if (refreshTokenCookieOp.isEmpty()) {
