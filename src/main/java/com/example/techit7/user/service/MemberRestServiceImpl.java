@@ -28,7 +28,7 @@ public class MemberRestServiceImpl {
 
     public GlobalResponse signup(UserCreateRequestDto dto) {
         if(!validDuplicationUsername(dto.getUsername())){
-            return GlobalResponse.of("500","중복된 이름입니다.");
+            return GlobalResponse.of("409","중복된 이름입니다.");
         }
         Member member = Member.builder()
                 .username(dto.getUsername())

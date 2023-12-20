@@ -33,7 +33,7 @@ public class MemberRestController {
     @PostMapping("/signup")
     public GlobalResponse signup(@RequestBody UserCreateRequestDto userCreateRequestDto) {
         if (!userCreateRequestDto.getPassword1().equals(userCreateRequestDto.getPassword2())) {
-            return GlobalResponse.of("500","비밀번호가 일치하지 않습니다");
+            return GlobalResponse.of("409","비밀번호가 일치하지 않습니다");
         }
         return memberRestService.signup(userCreateRequestDto);
     }
@@ -69,13 +69,13 @@ public class MemberRestController {
     public GlobalResponse refreshAccessToken() {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            return GlobalResponse.of("500", "cookies not exist.");
+            return GlobalResponse.of("401", "cookies not exist.");
         }
         Optional<Cookie> refreshTokenCookieOp = Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals("refreshToken"))
                 .findFirst();
         if (refreshTokenCookieOp.isEmpty()) {
-            return GlobalResponse.of("500", "refreshToken not exist.");
+            return GlobalResponse.of("401", "refreshToken not exist.");
         }
 
         String refreshToken = refreshTokenCookieOp.get().getValue();
