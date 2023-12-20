@@ -99,6 +99,12 @@ public class MemberRestController {
         return GlobalResponse.of("200","로그아웃 성공");
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/test")
+    public GlobalResponse test(Principal principal){
+        return GlobalResponse.of("200","test",principal.getName());
+    }
+
     private void removeCrossDomainCookie(){
         ResponseCookie cookie1 = ResponseCookie.from("accessToken", null)
                 .path("/")
