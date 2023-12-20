@@ -1,6 +1,5 @@
 package com.example.techit7.user.service;
 
-
 import com.example.techit7.global.dto.GlobalResponse;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.dto.UserCreateResponseDto;
