@@ -1,6 +1,6 @@
 package com.example.techit7.user.service;
 
-import com.example.techit7.global.dto.GlobalResponse;
+import com.example.techit7.global.response.GlobalResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.SiteUser;
 
@@ -19,7 +19,7 @@ public interface UserService {
      * @RETURN X
      */
 
-    GlobalResponse updateUserPassword(String username, UserCreateRequestDto userCreateRequestDto);
+    GlobalResponseDto updateUserPassword(String username, UserCreateRequestDto userCreateRequestDto);
 
     /**
      * 유저 닉네임,이메일 변경
@@ -27,7 +27,7 @@ public interface UserService {
      * @RETURN X
      */
 
-    GlobalResponse updateUser(String username, UserCreateRequestDto userCreateRequestDto);
+    GlobalResponseDto updateUser(String username, UserCreateRequestDto userCreateRequestDto);
 
     /**
      * 회원가입
@@ -36,7 +36,7 @@ public interface UserService {
      * @PARAM userRequestDto
      * @RETURN X
      */
-    GlobalResponse postUser(UserCreateRequestDto userCreateRequestDto);
+    GlobalResponseDto postUser(UserCreateRequestDto userCreateRequestDto);
 
 
 
