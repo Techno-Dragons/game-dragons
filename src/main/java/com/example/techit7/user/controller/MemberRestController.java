@@ -67,32 +67,32 @@ public class MemberRestController {
 
     @PostMapping("/login/refresh")
     public GlobalResponse refreshAccessToken(){
-        // TODO: logout 상태에서 접근 할 때 NPE 발생 문제
-        Optional<Cookie> refreshTokenCookie = Arrays.stream(request.getCookies())
+        Optional<Cookie> refreshTokenCookieOp = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("refreshToken"))
                 .findFirst();
-        if(refreshTokenCookie.isPresent()){
-            String refreshToken = refreshTokenCookie.get().getValue();
-            Member member = memberRestService.findMemberByRefreshToken(refreshToken).get();
-            String accessToken = JwtUtil.encode(
-                    60 * 10,
-                    Map.of(
-                            "id", member.getId().toString(),
-                            "username", member.getUsername(),
-                            "authorities", member.getAuthoritiesAsStrList()
-                    )
-            );
-            ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
-                    .path("/")
-                    .maxAge(60 * 10)
-                    .sameSite("None")
-                    .secure(true)
-                    .httpOnly(true)
-                    .build();
-            response.addHeader("Set-Cookie",accessCookie.toString());
-            return GlobalResponse.of("200","refresh accessToken complete");
+        if (refreshTokenCookieOp.isEmpty()) {
+            return GlobalResponse.of("500", "refreshToken not exist.");
         }
-        return GlobalResponse.of("500","리프레시토큰을 찾을 수 없습니다.?");
+
+        String refreshToken = refreshTokenCookieOp.get().getValue();
+        Member member = memberRestService.findMemberByRefreshToken(refreshToken).get();
+        String accessToken = JwtUtil.encode(
+                60 * 10,
+                Map.of(
+                        "id", member.getId().toString(),
+                        "username", member.getUsername(),
+                        "authorities", member.getAuthoritiesAsStrList()
+                )
+        );
+        ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
+                .path("/")
+                .maxAge(60 * 10)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+        response.addHeader("Set-Cookie", accessCookie.toString());
+        return GlobalResponse.of("200", "refresh accessToken complete");
     }
 
     @PostMapping("/logout")
