@@ -1,14 +1,33 @@
 <script>
+	import {toastWarning} from "../../../app.js";
+	import {page} from "$app/stores";
+	import {onMount} from "svelte";
+
+	let articleId = $page.param("id");
+	let article = $state([]);
+
+	async function articleDetail() {
+		const response = await fetch(`/demo/article/${articleId}`);
+		if (response.ok) {
+			article = await response.json();
+
+		} else {
+			toastWarning();
+		}
+	}
+
+	onMount(async () => {
+		await articleDetail()
+	});
+
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Article</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-	<h1>아티클 디테일</h1>
-</section>
+
 
 <style>
 
