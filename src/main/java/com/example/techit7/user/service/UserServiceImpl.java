@@ -1,6 +1,7 @@
 package com.example.techit7.user.service;
 
-import com.example.techit7.global.dto.GlobalResponse;
+
+import com.example.techit7.global.response.GlobalResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.dto.UserCreateResponseDto;
 import com.example.techit7.user.entity.SiteUser;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public GlobalResponse postUser(UserCreateRequestDto userCreateRequestDto){
+    public GlobalResponseDto postUser(UserCreateRequestDto userCreateRequestDto){
         SiteUser siteUser = SiteUser.builder()
                 .username(userCreateRequestDto.getUsername())
                 .password(encoder.encode(userCreateRequestDto.getPassword1()))
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     }
     @Override
-    public GlobalResponse updateUserPassword(String username, UserCreateRequestDto dto) {
+    public GlobalResponseDto updateUserPassword(String username, UserCreateRequestDto dto) {
         SiteUser siteUser = findByUsername(username);
 
         userRepository.save(
@@ -61,12 +62,12 @@ public class UserServiceImpl implements UserService {
                         .password(encoder.encode(dto.getPassword1()))
                         .build());
 
-        return GlobalResponse.of("200","유저 비밀번호 변경 성공");
+        return GlobalResponseDto.of("200","유저 비밀번호 변경 성공");
     }
 
 
     @Override
-    public GlobalResponse updateUser(String username, UserCreateRequestDto dto) {
+    public GlobalResponseDto updateUser(String username, UserCreateRequestDto dto) {
         SiteUser siteUser = findByUsername(username);
 
         userRepository.save(
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
                         .email(dto.getEmail())
                         .build());
 
-        return GlobalResponse.of("200","유저정보 변경 성공");
+        return GlobalResponseDto.of("200","유저정보 변경 성공");
     }
 
 }
