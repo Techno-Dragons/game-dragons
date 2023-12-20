@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,15 @@ public class MemberRestController {
 
     @PostMapping("/signup")
     public GlobalResponse signup(@RequestBody UserCreateRequestDto userCreateRequestDto) {
-        Member member = memberRestService.signup(userCreateRequestDto).getData();
+        if (!userCreateRequestDto.getPassword1().equals(userCreateRequestDto.getPassword2())) {
+            return GlobalResponse.of("500","비밀번호가 일치하지 않습니다");
+        }
+        try {
+            memberRestService.signup(userCreateRequestDto);
+        }catch(DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return GlobalResponse.of("500", "이미 등록된 사용자 입니다.");
+        }
         return GlobalResponse.of("200","회원가입 완료.");
     }
 
