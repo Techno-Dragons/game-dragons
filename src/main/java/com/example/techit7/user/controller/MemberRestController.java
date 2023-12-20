@@ -46,7 +46,6 @@ public class MemberRestController {
                         "authorities", member.getAuthoritiesAsStrList()
                 )
         );
-        // 기존에 사용하던 리프레시 토큰이 있으면 있는걸로 발급?
         String refreshToken = JwtUtil.encode(
                 60 * 60 * 24, //1 day
                 Map.of(
@@ -56,13 +55,14 @@ public class MemberRestController {
         );
         memberRestService.setRefreshToken(member, refreshToken);
 
-        addCrossDomainCookie(accessToken,refreshToken);
+        addCrossDomainCookie(accessToken, refreshToken);
 
         return GlobalResponse.of("200","로그인 성공.",new LoginResponseDto(member,accessToken,refreshToken));
     }
 
     @PostMapping("/login/refresh")
     public GlobalResponse refreshAccessToken(){
+        // TODO: logout 상태에서 접근 할 때 NPE 발생 문제
         Optional<Cookie> refreshTokenCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("refreshToken"))
                 .findFirst();

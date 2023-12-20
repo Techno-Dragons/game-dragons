@@ -1,14 +1,21 @@
 package com.example.techit7.user.service;
 
 
+import com.example.techit7.global.config.JwtUtil;
+import com.example.techit7.global.config.SecurityUser;
 import com.example.techit7.global.dto.GlobalResponse;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.repository.MemberRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -50,6 +57,25 @@ public class MemberRestServiceImpl {
 
     public Optional<Member> findMemberByRefreshToken(String refreshToken){
         return memberRepository.findByRefreshToken(refreshToken);
+    }
+
+    public SecurityUser getUserFromApiKey(String apiKey) {
+        Claims claims = JwtUtil.decode(apiKey);
+
+        Map<String, Object> data = (Map<String, Object>) claims.get("data");
+        long id = Long.parseLong((String) data.get("id"));
+        String username = (String) data.get("username");
+        List<? extends GrantedAuthority> authorities = ((List<String>) data.get("authorities"))
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+
+        return new SecurityUser(
+                id,
+                username,
+                "",
+                authorities
+        );
     }
 
 }
