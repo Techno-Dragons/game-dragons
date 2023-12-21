@@ -3,10 +3,10 @@ package com.example.techit7.comment.controller;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.comment.dto.CommentRequestDto;
-import com.example.techit7.comment.service.CommentServiceImpl;
+import com.example.techit7.comment.service.CommentRestServiceImpl;
 import com.example.techit7.global.response.GlobalResponse;
-import com.example.techit7.user.entity.SiteUser;
-import com.example.techit7.user.service.UserServiceImpl;
+import com.example.techit7.user.entity.Member;
+import com.example.techit7.user.service.MemberRestServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,10 +18,10 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/article/{articleId}/comment")
 @RequiredArgsConstructor
-public class CommentController {
-    private final CommentServiceImpl commentServiceImpl;
-    private final ArticleServiceImpl articleServiceImpl;
-    private final UserServiceImpl userServiceImpl;
+public class CommentRestController {
+    private final CommentRestServiceImpl commentService;
+    private final ArticleServiceImpl articleService;
+    private final MemberRestServiceImpl memberRestService;
 
     //POST :/article/{articleId}/comment
     @PreAuthorize("isAuthenticated()")
@@ -32,14 +32,14 @@ public class CommentController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        Article article = articleServiceImpl.findArticleById(articleId);
-        SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
+        Article article = articleService.findArticleById(articleId);
+        Member member = memberRestService.findByUsername(principal.getName());
 
         if (bindingResult.hasErrors()) {
             return GlobalResponse.of("400", "error", bindingResult.getAllErrors());
         }
 
-        return GlobalResponse.of("200", "success", commentServiceImpl.post(siteUser, article, req));
+        return GlobalResponse.of("200", "success", commentService.post(member, article, req));
     }
 
     //PUT :/article/{articleId}/comment/{commentId}
@@ -51,13 +51,13 @@ public class CommentController {
             BindingResult bindingResult,
             Principal principal
     ) {
-        SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
+        Member member = memberRestService.findByUsername(principal.getName());
 
         if (bindingResult.hasErrors()) {
             return GlobalResponse.of("400", "error", bindingResult.getAllErrors());
         }
 
-        return GlobalResponse.of("200", "success", commentServiceImpl.update(siteUser, commentId, req));
+        return GlobalResponse.of("200", "success", commentService.update(member, commentId, req));
     }
 
     //DELETE :/article/{articleId}/comment/{commentId}
@@ -67,9 +67,9 @@ public class CommentController {
             @PathVariable("commentId") Long commentId,
             Principal principal
     ) {
-        SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
+        Member member = memberRestService.findByUsername(principal.getName());
 
-        commentServiceImpl.delete(siteUser, commentId);
+        commentService.delete(member, commentId);
         return GlobalResponse.of("200", "success");
     }
 }
