@@ -85,4 +85,12 @@ public class MemberRestServiceImpl {
         );
     }
 
+    public Member findByUsername(String username){
+        Optional<Member> memberOp = memberRepository.findByUsername(username);
+        if(memberOp.isPresent()){
+            return memberOp.get();
+        }
+        return null;
+    }
+
 }
