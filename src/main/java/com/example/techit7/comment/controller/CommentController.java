@@ -26,7 +26,7 @@ public class CommentController {
     //POST :/article/{articleId}/comment
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public GlobalResponseDto write(
+    public GlobalResponse write(
             @PathVariable("articleId") Long articleId,
             @RequestBody @Valid CommentRequestDto req,
             BindingResult bindingResult,
@@ -36,16 +36,16 @@ public class CommentController {
         SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
         if (bindingResult.hasErrors()) {
-            return GlobalResponseDto.of("400", "error", bindingResult.getAllErrors());
+            return GlobalResponse.of("400", "error", bindingResult.getAllErrors());
         }
 
-        return GlobalResponseDto.of("200", "success", commentServiceImpl.post(siteUser, article, req));
+        return GlobalResponse.of("200", "success", commentServiceImpl.post(siteUser, article, req));
     }
 
     //PUT :/article/{articleId}/comment/{commentId}
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{commentId}")
-    public GlobalResponseDto modify(
+    public GlobalResponse modify(
             @PathVariable("commentId") Long commentId,
             @RequestBody @Valid CommentRequestDto req,
             BindingResult bindingResult,
@@ -54,22 +54,22 @@ public class CommentController {
         SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
         if (bindingResult.hasErrors()) {
-            return GlobalResponseDto.of("400", "error", bindingResult.getAllErrors());
+            return GlobalResponse.of("400", "error", bindingResult.getAllErrors());
         }
 
-        return GlobalResponseDto.of("200", "success", commentServiceImpl.update(siteUser, commentId, req));
+        return GlobalResponse.of("200", "success", commentServiceImpl.update(siteUser, commentId, req));
     }
 
     //DELETE :/article/{articleId}/comment/{commentId}
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{commentId}")
-    public GlobalResponseDto delete(
+    public GlobalResponse delete(
             @PathVariable("commentId") Long commentId,
             Principal principal
     ) {
         SiteUser siteUser = userServiceImpl.findByUsername(principal.getName());
 
         commentServiceImpl.delete(siteUser, commentId);
-        return GlobalResponseDto.of("200", "success");
+        return GlobalResponse.of("200", "success");
     }
 }
