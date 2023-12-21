@@ -4,7 +4,6 @@ package com.example.techit7.comment.entity;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.entity.Member;
-import com.example.techit7.user.entity.SiteUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
