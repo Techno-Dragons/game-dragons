@@ -1,6 +1,7 @@
 package com.example.techit7.article.exception;
 
-import com.example.techit7.global.dto.GlobalResponse;
+
+import com.example.techit7.global.response.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

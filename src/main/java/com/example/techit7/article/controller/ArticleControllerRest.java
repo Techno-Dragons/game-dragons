@@ -9,7 +9,7 @@ import com.example.techit7.article.entity.Image;
 import com.example.techit7.article.service.ArticleService;
 import com.example.techit7.article.service.ImageService;
 import com.example.techit7.global.response.GlobalResponse;
-import com.example.techit7.user.service.UserService;
+import com.example.techit7.user.service.MemberRestServiceImpl;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
@@ -35,14 +35,14 @@ public class ArticleControllerRest {
 
     private final ArticleService articleService;
     private final ImageService imageService;
-    private final UserService userService;
+    private final MemberRestServiceImpl userService;
 
     // Article 전체 출력
     @RequestMapping(value = "/article", method = {RequestMethod.GET, RequestMethod.POST})
-    public GlobalResponse articleAll(@RequestPart ArticleRequestDto articleRequestDto,
+    public GlobalResponse articleAll(@RequestPart(required = false) ArticleRequestDto articleRequestDto,
                                      @RequestPart(value = "file", required = false) MultipartFile multipartFile,
                                      @RequestParam(defaultValue = "0") int page,
-                                     @RequestParam String mode,
+                                     @RequestParam(defaultValue = "") String mode,
                                      Principal principal) throws IOException {
 
         if (mode.equals("write")) {
@@ -70,13 +70,14 @@ public class ArticleControllerRest {
     // Article 단일 출력
     @RequestMapping(value = "/article/{id}", method = {RequestMethod.GET, RequestMethod.PATCH, RequestMethod.DELETE})
     public GlobalResponse detailArticle(@PathVariable Long id,
-                                        @RequestParam String mode,
-                                        @RequestBody ArticleRequestDto articleRequestDto) {
+                                        @RequestParam(defaultValue = "") String mode,
+                                        @RequestBody(required = false) ArticleRequestDto articleRequestDto) {
         if (mode.equals("modify")) {
             articleService.updateArticleById(id, articleRequestDto);
             return GlobalResponse.of("200", "modify success");
         }
         if (mode.equals("delete")) {
+            imageService.delete(id);
             articleService.deleteArticleById(id);
             return GlobalResponse.of("200", "delete success");
         }

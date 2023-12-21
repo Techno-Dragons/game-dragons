@@ -7,7 +7,7 @@ import com.example.techit7.article.dto.ArticleResponseDto;
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.global.response.GlobalResponse;
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +117,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public Long postArticle(ArticleRequestDto articleRequestDto, SiteUser author) {
+    public Long postArticle(ArticleRequestDto articleRequestDto, Member author) {
         Article article = Article.builder()
                 .author(author)
                 .title(articleRequestDto.getTitle())
