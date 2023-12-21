@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class JwtUtil {
     private static final String SECRET_KEY = "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890";
-
     public static String encode(long expirationSeconds, Map<String, Object> data) {
         Claims claims = Jwts
                 .claims()
