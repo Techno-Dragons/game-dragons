@@ -3,7 +3,7 @@ package com.example.techit7.global.util;
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.comment.dto.CommentRequestDto;
-import com.example.techit7.comment.service.CommentServiceImpl;
+import com.example.techit7.comment.service.CommentRestServiceImpl;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.service.MemberRestServiceImpl;
@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Profile;
 @RequiredArgsConstructor
 public class InitData {
     private final ArticleServiceImpl articleService;
-    private final CommentServiceImpl commentService;
+    private final CommentRestServiceImpl commentService;
     private final MemberRestServiceImpl memberRestService;
     @Bean
     public ApplicationRunner run() {
