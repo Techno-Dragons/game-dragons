@@ -48,11 +48,11 @@ public class UserController {
         }
         try {
             userService.postUser(userCreateRequestDto);
-        }catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
             return "user/signup_form";
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
             return "user/signup_form";
@@ -63,12 +63,12 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
-    public String mypage(UserCreateRequestDto userCreateRequestDto, Principal principal, Model model){
+    public String mypage(UserCreateRequestDto userCreateRequestDto, Principal principal, Model model) {
         try {
             String loginedUsername = principal.getName();
             SiteUser user = userService.findByUsername(loginedUsername);
             model.addAttribute("user", user);
-        } catch (Exception e){
+        } catch (Exception e) {
             return "redirect:/";
         }
         return "user/mypage_form";
@@ -76,14 +76,14 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/mypage/modify")
-    public String modify(UserCreateRequestDto dto, Principal principal, BindingResult bindingResult){
+    public String modify(UserCreateRequestDto dto, Principal principal, BindingResult bindingResult) {
         userService.updateUser(principal.getName(), dto);
         return "redirect:/member/mypage";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/mypage/modifyPassword")
-    public String modifyPassword(UserCreateRequestDto dto, Principal principal, BindingResult bindingResult){
+    public String modifyPassword(UserCreateRequestDto dto, Principal principal, BindingResult bindingResult) {
         if (!dto.getPassword1().equals(dto.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");

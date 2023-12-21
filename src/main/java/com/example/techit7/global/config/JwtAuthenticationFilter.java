@@ -20,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberRestServiceImpl memberService;
+
     @Override
     @SneakyThrows
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
@@ -27,11 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // TODO: access, refresh token 갱신 자동화 과정 추가
         String apiKey = null;
         Cookie[] cookies = request.getCookies();
-        if(cookies != null){
+        if (cookies != null) {
             Optional<Cookie> rqCookie = Arrays.stream(cookies)
-                            .filter(cookie -> cookie.getName().equals("accessToken"))
-                            .findFirst();
-            if(rqCookie.isPresent()){
+                    .filter(cookie -> cookie.getName().equals("accessToken"))
+                    .findFirst();
+            if (rqCookie.isPresent()) {
                 apiKey = rqCookie.get().getValue();
             }
         }
