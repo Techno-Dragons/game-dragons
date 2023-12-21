@@ -17,14 +17,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,9 +39,8 @@ public class ArticleControllerRest {
 
     private final ArticleService articleService;
     private final ImageService imageService;
-    private final MemberRestServiceImpl userService;
+    private final MemberRestServiceImpl memberRestService;
 
-    // Article 전체 출력
     @RequestMapping(value = "/article", method = {RequestMethod.GET, RequestMethod.POST})
     public GlobalResponse articleAll(@RequestPart(required = false) ArticleRequestDto articleRequestDto,
                                      @RequestPart(value = "file", required = false) MultipartFile multipartFile,
@@ -47,13 +50,14 @@ public class ArticleControllerRest {
 
         if (mode.equals("write")) {
             Long articleId = articleService.postArticle(articleRequestDto,
-                    userService.findByUsername(principal.getName()));
+                    memberRestService.findByUsername(principal.getName()));
             imageService.save(multipartFile, articleId);
             return GlobalResponse.of("200", "wrtie success");
         }
         Page<Article> articles = articleService.getArticles(page);
         return GlobalResponse.of("200", "paging success", articles);
     }
+
 
 //    // Article 저장
 //    @ResponseStatus(HttpStatus.CREATED)
@@ -87,7 +91,7 @@ public class ArticleControllerRest {
 
         return GlobalResponse.of("200", "success", ArticleDetailResponseDto.builder()
                 .article(article)
-                .image(image));
+                .image(image).build());
     }
 
 //    // Article 삭제
