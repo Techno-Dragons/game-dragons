@@ -1,7 +1,7 @@
 package com.example.techit7.user.controller;
 
 import com.example.techit7.global.config.JwtUtil;
-import com.example.techit7.global.dto.GlobalResponse;
+import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.dto.LoginRequestDto;
 import com.example.techit7.user.dto.LoginResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +32,13 @@ public class MemberRestController {
     @PostMapping("/signup")
     public GlobalResponse signup(@RequestBody UserCreateRequestDto userCreateRequestDto) {
         if (!userCreateRequestDto.getPassword1().equals(userCreateRequestDto.getPassword2())) {
-            return GlobalResponse.of("409","비밀번호가 일치하지 않습니다");
+            return GlobalResponse.of("409", "비밀번호가 일치하지 않습니다");
         }
         return memberRestService.signup(userCreateRequestDto);
     }
 
     @PostMapping("/login")
-    public GlobalResponse<LoginResponseDto> login(@RequestBody LoginRequestDto dto){
+    public GlobalResponse<LoginResponseDto> login(@RequestBody LoginRequestDto dto) {
         GlobalResponse<Member> checkedResp = memberRestService.checkUsernameAndPassword(dto.getUsername(), dto.getPassword());
 
         Member member = checkedResp.getData();
@@ -62,7 +61,7 @@ public class MemberRestController {
 
         addCrossDomainCookie(accessToken, refreshToken);
 
-        return GlobalResponse.of("200","로그인 성공.",new LoginResponseDto(member,accessToken,refreshToken));
+        return GlobalResponse.of("200", "로그인 성공.", new LoginResponseDto(member, accessToken, refreshToken));
     }
 
     @PostMapping("/login/refresh")
@@ -100,19 +99,19 @@ public class MemberRestController {
     }
 
     @PostMapping("/logout")
-    public GlobalResponse logout(){
+    public GlobalResponse logout() {
 
         removeCrossDomainCookie();
-        return GlobalResponse.of("200","로그아웃 성공");
+        return GlobalResponse.of("200", "로그아웃 성공");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/test")
-    public GlobalResponse test(Principal principal){
-        return GlobalResponse.of("200","test",principal.getName());
+    public GlobalResponse test(Principal principal) {
+        return GlobalResponse.of("200", "test", principal.getName());
     }
 
-    private void removeCrossDomainCookie(){
+    private void removeCrossDomainCookie() {
         ResponseCookie cookie1 = ResponseCookie.from("accessToken", null)
                 .path("/")
                 .maxAge(0)
@@ -130,7 +129,8 @@ public class MemberRestController {
         response.addHeader("Set-Cookie", cookie1.toString());
         response.addHeader("Set-Cookie", cookie2.toString());
     }
-    private void addCrossDomainCookie(String accessToken, String refreshToken){
+
+    private void addCrossDomainCookie(String accessToken, String refreshToken) {
         ResponseCookie cookie1 = ResponseCookie.from("accessToken", accessToken)
                 .path("/")
                 .maxAge(60 * 10)
