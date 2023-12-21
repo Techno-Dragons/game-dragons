@@ -4,7 +4,7 @@ import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.service.ArticleServiceImpl;
 import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.service.CommentServiceImpl;
-import com.example.techit7.global.dto.GlobalResponseDto;
+import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.entity.SiteUser;
 import com.example.techit7.user.service.UserServiceImpl;
 import jakarta.validation.Valid;
