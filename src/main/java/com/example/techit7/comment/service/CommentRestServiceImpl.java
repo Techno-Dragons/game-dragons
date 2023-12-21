@@ -2,7 +2,7 @@ package com.example.techit7.comment.service;
 
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.comment.dto.CommentRequestDto;
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.comment.repository.CommentRepository;
@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService {
+public class CommentRestServiceImpl implements CommentRestService {
     private final CommentRepository commentRepository;
 
     @Override
@@ -23,10 +23,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponseDto post(SiteUser user, Article article, CommentRequestDto req) {
+    public CommentResponseDto post(Member member, Article article, CommentRequestDto req) {
 
         Comment comment = Comment.builder()
-                .author(user)
+                .author(member)
                 .article(article)
                 .content(req.getContent())
                 .build();
@@ -36,15 +36,15 @@ public class CommentServiceImpl implements CommentService {
         return CommentResponseDto
                 .builder()
                 .id(comment.getId())
-                .authorName(user.getUsername())
+                .authorName(member.getUsername())
                 .content(comment.getContent())
                 .build();
     }
 
     @Override
-    public CommentResponseDto update(SiteUser siteUser, Long id, CommentRequestDto req) {
+    public CommentResponseDto update(Member member, Long id, CommentRequestDto req) {
         Comment comment = validateById(id);
-        validateByUser(siteUser, comment);
+        validateByUser(member, comment);
 
         comment = comment.toBuilder()
                 .content(req.getContent())
@@ -55,15 +55,15 @@ public class CommentServiceImpl implements CommentService {
         return CommentResponseDto
                 .builder()
                 .id(comment.getId())
-                .authorName(siteUser.getUsername())
+                .authorName(member.getUsername())
                 .content(comment.getContent())
                 .build();
     }
 
     @Override
-    public void delete(SiteUser siteUser, Long id) {
+    public void delete(Member member, Long id) {
         Comment comment = validateById(id);
-        validateByUser(siteUser, comment);
+        validateByUser(member, comment);
 
         commentRepository.delete(comment);
     }
@@ -78,8 +78,8 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
-    public void validateByUser(SiteUser siteUser, Comment comment) {
-        if (!siteUser.getUsername().equals(comment.getAuthor().getUsername())){
+    public void validateByUser(Member member, Comment comment) {
+        if (!member.getUsername().equals(comment.getAuthor().getUsername())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다");
         }
     }

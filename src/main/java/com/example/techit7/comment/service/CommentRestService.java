@@ -5,15 +5,15 @@ import com.example.techit7.comment.dto.CommentRequestDto;
 import com.example.techit7.comment.dto.CommentResponseDto;
 import com.example.techit7.comment.entity.Comment;
 
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
 
-public interface CommentService {
+public interface CommentRestService {
 
     Comment get(Long id);
 
-    CommentResponseDto post(SiteUser siteUser, Article article, CommentRequestDto req);
+    CommentResponseDto post(Member member, Article article, CommentRequestDto req);
 
-    CommentResponseDto update(SiteUser siteUser, Long id, CommentRequestDto req);
+    CommentResponseDto update(Member member, Long id, CommentRequestDto req);
 
-    void delete(SiteUser siteUser, Long id);
+    void delete(Member member, Long id);
 }

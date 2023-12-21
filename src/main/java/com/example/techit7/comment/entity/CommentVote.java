@@ -1,6 +1,6 @@
 package com.example.techit7.comment.entity;
 
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -16,7 +16,7 @@ public class CommentVote {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private SiteUser user;
+    private Member user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")

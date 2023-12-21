@@ -3,7 +3,7 @@ package com.example.techit7.user.service;
 
 import com.example.techit7.global.config.JwtUtil;
 import com.example.techit7.global.config.SecurityUser;
-import com.example.techit7.global.dto.GlobalResponse;
+import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.repository.MemberRepository;
@@ -27,8 +27,8 @@ public class MemberRestServiceImpl {
 
 
     public GlobalResponse signup(UserCreateRequestDto dto) {
-        if(!validDuplicationUsername(dto.getUsername())){
-            return GlobalResponse.of("409","중복된 이름입니다.");
+        if (!validDuplicationUsername(dto.getUsername())) {
+            return GlobalResponse.of("409", "중복된 이름입니다.");
         }
         Member member = Member.builder()
                 .username(dto.getUsername())
@@ -37,9 +37,10 @@ public class MemberRestServiceImpl {
                 .email(dto.getEmail()).build();
 
         memberRepository.save(member);
-        return GlobalResponse.of("200","회원가입 완료");
+        return GlobalResponse.of("200", "회원가입 완료");
     }
-    public boolean validDuplicationUsername(String username){
+
+    public boolean validDuplicationUsername(String username) {
         return memberRepository.findByUsername(username).isPresent() ? false : true;
     }
 
@@ -57,11 +58,11 @@ public class MemberRestServiceImpl {
         return GlobalResponse.of("200", "로그인 성공", memberOp.get());
     }
 
-    public void setRefreshToken(Member member, String refreshToken){
+    public void setRefreshToken(Member member, String refreshToken) {
         memberRepository.save(member.toBuilder().refreshToken(refreshToken).build());
     }
 
-    public Optional<Member> findMemberByRefreshToken(String refreshToken){
+    public Optional<Member> findMemberByRefreshToken(String refreshToken) {
         return memberRepository.findByRefreshToken(refreshToken);
     }
 
