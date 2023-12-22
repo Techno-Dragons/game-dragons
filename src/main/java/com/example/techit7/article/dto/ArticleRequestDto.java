@@ -1,16 +1,19 @@
 package com.example.techit7.article.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 
 @Getter
+@Setter
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 public class ArticleRequestDto {
 
     @NotEmpty(message = "제목을 입력하세요")
