@@ -82,9 +82,10 @@ public class ArticleControllerRest {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/article/{id}")
     public GlobalResponse modifyArticle(@PathVariable Long id,
-                                        @RequestBody ArticleRequestDto articleRequestDto) {
+                                        @RequestBody ArticleRequestDto articleRequestDto,
+                                        Principal principal) {
 
-        articleService.updateArticleById(id, articleRequestDto);
+        articleService.updateArticleById(id, articleRequestDto, principal.getName());
         return GlobalResponse.of("200", "modify success");
     }
 
@@ -92,9 +93,14 @@ public class ArticleControllerRest {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/article/{id}")
-    public GlobalResponse deleteArticle(@PathVariable Long id) {
-        imageService.delete(id);
-        articleService.deleteArticleById(id);
+    public GlobalResponse deleteArticle(@PathVariable Long id,
+                                        Principal principal) {
+        if (articleService.findArticleById(id).getAuthor().getUsername() != principal.getName()){
+            // 불러온 article의 username 값이랑 principal의 username 값이 다르면 exception 발생
+        }
+
+        imageService.delete(id, principal.getName());
+        articleService.deleteArticleById(id, principal.getName());
         return GlobalResponse.of("200", "delete success");
     }
 

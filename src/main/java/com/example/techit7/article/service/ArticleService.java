@@ -26,14 +26,14 @@ public interface ArticleService{
      * @PARAM Long Id
      * @RETURN X
      */
-    void updateArticleById(Long id, ArticleRequestDto articleRequestDto);
+    void updateArticleById(Long id, ArticleRequestDto articleRequestDto, String username);
 
     /**
      * 게시글 삭제
      * @PARAM Long Id
      * @RETURN X
      */
-    void deleteArticleById(Long id);
+    void deleteArticleById(Long id, String username);
 
     /**
      * 게시글 작성
