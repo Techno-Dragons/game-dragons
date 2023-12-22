@@ -1,8 +1,8 @@
 package com.example.techit7.article.dto;
 
 import com.example.techit7.comment.entity.Comment;
-import com.example.techit7.global.dto.GlobalResponseDto;
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.global.response.GlobalResponse;
+import com.example.techit7.user.entity.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 //뭘 보여줄 지 몰라서 골라내야함
-public class ArticleResponseDto extends GlobalResponseDto<ArticleResponseDto> {
+public class ArticleResponseDto extends GlobalResponse<ArticleResponseDto> {
 
     private Long id;
-    private SiteUser author;    //글쓴이
+    private Member author;    //글쓴이
     private String title;   //제목
     private String content; //내용
     private Long viewCount; //조회수
