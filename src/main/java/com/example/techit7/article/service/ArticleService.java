@@ -2,7 +2,7 @@ package com.example.techit7.article.service;
 
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.entity.Article;
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
 import org.springframework.data.domain.Page;
 
 public interface ArticleService{
@@ -40,7 +40,7 @@ public interface ArticleService{
      * @PARAM X
      * @RETURN X
      */
-    Long postArticle(ArticleRequestDto articleRequestDto, SiteUser user);
+    Long postArticle(ArticleRequestDto articleRequestDto, Member user);
 
 
 
