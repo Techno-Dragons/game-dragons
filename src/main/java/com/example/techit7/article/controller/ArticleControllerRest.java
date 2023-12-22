@@ -79,6 +79,7 @@ public class ArticleControllerRest {
 
     // Article 수정
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/article/{id}")
     public GlobalResponse modifyArticle(@PathVariable Long id,
                                         @RequestBody ArticleRequestDto articleRequestDto) {
@@ -89,6 +90,7 @@ public class ArticleControllerRest {
 
     // Article 삭제
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/article/{id}")
     public GlobalResponse deleteArticle(@PathVariable Long id) {
         imageService.delete(id);
