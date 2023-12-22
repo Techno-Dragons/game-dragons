@@ -95,9 +95,6 @@ public class ArticleControllerRest {
     @DeleteMapping("/article/{id}")
     public GlobalResponse deleteArticle(@PathVariable Long id,
                                         Principal principal) {
-        if (articleService.findArticleById(id).getAuthor().getUsername() != principal.getName()){
-            // 불러온 article의 username 값이랑 principal의 username 값이 다르면 exception 발생
-        }
 
         imageService.delete(id, principal.getName());
         articleService.deleteArticleById(id, principal.getName());
