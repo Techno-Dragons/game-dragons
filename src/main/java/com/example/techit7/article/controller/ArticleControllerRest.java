@@ -20,9 +20,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,50 +43,31 @@ public class ArticleControllerRest {
     private final ImageService imageService;
     private final MemberRestServiceImpl memberRestService;
 
-    @RequestMapping(value = "/article", method = {RequestMethod.GET, RequestMethod.POST})
-    public GlobalResponse articleAll(@RequestPart(required = false) ArticleRequestDto articleRequestDto,
-                                     @RequestPart(value = "file", required = false) MultipartFile multipartFile,
-                                     @RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "") String mode,
-                                     Principal principal) throws IOException {
+    @GetMapping("/article")
+    public GlobalResponse articleAll(@RequestParam(defaultValue = "0") int page) {
 
-        if (mode.equals("write")) {
-            Long articleId = articleService.postArticle(articleRequestDto,
-                    memberRestService.findByUsername(principal.getName()));
-            imageService.save(multipartFile, articleId);
-            return GlobalResponse.of("200", "wrtie success");
-        }
         Page<Article> articles = articleService.getArticles(page);
         return GlobalResponse.of("200", "paging success", articles);
     }
 
 
-//    // Article 저장
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping("/article")
-//    public void createArticle(@RequestPart ArticleRequestDto articleRequestDto,
-//                              @RequestPart(value = "file", required = false) MultipartFile multipartFile,
-//                              Principal principal) throws IOException {
-//
-//        Long articleId = articleService.postArticle(articleRequestDto, null);
-//
-//        imageService.save(multipartFile, articleId);
-//    }
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/article")
+    public GlobalResponse createArticle(ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
 
-    // Article 단일 출력
-    @RequestMapping(value = "/article/{id}", method = {RequestMethod.GET, RequestMethod.PATCH, RequestMethod.DELETE})
-    public GlobalResponse detailArticle(@PathVariable Long id,
-                                        @RequestParam(defaultValue = "") String mode,
-                                        @RequestBody(required = false) ArticleRequestDto articleRequestDto) {
-        if (mode.equals("modify")) {
-            articleService.updateArticleById(id, articleRequestDto);
-            return GlobalResponse.of("200", "modify success");
-        }
-        if (mode.equals("delete")) {
-            imageService.delete(id);
-            articleService.deleteArticleById(id);
-            return GlobalResponse.of("200", "delete success");
-        }
+        Long articleId = articleService.postArticle(articleRequestDto,
+                memberRestService.findByUsername(principal.getName()));
+        imageService.save(articleRequestDto.getMultipartFile(), articleId);
+
+        return GlobalResponse.of("200", "create success");
+    }
+
+
+    //단일 조회
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/article/{id}")
+    public GlobalResponse detailArticle(@PathVariable Long id) {
 
         Article article = articleService.findArticleById(id);
         Image image = imageService.getByArticleId(id);
@@ -94,22 +77,24 @@ public class ArticleControllerRest {
                 .image(image).build());
     }
 
-//    // Article 삭제
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @DeleteMapping("/article/{id}")
-//    public void deleteArticle(@PathVariable Long id) {
-//        imageService.delete(id);
-//        articleService.deleteArticleById(id);
-//    }
-//
-//    // Article 수정
-//    @ResponseStatus(HttpStatus.OK)
-//    @PatchMapping("/article/{id}")
-//    public void modifyArticle(@PathVariable Long id,
-//                              @RequestBody ArticleRequestDto articleRequestDto) {
-//
-//        articleService.updateArticleById(id, articleRequestDto);
-//    }
+    // Article 수정
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/article/{id}")
+    public GlobalResponse modifyArticle(@PathVariable Long id,
+                                        @RequestBody ArticleRequestDto articleRequestDto) {
+
+        articleService.updateArticleById(id, articleRequestDto);
+        return GlobalResponse.of("200", "modify success");
+    }
+
+    // Article 삭제
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/article/{id}")
+    public GlobalResponse deleteArticle(@PathVariable Long id) {
+        imageService.delete(id);
+        articleService.deleteArticleById(id);
+        return GlobalResponse.of("200", "delete success");
+    }
 
 
     // Image 출력
