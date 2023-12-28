@@ -1,6 +1,6 @@
 package com.example.techit7.article.entity;
 
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,7 +26,7 @@ public class ArticleVote {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private SiteUser user; //author?
+    private Member user; //author?
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")

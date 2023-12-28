@@ -4,14 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class GlobalResponse<T> {
 
     private String resultCode;
     private String msg;
     private T data;
 
-    public static<T> GlobalResponse<T> of(String resultCode, String msg){
+    public static <T> GlobalResponse<T> of(String resultCode, String msg) {
         GlobalResponse<T> globalResponse = new GlobalResponse<T>();
 
         globalResponse.setResultCode(resultCode);
@@ -20,7 +22,7 @@ public class GlobalResponse<T> {
         return globalResponse;
     }
 
-    public static<T> GlobalResponse<T> of(String resultCode, String msg, T data){
+    public static <T> GlobalResponse<T> of(String resultCode, String msg, T data) {
         GlobalResponse<T> globalResponse = new GlobalResponse<T>();
 
         globalResponse.setResultCode(resultCode);
