@@ -8,9 +8,12 @@ import com.example.techit7.article.entity.Article;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.entity.Member;
+import com.example.techit7.user.service.MemberRestServiceImpl;
+import io.jsonwebtoken.security.Jwks.OP;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -85,11 +88,14 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public void updateArticleById(Long id, ArticleRequestDto articleRequestDto) {
+    public void updateArticleById(Long id, ArticleRequestDto articleRequestDto, String username) {
         Optional<Article> article = articleRepository.findById(id);
 
         if (article.isEmpty()) {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
+        }
+        if (!article.get().getAuthor().getUsername().equals(username)) {
+            throw new IllegalArgumentException("권한이 없는 유저입니다.");
         }
 
         article.get().modifyArticle(articleRequestDto);
@@ -101,12 +107,17 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     @Transactional
-    public void deleteArticleById(Long id) {
+    public void deleteArticleById(Long id, String username) {
+
         Optional<Article> article = articleRepository.findById(id);
 
         if (article.isEmpty()) {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }
+        if (!article.get().getAuthor().getUsername().equals(username)) {
+            throw new IllegalArgumentException("권한이 없는 유저입니다.");
+        }
+
         articleRepository.delete(article.get());
     }
 

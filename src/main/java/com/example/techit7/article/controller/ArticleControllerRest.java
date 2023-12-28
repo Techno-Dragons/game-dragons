@@ -10,6 +10,7 @@ import com.example.techit7.article.service.ArticleService;
 import com.example.techit7.article.service.ImageService;
 import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.service.MemberRestServiceImpl;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
@@ -54,7 +55,7 @@ public class ArticleControllerRest {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/article")
-    public GlobalResponse createArticle(ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
+    public GlobalResponse createArticle(@Valid ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
 
         Long articleId = articleService.postArticle(articleRequestDto,
                 memberRestService.findByUsername(principal.getName()));
@@ -79,20 +80,25 @@ public class ArticleControllerRest {
 
     // Article 수정
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/article/{id}")
     public GlobalResponse modifyArticle(@PathVariable Long id,
-                                        @RequestBody ArticleRequestDto articleRequestDto) {
+                                        @Valid @RequestBody ArticleRequestDto articleRequestDto,
+                                        Principal principal) {
 
-        articleService.updateArticleById(id, articleRequestDto);
+        articleService.updateArticleById(id, articleRequestDto, principal.getName());
         return GlobalResponse.of("200", "modify success");
     }
 
     // Article 삭제
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/article/{id}")
-    public GlobalResponse deleteArticle(@PathVariable Long id) {
-        imageService.delete(id);
-        articleService.deleteArticleById(id);
+    public GlobalResponse deleteArticle(@PathVariable Long id,
+                                        Principal principal) {
+
+        imageService.delete(id, principal.getName());
+        articleService.deleteArticleById(id, principal.getName());
         return GlobalResponse.of("200", "delete success");
     }
 
