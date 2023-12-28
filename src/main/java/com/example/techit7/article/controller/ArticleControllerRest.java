@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,13 +55,13 @@ public class ArticleControllerRest {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/article")
-    public GlobalResponse createArticle(ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
+    public GlobalResponse createArticle(@RequestBody ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
 
         Long articleId = articleService.postArticle(articleRequestDto,
                 memberRestService.findByUsername(principal.getName()));
         imageService.save(articleRequestDto.getMultipartFile(), articleId);
 
-        return GlobalResponse.of("200", "create success");
+        return GlobalResponse.of("200", "create success", articleId);
     }
 
 
