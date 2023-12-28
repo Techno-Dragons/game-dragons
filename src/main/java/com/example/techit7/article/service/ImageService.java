@@ -45,7 +45,7 @@ public class ImageService {
     }
 
     @Transactional
-    public void update(MultipartFile multipartFile, Long articleId) throws IOException {
+    public void update(MultipartFile multipartFile, Long articleId, String username) throws IOException {
         if (multipartFile == null || multipartFile.isEmpty()) {
             return;
         }
@@ -53,8 +53,11 @@ public class ImageService {
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
             save(multipartFile, articleId);
-            image = imageRepository.findByArticleId(articleId);
             return;
+        }
+
+        if (!image.get().getArticle().getAuthor().getUsername().equals(username)) {
+            throw new IllegalArgumentException("권한이 없는 유저입니다.");
         }
 
         image.get().updateImage(fileStore.storeFile(multipartFile));
@@ -62,10 +65,13 @@ public class ImageService {
 
     // 이미지 삭제
     @Transactional
-    public void delete(Long articleId) {
+    public void delete(Long articleId, String username) {
         Optional<Article> article = articleRepository.findById(articleId);
         if (article.isEmpty()) {
             throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);
+        }
+        if (!article.get().getAuthor().getUsername().equals(username)) {
+            throw new IllegalArgumentException("권한이 없는 유저입니다.");
         }
         Optional<Image> image = imageRepository.findByArticleId(articleId);
         if (image.isEmpty()) {
