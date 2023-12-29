@@ -4,7 +4,9 @@ import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.entity.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,7 +56,7 @@ public class Article extends BaseEntity {
     @Column
     private String category;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
@@ -83,10 +85,10 @@ public class Article extends BaseEntity {
             this.title = articleRequestDto.getTitle();
         }
         if (StringUtils.hasText(articleRequestDto.getContent())) {
-            this.title = this.content = articleRequestDto.getContent();
+            this.content = articleRequestDto.getContent();
         }
         if (StringUtils.hasText(articleRequestDto.getCategory())) {
-            this.title = this.category = articleRequestDto.getCategory();
+            this.category = articleRequestDto.getCategory();
         }
 
     }
