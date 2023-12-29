@@ -85,11 +85,13 @@ public class ArticleControllerRest {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/article/{id}")
     public GlobalResponse modifyArticle(@PathVariable Long id,
-                                        @Valid @RequestBody ArticleRequestDto articleRequestDto,
-                                        Principal principal) {
+                                        @Valid @RequestPart ArticleRequestDto articleRequestDto,
+                                        @RequestPart(required = false, name = "imageFile") MultipartFile imageFile,
+                                        Principal principal) throws IOException {
 
         articleService.updateArticleById(id, articleRequestDto, principal.getName());
-        return GlobalResponse.of("200", "modify success");
+        imageService.update(imageFile, id, principal.getName());
+         return GlobalResponse.of("200", "modify success");
     }
 
     // Article 삭제

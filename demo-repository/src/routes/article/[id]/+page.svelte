@@ -14,6 +14,7 @@
 	let isCommentModify = $state([{}]);
 	let isArticleAuthor = $state(false);
 	let imageUrl = $state();
+	let imageFile;
 
 	let modifyForm = $state({
 		title: '',
@@ -47,7 +48,6 @@
 		return new Promise(async (resolve, reject) => {
 			try {
 				const res = await axios.get(`http://localhost:8090/article/${id}`);
-				console.log(res);
 				article.title = res.data.data.article.title;
 				article.content = res.data.data.article.content;
 				article.authorId = res.data.data.article.author.id;
@@ -85,13 +85,30 @@
 		}
 	}
 
+	function handleFileChange(event) {
+		imageFile = event.target.files[0];
+	}
+
 	function modifyArticle() {
 		return new Promise(async (resolve, reject) => {
 			try {
-				console.log(modifyForm);
-				let res = await axios.put(`http://localhost:8090/article/${id}`, modifyForm, {
+				const formData = new FormData();
+
+				const articleData = JSON.stringify({
+					title: modifyForm.title,
+					content: modifyForm.content
+				});
+
+				formData.append('articleRequestDto', new Blob([articleData], { type: 'application/json' }));
+				formData.append('imageFile', imageFile);
+
+				const res = await axios.put(`http://localhost:8090/article/${id}`, formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
 					withCredentials: true
 				});
+
 				console.log(res);
 			} catch (error) {
 				console.log(error);
@@ -114,11 +131,9 @@
 						withCredentials: true
 					}
 				);
-				console.log(res);
+
 			} catch (error) {
 				reject(error);
-			} finally {
-				console.log('done');
 			}
 		});
 	}
@@ -135,18 +150,16 @@
 						withCredentials: true
 					}
 				);
-				console.log(res);
-				//article.comments.push(commentContent);
-				console.log(commentContent);
+
 				commentContent = '';
 				window.location.href = `http://localhost:5173/article/${id}`;
 			} catch (error) {
 				reject(error);
-			} finally {
-				console.log('done');
 			}
 		});
 	}
+
+	
 
 	$effect(() => {
 		id = $page.params['id'];
@@ -171,7 +184,11 @@
 		/>
 		<div class="flex items-center space-x-2 mt-6" />
 		<div class="divider divider-Neutral mb-1" />
-
+		<input
+			type="file"
+			class="file-input file-input-bordered file-input-primary w-full max-w-xs"
+			on:change={handleFileChange}
+		/>
 		<div class="mt-8">
 			<textarea
 				class="textarea textarea-ghost mt-1 w-full h-screen"

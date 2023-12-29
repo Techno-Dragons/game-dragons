@@ -1,10 +1,10 @@
 <script>
 	import axios from 'axios';
 
-	let imageFile;
+	
 	let inputTitle = $state();
 	let inputContent = $state();
-
+	let imageFile;
 
 	function handleFileChange(event) {
     	imageFile = event.target.files[0];
