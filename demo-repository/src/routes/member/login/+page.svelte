@@ -8,7 +8,7 @@
 				'Content-Type': 'application/json'
 			},
 			method: 'POST',
-			credentials: 'include', // 로컬에 쿠키를 저장하기 위한 옵션
+			credentials: 'include', // 로컬에 쿠키를 저장하기 위한 옵션..
 			body: JSON.stringify({
 				username: username,
 				password: password
