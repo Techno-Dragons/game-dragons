@@ -1,35 +1,30 @@
 package com.example.techit7.user.entity;
-
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 
-@Getter
 @Entity
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class SiteUser {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Getter
+public class Member {
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)
     private String username;
 
-    @Column
     private String password;
-
-    @Column
-    private String nickname;
-
-    @Column(unique = true)
     private String email;
+    private String nickname;
+    private String refreshToken;
 
     @SuppressWarnings("JpaAttributeTypeInspection")
     public List<? extends GrantedAuthority> getAuthorities() {
@@ -43,5 +38,4 @@ public class SiteUser {
     public List<String> getAuthoritiesAsStrList() {
         return List.of("ROLE_MEMBER");
     }
-
 }

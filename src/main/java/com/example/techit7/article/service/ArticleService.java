@@ -2,7 +2,7 @@ package com.example.techit7.article.service;
 
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.article.entity.Article;
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
 import org.springframework.data.domain.Page;
 
 public interface ArticleService{
@@ -26,21 +26,21 @@ public interface ArticleService{
      * @PARAM Long Id
      * @RETURN X
      */
-    void updateArticleById(Long id, ArticleRequestDto articleRequestDto);
+    void updateArticleById(Long id, ArticleRequestDto articleRequestDto, String username);
 
     /**
      * 게시글 삭제
      * @PARAM Long Id
      * @RETURN X
      */
-    void deleteArticleById(Long id);
+    void deleteArticleById(Long id, String username);
 
     /**
      * 게시글 작성
      * @PARAM X
      * @RETURN X
      */
-    Long postArticle(ArticleRequestDto articleRequestDto, SiteUser user);
+    Long postArticle(ArticleRequestDto articleRequestDto, Member user);
 
 
 
