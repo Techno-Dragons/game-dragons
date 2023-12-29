@@ -412,7 +412,7 @@
 				type="button"
 				class="btn border-gray-600 btn-ghost ml-1 mt-10"
 				value="뒤로가기"
-				on:click={() => history.back()}
+				on:click={() => window.location.href="http://localhost:5173/article"}
 			/>
 		</div>
 	{/await}
