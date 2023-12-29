@@ -55,11 +55,13 @@ public class ArticleControllerRest {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/article")
-    public GlobalResponse createArticle(@Valid @RequestBody ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
+    public GlobalResponse createArticle(@Valid @RequestPart ArticleRequestDto articleRequestDto,
+                                        @RequestPart(required = false, name = "imageFile") MultipartFile imageFile,
+                                        Principal principal) throws IOException {
 
         Long articleId = articleService.postArticle(articleRequestDto,
                 memberRestService.findByUsername(principal.getName()));
-        imageService.save(articleRequestDto.getMultipartFile(), articleId);
+        imageService.save(imageFile, articleId);
 
         return GlobalResponse.of("200", "create success", articleId);
     }
