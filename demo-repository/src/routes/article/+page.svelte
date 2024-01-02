@@ -1,6 +1,8 @@
 <script>
+	import { page } from '$app/stores';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
+	import WriteArticle from "./write/+page.svelte";
 
 	let promise = Promise.resolve([]);
 	let pageList = $state({
@@ -109,40 +111,46 @@
 	});
 </script>
 
-{#if isPost}
-	<div class="flex max-w-7xl mx-auto">
-		<div class="flex-1 p-8">
-			<div class="flex space-x-4 mb-6">
-				<button
-					class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-					on:click={() => {
-						isPost = !isPost;
-					}}
-				>
-					취소
-				</button>
-			</div>
 
-			<div class="flex space-x-4 mb-6">
-				<p>제목 입력 :</p>
-				<input type="text" bind:value={inputTitle} />
 
-				<p>내용 입력 :</p>
-				<textarea bind:value={inputContent} />
-			</div>
+<!-- {#if isPost}
+	<div class="width-45 mr-auto ml-auto">
+		<textarea class="textarea textarea-ghost text-4xl w-full" placeholder="제목을 입력해주세요." bind:value={inputTitle} />
+		<div class="flex items-center space-x-2 mt-6" />
+		<div class="divider divider-Neutral mb-1" />
 
+		<div class="mt-8">
+			<textarea class="textarea textarea-ghost mt-1 w-full h-screen" placeholder="내용을 입력해주세요." bind:value={inputContent} />
+		</div>
+
+		<div class="flex space-x-4 mb-6 container flex-wrap flex-row-reverse">
+
+			<div class="flex-wrap">
 			<button
-				class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+				class="btn border-gray-600 btn-ghost"
 				on:click={() => {
 					postArticle();
+					inputTitle = "";
+					inputContent = "";
 					isPost = !isPost;
 				}}
 			>
 				작성 완료
 			</button>
+			<button
+				class="btn border-gray-600 btn-ghost "
+				on:click={() => {
+					inputTitle = "";
+					inputContent = "";
+					isPost = !isPost;
+				}}
+			>
+				취소
+			</button>
+		</div>
 		</div>
 	</div>
-{:else}
+{:else} -->
 	{#await promise}
 		<span class="justify-center items-center loading loading-bars loading-lg"></span>
 	{:then articles}
@@ -150,13 +158,20 @@
 			<div class="flex-1 p-8">
 				<div class="flex space-x-4 mb-6">
 					<button
-						class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+						class="btn border-gray-600 btn-ghost"
+						on:click={() => {
+							location.href="article/write";	
+						}}>
+						글쓰기
+					</button>
+					<!-- <button
+						class="btn border-gray-600 btn-ghost"
 						on:click={() => {
 							isPost = !isPost;
 						}}
 					>
 						글쓰기
-					</button>
+					</button> -->
 					<!-- <button
 					class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
 					category2
@@ -191,11 +206,7 @@
 						</div>
 						<div class="p-6">
 							<div class="flex justify-between items-center">
-								<div
-									class="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"
-								>
-									카테고리
-								</div>
+								<div class="btn border-gray-600 btn-ghost">카테고리</div>
 								<span>{formatDateTime(article.createdTime)}</span>
 							</div>
 						</div>
@@ -210,35 +221,38 @@
 	{/await}
 
 	<!-- 페이지네이션 컨트롤 -->
-	<div>
-		<button
-			on:click={() => changePage(pageList.currentPage - 1)}
-			disabled={pageList.currentPage <= 0}
-			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-		>
-			이전
-		</button>
-		<span>페이지 {pageList.currentPage + 1} / {pageList.totalPages}</span>
+	<div class="grid place-items-center mb-10">
+		<div class="join">
+			<button
+				on:click={() => changePage(pageList.currentPage - 1)}
+				disabled={pageList.currentPage <= 0}
+				class="btn border-gray-600 btn-ghost mr-1"
+			>
+				이전
+			</button>
+			<!-- <span>페이지 {pageList.currentPage + 1} / {pageList.totalPages}</span> -->
 
-		<div class="pagination">
 			{#each createPageArray(pageList.currentPage, pageList.totalPages) as page}
-				<button
+				<input
 					on:click={() => changePage(page)}
-					class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-				>
-					{`Page ${page + 1}`}
-				</button>
+					class="join-item btn btn-square"
+					type="radio"
+					name="options"
+					aria-label={`Page ${page + 1}`}
+					checked
+				/>
 			{/each}
+
+			<button
+				on:click={() => changePage(pageList.currentPage + 1)}
+				disabled={pageList.currentPage >= pageList.totalPages - 1}
+				class="btn border-gray-600 btn-ghost ml-1"
+			>
+				다음
+			</button>
 		</div>
-		<button
-			on:click={() => changePage(pageList.currentPage + 1)}
-			disabled={pageList.currentPage >= totalPages - 1}
-			class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-		>
-			다음
-		</button>
 	</div>
-{/if}
+<!-- {/if} -->
 
 <!-- <form th:action="@{/article}" method="get" id="searchForm">
 			<input type="hidden" id="page" name="page" value={pageList.currentPage}>
@@ -309,5 +323,13 @@
 		background-color: #007bff;
 		color: white;
 		border-color: #007bff;
+	}
+
+	.flex-container {
+		display: flex;
+		align-items: center; /* 요소들을 수직 중앙에 정렬 */
+	}
+	.width-45 {
+		width: 45%;
 	}
 </style>
