@@ -1,4 +1,7 @@
 <script>
+    import memberInfo from "$lib/user_store.js";
+    import {goto} from "$app/navigation";
+
     $: username = '';
     $: password = '';
 
@@ -15,12 +18,15 @@
             })
         })
             .then((res) => res.json())
-            .then((res)=> memberInfo.set(res.data))
-            .then((res) => check_login(res));
+            .then((res) => {
+                check_login(res);
+                memberInfo.set(res.data);
+                memberInfo.subscribe(value => console.log(value))
+            });
+        goto('/');
     }
 
     function check_login(res) {
-        console.log(res);
         if (res.data.accessToken) {
             alert(res.msg);
         }
