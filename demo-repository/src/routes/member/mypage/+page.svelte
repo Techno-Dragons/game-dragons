@@ -1,34 +1,23 @@
 <script>
     import {onMount} from "svelte";
+    import {goto} from "$app/navigation";
+    import {checkLogout} from "../login_check.js";
 
-    $: userData1 = {
-        username: '',
-        nickname: '',
-        password1: '',
-        password2: '',
-        email: ''
-    };
+    checkLogout("로그인이 필요합니다.");
 
     let userData2 = [];
     onMount(async () => {
         let response = await fetch(`http://localhost:8090/member/mypage`,{
             credentials: 'include'
-        });
-        userData2 = await response.json();
-        try {
-            userData1.username = userData2.data.username;
-            userData1.nickname = userData2.data.nickname;
-            userData1.email = userData2.data.email;
-        } catch (e) {
-            console.log("error");
-        }
+        }).then((res)=> res.json());
+        userData2 = response.data;
     });
 
 
     $: userData3 = {
         nickname: '',
         password1: '',
-        password2: ' ',
+        password2: '',
     }
 
     async function postModifiedData() {
@@ -47,7 +36,7 @@
     }
 
     function passwordCheck() {
-        if (userData1.password1 == userData1.password2) {
+        if (userData3.password1 == userData3.password2) {
             return true;
         }
         return false;
@@ -69,7 +58,7 @@
                     <input
                             type="text"
                             class="textarea textarea-bordered card-actions justify-end"
-                            placeholder="{userData1.username}"
+                            placeholder="{userData2.username}"
                             disabled="disabled"
                     />
                 </div>
@@ -78,7 +67,7 @@
                     <input
                             type="text"
                             class="textarea textarea-bordered"
-                            placeholder="{userData1.username}"
+                            placeholder="{userData2.nickname}"
                             bind:value={userData3.nickname}
                     />
                 </div>
@@ -110,7 +99,7 @@
                     <input
                             type="email"
                             class="textarea textarea-bordered"
-                            placeholder="{userData1.username}"
+                            placeholder="{userData2.email}"
                             disabled="disabled"
                     />
                 </div>
