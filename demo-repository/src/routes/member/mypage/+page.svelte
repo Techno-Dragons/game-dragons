@@ -17,7 +17,7 @@
             userData1.username = userData2.data.username;
             userData1.nickname = userData2.data.nickname;
             userData1.email = userData2.data.email;
-        } catch (e){
+        } catch (e) {
             console.log("error");
         }
     });
@@ -30,7 +30,7 @@
     }
 
     async function postModifiedData() {
-        if(passwordCheck()){
+        if (passwordCheck()) {
             await fetch(`http://localhost:8090/member/mypage`, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,7 +38,7 @@
                 method: 'POST',
                 body: JSON.stringify(userData3)
             })
-        } else{
+        } else {
             alert("비밀번호가 일치하지 않습니다.")
         }
 
