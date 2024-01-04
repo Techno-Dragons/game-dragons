@@ -3,8 +3,6 @@
     import {goto} from "$app/navigation";
     import {checkLogout} from "../login_check.js";
 
-    checkLogout("로그인이 필요합니다.");
-
     let userData2 = [];
     onMount(async () => {
         let response = await fetch(`http://localhost:8090/member/mypage`,{
