@@ -1,21 +1,51 @@
 <script>
     import {onMount} from "svelte";
 
-    $: userData = {
+    $: userData1 = {
         username: '',
         nickname: '',
         password1: '',
-        password2: '',
+        password2: ' ',
         email: ''
     };
 
+    let userData2 = [];
     onMount(async () => {
         let response = await fetch(`http://localhost:8090/member/mypage`);
-        response = await response.json();
+        userData2 = await response.json();
+        try {
+            userData1.username = userData2.data.username;
+            userData1.nickname = userData2.data.nickname;
+            userData1.email = userData2.data.email;
+        } catch (e){
+            console.log("error");
+        }
     });
 
+
+    $: userData3 = {
+        nickname: '',
+        password1: '',
+        password2: ' ',
+    }
+
+    async function postModifiedData() {
+        if(passwordCheck()){
+            await fetch(`http://localhost:8090/member/mypage`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify(userData3)
+            })
+        } else{
+            alert("비밀번호가 일치하지 않습니다.")
+        }
+
+    }
+
     function passwordCheck() {
-        if (userData.password1 == userData.password2) {
+        if (userData1.password1 == userData1.password2) {
             return true;
         }
         return false;
@@ -30,15 +60,15 @@
 <section>
     <div class="card shadow-xl">
         <div class="card-body p-1">
-            <h1 class="card-title justify-center">마이페이지</h1>
+            <h1 class="card-title justify-center">내 정보 변경</h1>
             <form class="p-5">
                 <div class="card-body p-1">
                     <label class="card-title" for="username">사용자ID</label>
                     <input
                             type="text"
                             class="textarea textarea-bordered card-actions justify-end"
-                            placeholder="{userData.username}"
-                            bind:value={userData.username}
+                            placeholder="{userData1.username}"
+                            disabled="disabled"
                     />
                 </div>
                 <div class="card-body p-1">
@@ -46,8 +76,8 @@
                     <input
                             type="text"
                             class="textarea textarea-bordered"
-                            placeholder="{userData.username}"
-                            bind:value={userData.nickname}
+                            placeholder="{userData1.username}"
+                            bind:value={userData3.nickname}
                     />
                 </div>
                 <div class="card-body p-1">
@@ -55,8 +85,8 @@
                     <input
                             type="password"
                             class="textarea textarea-bordered"
-                            placeholder="{userData.username}"
-                            bind:value={userData.password1}
+                            placeholder="new password"
+                            bind:value={userData3.password1}
                     />
                 </div>
                 <div class="card-body p-1">
@@ -69,8 +99,8 @@
                     <input
                             type="password"
                             class="textarea textarea-bordered"
-                            placeholder="{userData.username} confirm"
-                            bind:value={userData.password2}
+                            placeholder="password confirm"
+                            bind:value={userData3.password2}
                     />
                 </div>
                 <div class="card-body p-1">
@@ -78,11 +108,11 @@
                     <input
                             type="email"
                             class="textarea textarea-bordered"
-                            placeholder="{userData.username}"
-                            bind:value={userData.email}
+                            placeholder="{userData1.username}"
+                            disabled="disabled"
                     />
                 </div>
-                <button class="btn" type="submit">변경사항 저장</button>
+                <button class="btn" type="submit" on:click={postModifiedData()}>변경사항 저장</button>
             </form>
         </div>
     </div>

@@ -8,6 +8,7 @@
     };
 
     async function signup() {
+        if(passwordCheck()){
         await fetch(`http://localhost:8090/member/signup`, {
             headers: {
                 'Content-Type': 'application/json'
@@ -15,6 +16,7 @@
             method: 'POST',
             body: JSON.stringify(signupData)
         });
+        }
     }
 
     function passwordCheck() {
