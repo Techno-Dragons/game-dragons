@@ -1,61 +1,72 @@
 <script>
-	$: username = '';
-	$: password = '';
+    import memberInfo from "$lib/user_store.js";
+    import {goto} from "$app/navigation";
 
-	async function login() {
-		await fetch(`http://localhost:8090/member/login`, {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			credentials: 'include', // 로컬에 쿠키를 저장하기 위한 옵션
-			body: JSON.stringify({
-				username: username,
-				password: password
-			})
-		})
-			.then((res) => res.json())
-			.then((res) => check_login(res));
-	}
+    $: username = '';
+    $: password = '';
 
-	function check_login(res) {
-		console.log(res);
-		if (res.data.accessToken) {
-			alert(res.msg);
-		}
-	}
+    async function login() {
+        await fetch(`http://localhost:8090/member/login`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            credentials: 'include', // 로컬에 쿠키를 저장하기 위한 옵션..
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                check_login(res);
+                memberInfo.set(res.data);
+                memberInfo.subscribe(value => console.log(value))
+            });
+        goto('/');
+    }
+
+    function check_login(res) {
+        if (res.data.accessToken) {
+            alert(res.msg);
+        }
+    }
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+    <title>Home</title>
+    <meta name="description" content="Svelte demo app"/>
 </svelte:head>
 
 <section>
-	<h1>유저 로그인</h1>
-	<form>
-		<div>
-			<label for="username">사용자ID</label>
-			<input
-				class="textarea textarea-bordered"
-				placeholder="username"
-				type="text"
-				id="username"
-				bind:value={username}
-			/>
-		</div>
-		<div>
-			<label for="password">비밀번호</label>
-			<input
-				class="textarea textarea-bordered"
-				placeholder="password"
-				type="password"
-				id="password"
-				bind:value={password}
-			/>
-		</div>
-		<button type="submit" on:click={(event) => login()}>로그인</button>
-	</form>
+    <div class="card shadow-xl">
+        <div class="card-body p-1">
+            <h1 class="card-title justify-center">유저 로그인</h1>
+            <form>
+                <div class="card-body p-1">
+                    <label class="card-title" for="username">사용자ID</label>
+                    <input
+                            class="textarea textarea-bordered"
+                            placeholder="username"
+                            type="text"
+                            id="username"
+                            bind:value={username}
+                    />
+                </div>
+                <div class="card-body p-1">
+                    <label class="card-title" for="password">비밀번호</label>
+                    <input
+                            class="textarea textarea-bordered"
+                            placeholder="password"
+                            type="password"
+                            id="password"
+                            bind:value={password}
+                    />
+                </div>
+                <button class="btn" type="submit" on:click={(event) => login()}>로그인</button>
+            </form>
+        </div>
+    </div>
 </section>
 
 <style>
