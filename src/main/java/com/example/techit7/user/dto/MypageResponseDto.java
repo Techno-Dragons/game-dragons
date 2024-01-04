@@ -6,13 +6,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class mypageResponseDto {
+public class MypageResponseDto {
     private String username;
     private String nickname;
     private String email;
 
 
-    public mypageResponseDto(Member member) {
+    public MypageResponseDto(Member member) {
         this.username = member.getUsername();
         this.nickname = member.getNickname();
         this.email = member.getEmail();
