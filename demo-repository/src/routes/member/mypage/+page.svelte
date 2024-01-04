@@ -5,13 +5,15 @@
         username: '',
         nickname: '',
         password1: '',
-        password2: ' ',
+        password2: '',
         email: ''
     };
 
     let userData2 = [];
     onMount(async () => {
-        let response = await fetch(`http://localhost:8090/member/mypage`);
+        let response = await fetch(`http://localhost:8090/member/mypage`,{
+            credentials: 'include'
+        });
         userData2 = await response.json();
         try {
             userData1.username = userData2.data.username;
