@@ -15,6 +15,7 @@
             })
         })
             .then((res) => res.json())
+            .then((res)=> memberInfo.set(res.data))
             .then((res) => check_login(res));
     }
 
