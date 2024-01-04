@@ -1,4 +1,8 @@
 <script>
+
+    import {checkLogin} from "../login_check.js";
+
+    checkLogin("로그인 상태입니다.");
     $: signupData = {
         username: '',
         nickname: '',

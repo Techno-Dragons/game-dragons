@@ -1,10 +1,11 @@
 <script>
-    import memberInfo from "$lib/user_store.js";
     import {goto} from "$app/navigation";
+    import {checkLogin} from "../login_check.js";
+
+    checkLogin("로그인 상태입니다.");
 
     $: username = '';
     $: password = '';
-
     async function login() {
         await fetch(`http://localhost:8090/member/login`, {
             headers: {
@@ -20,8 +21,8 @@
             .then((res) => res.json())
             .then((res) => {
                 check_login(res);
-                memberInfo.set(res.data);
-                memberInfo.subscribe(value => console.log(value))
+                localStorage.setItem('username', res.data.username);
+                localStorage.setItem('nickname', res.data.nickname);
             });
         goto('/');
     }
