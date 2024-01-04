@@ -2,8 +2,6 @@
     import {goto} from "$app/navigation";
     import {checkLogin} from "../login_check.js";
 
-    checkLogin("로그인 상태입니다.");
-
     $: username = '';
     $: password = '';
     async function login() {
