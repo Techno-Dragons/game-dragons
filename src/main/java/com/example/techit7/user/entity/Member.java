@@ -1,23 +1,22 @@
 package com.example.techit7.user.entity;
+import com.example.techit7.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 
 @Entity
-@Builder(toBuilder = true)
+@Getter
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class Member {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
 

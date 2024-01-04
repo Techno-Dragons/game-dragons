@@ -3,6 +3,18 @@ server:
 spring:
   thymeleaf:
     cache: false
+  datasource:
+    url: jdbc:h2:./demo_dev;MODE=MYSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   output:
     ansi:
       enabled: always
+custom:
+  site:
+    name: gamedragons
+    baseUrl: "http://localhost:${server.port}"
+  tempDirPath: c:/gamedragons/gamedragons_dev/temp
+  genFile:
+    dirPath: c:/gamedragons/gamedragons_dev
