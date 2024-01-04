@@ -5,6 +5,7 @@ import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.dto.LoginRequestDto;
 import com.example.techit7.user.dto.LoginResponseDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
+import com.example.techit7.user.dto.mypageResponseDto;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.service.MemberRestServiceImpl;
 import jakarta.servlet.http.Cookie;
@@ -105,7 +106,14 @@ public class MemberRestController {
         return GlobalResponse.of("200", "로그아웃 성공");
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypage")
+    public GlobalResponse<mypageResponseDto> mypage(Principal principal) {
 
+        String username = principal.getName();
+        mypageResponseDto responseDto = new mypageResponseDto(memberRestService.findByUsername(username));
+        return GlobalResponse.of("200", "유저 정보 반환", responseDto);
+    }
 
     private void removeCrossDomainCookie() {
         ResponseCookie cookie1 = ResponseCookie.from("accessToken", null)
