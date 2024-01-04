@@ -6,7 +6,7 @@ import {onMount} from "svelte";
  */
 export function checkLogout(msg){
     onMount(()=>{
-        if(localStorage.getItem("username")==undefined){
+        if(localStorage.getItem("nickname")!=undefined){
             alert(msg);
             goto("/");
         }
@@ -18,9 +18,24 @@ export function checkLogout(msg){
  */
 export function checkLogin(msg){
     onMount(()=>{
-        if(localStorage.getItem("username")){
+        if(localStorage.getItem("nickname")){
             alert(msg);
             goto("/");
         }
     })
+}
+
+export function logout(){
+    onMount(async () => {
+        await fetch(`http://localhost:8090/member/logout`,{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            credentials: 'include'
+        });
+        localStorage.removeItem("username");
+        localStorage.removeItem("nickname");
+        goto('/');
+    });
 }
