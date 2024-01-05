@@ -1,14 +1,14 @@
 <script>
 	import axios from 'axios';
+	import { onMount } from 'svelte';
 
-	
 	let inputTitle = $state();
 	let inputContent = $state();
 	let imageFile;
 
 	function handleFileChange(event) {
-    	imageFile = event.target.files[0];
-  }
+		imageFile = event.target.files[0];
+	}
 
 	async function postArticle() {
 		const formData = new FormData();
@@ -18,7 +18,7 @@
 			content: inputContent
 		});
 
-		formData.append('articleRequestDto', new Blob([articleData], {type: "application/json"}));
+		formData.append('articleRequestDto', new Blob([articleData], { type: 'application/json' }));
 		formData.append('imageFile', imageFile);
 
 		const res = await axios.post(`http://localhost:8090/article`, formData, {
@@ -34,30 +34,27 @@
 		window.location.href = `http://localhost:5173/article/${res.data.data}`;
 	}
 
-	function login() {
-		return new Promise(async (resolve, reject) => {
-			try {
-				let res = await axios.post(
-					`http://localhost:8090/member/login`,
-					{
-						username: '123',
-						password: '123'
-					},
-					{
-						withCredentials: true
-					}
-				);
-				console.log(res);
-			} catch (error) {
-				reject(error);
-			} finally {
-				console.log('done');
-			}
-		});
+	async function login() {
+		try {
+			let res = await axios.post(
+				`http://localhost:8090/member/login`,
+				{
+					username: '123',
+					password: '123'
+				},
+				{
+					withCredentials: true
+				}
+			);
+			console.log(res);
+			return res;
+		} catch (error) {
+			console.log('loginError');
+		}
 	}
 
-	$effect(() => {
-		login();
+	onMount(async () => {
+		
 	})
 
 </script>
@@ -71,7 +68,11 @@
 	<div class="flex items-center space-x-2 mt-6" />
 	<div class="divider divider-Neutral mb-1" />
 
-	<input type="file" class="file-input file-input-bordered file-input-primary w-full max-w-xs" on:change={handleFileChange} />
+	<input
+		type="file"
+		class="file-input file-input-bordered file-input-primary w-full max-w-xs"
+		on:change={handleFileChange}
+	/>
 
 	<div class="mt-8">
 		<textarea
@@ -109,7 +110,7 @@
 <style>
 	.flex-container {
 		display: flex;
-		align-items: center; /* 요소들을 수직 중앙에 정렬 */
+		align-items: center;
 	}
 	.width-45 {
 		width: 45%;

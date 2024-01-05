@@ -5,6 +5,9 @@
 	import { page } from '$app/stores';
 	import { stringify } from 'postcss';
 	import Icon from '@iconify/svelte';
+	// import memberInfo from "../../../lib/user_store.js"
+
+	// export let data;
 
 	let promise = Promise.resolve([]);
 	let id = $state();
@@ -15,6 +18,7 @@
 	let isArticleAuthor = $state(false);
 	let imageUrl = $state();
 	let imageFile;
+	let username = $state(null);
 
 	let modifyForm = $state({
 		title: '',
@@ -63,8 +67,6 @@
 						[article.comments[i].id]: false
 					});
 				}
-
-				// resolve(article);
 			} catch (err) {
 				console.log('err');
 				reject(err);
@@ -81,7 +83,7 @@
 			});
 			imageUrl = URL.createObjectURL(res.data);
 		} catch (error) {
-			// console.error('이미지를 불러오는데 실패했습니다.', error);
+			
 		}
 	}
 
@@ -131,7 +133,6 @@
 						withCredentials: true
 					}
 				);
-
 			} catch (error) {
 				reject(error);
 			}
@@ -159,20 +160,17 @@
 		});
 	}
 
-	
-
 	$effect(() => {
-		id = $page.params['id'];
-		promise = loadArticle();
-		login();
-		loadImage();
+		username = localStorage.getItem('username');
+		console.log("username : ", username);
+	})
+	onMount(async () => {
+		id = await $page.params['id'];
+		promise = await loadArticle();
+		await loadImage();
+		
 	});
-	// onMount(async() => {
-	// 	articleId = $page.params['articleId'];
-	// 	loadArticle();
-	// 	//로그인에 성공했다 나오는데 로그인이 안돼는 문제점이 있음 왜지?
-	// 	login();
-	// });
+
 </script>
 
 {#if isModify}
@@ -217,8 +215,7 @@
 						modifyForm.title = '';
 						modifyForm.content = '';
 						isModify = !isModify;
-					}}
-				>
+					}}>
 					취소
 				</button>
 			</div>
@@ -241,22 +238,24 @@
 					</div>
 					<div class="flex space-x-4 mb-6 container flex-wrap flex-row-reverse">
 						<div class="flex-wrap">
-							<button
-								class="btn border-gray-600 btn-ghost"
-								style="color: red;"
-								on:click={() => {
-									axios.delete(`http://localhost:8090/article/${id}`, { withCredentials: true });
-									window.location.href = `http://localhost:5173/article`;
-								}}>게시글 삭제</button
-							>
-							<button
-								class="btn border-gray-600 btn-ghost"
-								on:click={() => {
-									modifyForm.title = article.title;
-									modifyForm.content = article.content;
-									isModify = !isModify;
-								}}>게시글 수정</button
-							>
+							{#if username === article.authorname}
+								<button
+									class="btn border-gray-600 btn-ghost"
+									style="color: red;"
+									on:click={() => {
+										axios.delete(`http://localhost:8090/article/${id}`, { withCredentials: true });
+										window.location.href = `http://localhost:5173/article`;
+									}}>게시글 삭제</button
+								>
+								<button
+									class="btn border-gray-600 btn-ghost"
+									on:click={() => {
+										modifyForm.title = article.title;
+										modifyForm.content = article.content;
+										isModify = !isModify;
+									}}>게시글 수정</button
+								>
+							{/if}
 						</div>
 					</div>
 				</div>
@@ -267,14 +266,6 @@
 				<Icon class="ml-4" icon="ant-design:comment-outlined" color="white" width="20" />
 				<p class="ml-2 font-sans">{article.comments.length}</p>
 			</div>
-			<!-- <img
-					src="/placeholder.svg"
-					alt="Eat Sleep Code Repeat"
-					class="w-full h-auto"
-					width="800"
-					height="400"
-					style="aspect-ratio: 800 / 400; object-fit: cover;"
-				  /> -->
 			<div class="divider divider-Neutral mt-1" />
 			{#if imageUrl}
 				<img src={imageUrl} alt="이미지" />
@@ -291,108 +282,110 @@
 		<div class="grid place-items-center">
 			{#each article.comments as comment}
 				<div class="width-45">
-					<!-- {#if article.authorId === comment.author.id} -->
-					{#if comment.author}
-						{console.log(comment.author.id)}
+					{#if comment.author && comment.author.username}
+						{#if article.authorId === comment.author.id}
+							{console.log(comment.author.id)}
 
-						<div class="chat chat-end">
-							<div class="chat-header">
-								이름!
-								<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
+							<div class="chat chat-end">
+								<div class="chat-header">
+									{comment.author.username}
+									<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
+								</div>
+								<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
+								{#if username === comment.author.username}
+									{#if isCommentModify[comment.id]}
+										<textarea
+											class="textarea textarea-primary"
+											placeholder="댓글을 입력해주세요."
+											bind:value={modifyCommentContent}
+										></textarea>
+										<button
+											on:click={() => {
+												if (!modifyCommentContent.trim()) {
+													return;
+												}
+												axios.put(
+													`http://localhost:8090/article/${id}/comment/${comment.id}`,
+													{ content: modifyCommentContent },
+													{ withCredentials: true }
+												);
+												modifyCommentContent = '';
+												isCommentModify[comment.id] = !isCommentModify[comment.id];
+												window.location.href = `http://localhost:5173/article/${id}`;
+											}}>수정 완료</button
+										>
+										<button
+											on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
+											>취소</button
+										>
+									{:else}
+										<button
+											on:click={() => {
+												modifyCommentContent = commentContent;
+												isCommentModify[comment.id] = !isCommentModify[comment.id];
+											}}>수정</button
+										>
+										<button
+											on:click={() => {
+												axios.delete(`http://localhost:8090/article/${id}/comment/${comment.id}`, {
+													withCredentials: true
+												});
+												window.location.href = `http://localhost:5173/article/${id}`;
+											}}
+											style="color: red;">댓글 삭제</button
+										>
+									{/if}
+								{/if}
 							</div>
-							<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
-
-							{#if isCommentModify[comment.id]}
-								<textarea
-									class="textarea textarea-primary"
-									placeholder="댓글을 입력해주세요."
-									bind:value={modifyCommentContent}
-								></textarea>
-								<button
-									on:click={() => {
-										if (!modifyCommentContent.trim()) {
-											return;
-										}
-										axios.put(
-											`http://localhost:8090/article/${id}/comment/${comment.id}`,
-											{ content: modifyCommentContent },
-											{ withCredentials: true }
-										);
-										modifyCommentContent = '';
-										isCommentModify[comment.id] = !isCommentModify[comment.id];
-										window.location.href = `http://localhost:5173/article/${id}`;
-									}}>수정 완료</button
-								>
-								<button
-									on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
-									>취소</button
-								>
-							{:else}
-								<button
-									on:click={() => {
-										modifyCommentContent = commentContent;
-										isCommentModify[comment.id] = !isCommentModify[comment.id];
-									}}>수정</button
-								>
-								<button
-									on:click={() => {
-										axios.delete(`http://localhost:8090/article/${id}/comment/${comment.id}`, {
-											withCredentials: true
-										});
-										window.location.href = `http://localhost:5173/article/${id}`;
-									}}
-									style="color: red;">댓글 삭제</button
-								>
-							{/if}
-						</div>
-					{:else}
-						<div class="chat chat-start">
-							<div class="chat-header">
-								이름!
-								<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
+						{:else}
+							<div class="chat chat-start">
+								<div class="chat-header">
+									{comment.author.username}
+									<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
+								</div>
+								<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
+								{#if isCommentModify[comment.id]}
+									<textarea
+										class="textarea textarea-primary"
+										placeholder="댓글을 입력해주세요."
+										bind:value={modifyCommentContent}
+									></textarea>
+									<button
+										on:click={() => {
+											if (!modifyCommentContent.trim()) {
+												return;
+											}
+											axios.put(
+												`http://localhost:8090/article/${id}/comment/${comment.id}`,
+												{ content: modifyCommentContent },
+												{ withCredentials: true }
+											);
+											modifyCommentContent = '';
+											isCommentModify[comment.id] = !isCommentModify[comment.id];
+											window.location.href = `http://localhost:5173/article/${id}`;
+										}}>수정 완료</button
+									>
+									<button
+										on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
+										>취소</button
+									>
+								{:else}
+									<button
+										on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
+										>수정</button
+									>
+									<button
+										on:click={() => {
+											axios.delete(`http://localhost:8090/article/${id}/comment/${comment.id}`, {
+												withCredentials: true
+											});
+											window.location.href = `http://localhost:5173/article/${id}`;
+										}}
+										style="color: red;">댓글 삭제</button
+									>
+								{/if}
 							</div>
-							<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
-							{#if isCommentModify[comment.id]}
-								<textarea
-									class="textarea textarea-primary"
-									placeholder="댓글을 입력해주세요."
-									bind:value={modifyCommentContent}
-								></textarea>
-								<button
-									on:click={() => {
-										if (!modifyCommentContent.trim()) {
-											return;
-										}
-										axios.put(
-											`http://localhost:8090/article/${id}/comment/${comment.id}`,
-											{ content: modifyCommentContent },
-											{ withCredentials: true }
-										);
-										modifyCommentContent = '';
-										isCommentModify[comment.id] = !isCommentModify[comment.id];
-										window.location.href = `http://localhost:5173/article/${id}`;
-									}}>수정 완료</button
-								>
-								<button
-									on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
-									>취소</button
-								>
-							{:else}
-								<button
-									on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
-									>수정</button
-								>
-								<button
-									on:click={() => {
-										axios.delete(`http://localhost:8090/article/${id}/comment/${comment.id}`, {
-											withCredentials: true
-										});
-										window.location.href = `http://localhost:5173/article/${id}`;
-									}}
-									style="color: red;">댓글 삭제</button
-								>
-							{/if}
-						</div>
+						{/if}
 					{/if}
 				</div>
 			{/each}
@@ -412,7 +405,7 @@
 				type="button"
 				class="btn border-gray-600 btn-ghost ml-1 mt-10"
 				value="뒤로가기"
-				on:click={() => window.location.href="http://localhost:5173/article"}
+				on:click={() => (window.location.href = 'http://localhost:5173/article')}
 			/>
 		</div>
 	{/await}
