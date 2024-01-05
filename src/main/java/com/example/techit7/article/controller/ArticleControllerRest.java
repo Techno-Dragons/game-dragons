@@ -55,13 +55,15 @@ public class ArticleControllerRest {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/article")
-    public GlobalResponse createArticle(@Valid ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
+    public GlobalResponse createArticle(@Valid @RequestPart ArticleRequestDto articleRequestDto,
+                                        @RequestPart(required = false, name = "imageFile") MultipartFile imageFile,
+                                        Principal principal) throws IOException {
 
         Long articleId = articleService.postArticle(articleRequestDto,
                 memberRestService.findByUsername(principal.getName()));
-        imageService.save(articleRequestDto.getMultipartFile(), articleId);
+        imageService.save(imageFile, articleId);
 
-        return GlobalResponse.of("200", "create success");
+        return GlobalResponse.of("200", "create success", articleId);
     }
 
 
@@ -83,11 +85,13 @@ public class ArticleControllerRest {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/article/{id}")
     public GlobalResponse modifyArticle(@PathVariable Long id,
-                                        @Valid @RequestBody ArticleRequestDto articleRequestDto,
-                                        Principal principal) {
+                                        @Valid @RequestPart ArticleRequestDto articleRequestDto,
+                                        @RequestPart(required = false, name = "imageFile") MultipartFile imageFile,
+                                        Principal principal) throws IOException {
 
         articleService.updateArticleById(id, articleRequestDto, principal.getName());
-        return GlobalResponse.of("200", "modify success");
+        imageService.update(imageFile, id, principal.getName());
+         return GlobalResponse.of("200", "modify success");
     }
 
     // Article 삭제
