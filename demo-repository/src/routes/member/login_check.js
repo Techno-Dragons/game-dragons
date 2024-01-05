@@ -25,17 +25,15 @@ export function checkLogin(msg){
     })
 }
 
-export function logout(){
-    onMount(async () => {
-        await fetch(`http://localhost:8090/member/logout`,{
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-            credentials: 'include'
-        });
-        localStorage.removeItem("username");
-        localStorage.removeItem("nickname");
-        goto('/');
+export async function logout(){
+    await fetch(`http://localhost:8090/member/logout`,{
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        credentials: 'include'
     });
+    localStorage.removeItem("username");
+    localStorage.removeItem("nickname");
+    await goto('/');
 }
