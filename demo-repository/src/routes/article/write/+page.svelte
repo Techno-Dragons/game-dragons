@@ -99,6 +99,7 @@
 				on:click={() => {
 					inputTitle = '';
 					inputContent = '';
+					location.href = "./"
 				}}
 			>
 				취소
