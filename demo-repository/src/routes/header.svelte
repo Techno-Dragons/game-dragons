@@ -1,22 +1,19 @@
 <script>
   import {onMount} from "svelte";
+  import {logout} from "./member/login_check.js";
+  import {toastNotice} from "../app.js";
 
-  let isLogin = $state({});
-
-  async function logout() {
-    await fetch(`/demo/member/logout`, {
-      method: 'DELETE',
-    });
-  }
+  let isLogin = false;
 
   async function logoutProcess() {
     await logout();
     toastNotice("로그아웃 되었습니다.");
-    window.location.href = '/';
+
+    isLogin = false;
   }
 
   onMount(() => {
-    isLogin = false;
+    isLogin = !!localStorage.getItem('nickname');
   });
 </script>
 
