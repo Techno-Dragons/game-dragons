@@ -8,6 +8,6 @@ spring:
     hibernate:
       ddl-auto: create
 custom:
-  tempDirPath: c:/temp/demo_test/temp
+  tempDirPath: c:/gamedragons/gamedragons_test/temp
   genFile:
-    dirPath: c:/temp/demo_test
+    dirPath: c:/gamedragons/demo_test

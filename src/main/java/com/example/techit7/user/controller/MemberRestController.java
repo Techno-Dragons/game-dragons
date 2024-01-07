@@ -2,10 +2,7 @@ package com.example.techit7.user.controller;
 
 import com.example.techit7.global.config.JwtUtil;
 import com.example.techit7.global.response.GlobalResponse;
-import com.example.techit7.user.dto.LoginRequestDto;
-import com.example.techit7.user.dto.LoginResponseDto;
-import com.example.techit7.user.dto.UserCreateRequestDto;
-import com.example.techit7.user.dto.MypageResponseDto;
+import com.example.techit7.user.dto.*;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.service.MemberRestServiceImpl;
 import jakarta.servlet.http.Cookie;
@@ -62,7 +59,7 @@ public class MemberRestController {
 
         addCrossDomainCookie(accessToken, refreshToken);
 
-        return GlobalResponse.of("200", "로그인 성공.", new LoginResponseDto(member, accessToken, refreshToken));
+        return GlobalResponse.of("200", "로그인 성공.", new LoginResponseDto(member));
     }
 
     @PostMapping("/login/refresh")
@@ -113,6 +110,17 @@ public class MemberRestController {
         String username = principal.getName();
         MypageResponseDto responseDto = new MypageResponseDto(memberRestService.findByUsername(username));
         return GlobalResponse.of("200", "유저 정보 반환", responseDto);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/mypage")
+    public GlobalResponse mypage(Principal principal, @RequestBody MypageRequsetDto dto){
+        Member member = memberRestService.findByUsername(principal.getName());
+        if(member != null){
+           return memberRestService.updateMemberData(member, dto);
+        } else{
+            return GlobalResponse.of("403", "확인되지 않은 유저입니다.");
+        }
     }
 
     private void removeCrossDomainCookie() {
