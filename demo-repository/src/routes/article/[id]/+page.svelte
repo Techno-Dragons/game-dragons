@@ -288,7 +288,7 @@
 
 							<div class="chat chat-end">
 								<div class="chat-header">
-									{comment.author.username}
+									{comment.author.nickname}
 									<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
 								</div>
 								<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
@@ -340,7 +340,7 @@
 						{:else}
 							<div class="chat chat-start">
 								<div class="chat-header">
-									{comment.author.username}
+									{comment.author.nickname}
 									<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
 								</div>
 								<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
