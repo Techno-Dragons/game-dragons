@@ -14,7 +14,7 @@ RUN npm install --force --legacy-peer-deps
 COPY . .
 
 # SvelteKit 애플리케이션 빌드
-RUN npm run builder
+RUN npm run build
 
 # 2단계: 실행 환경 설정
 FROM node:18-alpine
