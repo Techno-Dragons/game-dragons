@@ -10,6 +10,7 @@ import com.example.techit7.article.service.ArticleService;
 import com.example.techit7.article.service.ImageService;
 import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.service.MemberRestServiceImpl;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.Principal;
@@ -20,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,11 +55,13 @@ public class ArticleControllerRest {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/article")
-    public GlobalResponse createArticle(@RequestBody ArticleRequestDto articleRequestDto, Principal principal) throws IOException {
+    public GlobalResponse createArticle(@Valid @RequestPart ArticleRequestDto articleRequestDto,
+                                        @RequestPart(required = false, name = "imageFile") MultipartFile imageFile,
+                                        Principal principal) throws IOException {
 
         Long articleId = articleService.postArticle(articleRequestDto,
                 memberRestService.findByUsername(principal.getName()));
-        imageService.save(articleRequestDto.getMultipartFile(), articleId);
+        imageService.save(imageFile, articleId);
 
         return GlobalResponse.of("200", "create success", articleId);
     }
@@ -83,11 +85,13 @@ public class ArticleControllerRest {
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/article/{id}")
     public GlobalResponse modifyArticle(@PathVariable Long id,
-                                        @RequestBody ArticleRequestDto articleRequestDto,
-                                        Principal principal) {
+                                        @Valid @RequestPart ArticleRequestDto articleRequestDto,
+                                        @RequestPart(required = false, name = "imageFile") MultipartFile imageFile,
+                                        Principal principal) throws IOException {
 
         articleService.updateArticleById(id, articleRequestDto, principal.getName());
-        return GlobalResponse.of("200", "modify success");
+        imageService.update(imageFile, id, principal.getName());
+         return GlobalResponse.of("200", "modify success");
     }
 
     // Article 삭제
