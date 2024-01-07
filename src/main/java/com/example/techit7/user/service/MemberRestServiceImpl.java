@@ -4,6 +4,7 @@ package com.example.techit7.user.service;
 import com.example.techit7.global.config.JwtUtil;
 import com.example.techit7.global.config.SecurityUser;
 import com.example.techit7.global.response.GlobalResponse;
+import com.example.techit7.user.dto.MypageRequsetDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.repository.MemberRepository;
@@ -93,4 +94,17 @@ public class MemberRestServiceImpl {
         return null;
     }
 
+    public GlobalResponse updateMemberData(Member member, MypageRequsetDto dto) {
+        String msg ="";
+        if(dto.getNickname() != null){
+            member = member.toBuilder().nickname(dto.getNickname()).build();
+            msg += "닉네임, ";
+        }
+        if(dto.getPassword1() != null && dto.getPassword2()!=null){
+            member.toBuilder().password(encoder.encode(dto.getPassword1())).build();
+            msg += "비밀번호 ";
+        }
+        memberRepository.save(member);
+        return GlobalResponse.of("200",msg + "변경완료");
+    }
 }
