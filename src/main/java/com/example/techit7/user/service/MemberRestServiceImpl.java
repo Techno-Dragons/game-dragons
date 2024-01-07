@@ -96,12 +96,12 @@ public class MemberRestServiceImpl {
 
     public GlobalResponse updateMemberData(Member member, MypageRequsetDto dto) {
         String msg ="";
-        if(dto.getNickname() != null){
+        if(dto.getNickname() != ""){
             member = member.toBuilder().nickname(dto.getNickname()).build();
             msg += "닉네임, ";
         }
-        if(dto.getPassword1() != null && dto.getPassword2()!=null){
-            member.toBuilder().password(encoder.encode(dto.getPassword1())).build();
+        if(dto.getPassword1() != "" && dto.getPassword2() != ""){
+            member = member.toBuilder().password(encoder.encode(dto.getPassword1())).build();
             msg += "비밀번호 ";
         }
         memberRepository.save(member);
