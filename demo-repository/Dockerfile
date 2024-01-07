@@ -23,9 +23,9 @@ FROM node:18-alpine
 WORKDIR /app
 
 # 빌드 스테이지에서 생성된 파일 복사
-COPY --from=build /app/build .
-COPY --from=build /app/node_modules node_modules
-COPY --from=build /app/package.json package.json
+COPY --from=builder /app/build .
+COPY --from=builder /app/node_modules node_modules
+COPY --from=builder /app/package.json package.json
 
 # 애플리케이션 포트 설정
 EXPOSE 5173
