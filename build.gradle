@@ -39,6 +39,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	// h2 db
 	runtimeOnly 'com.h2database:h2'
+	// mysql db
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// validation
@@ -58,5 +60,6 @@ tasks.named('bootBuildImage') {
 }
 
 tasks.named('test') {
+	maxHeapSize = "1024m"
 	useJUnitPlatform()
 }
