@@ -3,7 +3,8 @@ package com.example.techit7.user.service;
 
 import com.example.techit7.global.config.JwtUtil;
 import com.example.techit7.global.config.SecurityUser;
-import com.example.techit7.global.dto.GlobalResponse;
+import com.example.techit7.global.response.GlobalResponse;
+import com.example.techit7.user.dto.MypageRequsetDto;
 import com.example.techit7.user.dto.UserCreateRequestDto;
 import com.example.techit7.user.entity.Member;
 import com.example.techit7.user.repository.MemberRepository;
@@ -27,8 +28,8 @@ public class MemberRestServiceImpl {
 
 
     public GlobalResponse signup(UserCreateRequestDto dto) {
-        if(!validDuplicationUsername(dto.getUsername())){
-            return GlobalResponse.of("409","중복된 이름입니다.");
+        if (!validDuplicationUsername(dto.getUsername())) {
+            return GlobalResponse.of("409", "중복된 이름입니다.");
         }
         Member member = Member.builder()
                 .username(dto.getUsername())
@@ -37,9 +38,10 @@ public class MemberRestServiceImpl {
                 .email(dto.getEmail()).build();
 
         memberRepository.save(member);
-        return GlobalResponse.of("200","회원가입 완료");
+        return GlobalResponse.of("200", "회원가입 완료");
     }
-    public boolean validDuplicationUsername(String username){
+
+    public boolean validDuplicationUsername(String username) {
         return memberRepository.findByUsername(username).isPresent() ? false : true;
     }
 
@@ -57,11 +59,11 @@ public class MemberRestServiceImpl {
         return GlobalResponse.of("200", "로그인 성공", memberOp.get());
     }
 
-    public void setRefreshToken(Member member, String refreshToken){
+    public void setRefreshToken(Member member, String refreshToken) {
         memberRepository.save(member.toBuilder().refreshToken(refreshToken).build());
     }
 
-    public Optional<Member> findMemberByRefreshToken(String refreshToken){
+    public Optional<Member> findMemberByRefreshToken(String refreshToken) {
         return memberRepository.findByRefreshToken(refreshToken);
     }
 
@@ -84,4 +86,25 @@ public class MemberRestServiceImpl {
         );
     }
 
+    public Member findByUsername(String username){
+        Optional<Member> memberOp = memberRepository.findByUsername(username);
+        if(memberOp.isPresent()){
+            return memberOp.get();
+        }
+        return null;
+    }
+
+    public GlobalResponse updateMemberData(Member member, MypageRequsetDto dto) {
+        String msg ="";
+        if(dto.getNickname() != null){
+            member = member.toBuilder().nickname(dto.getNickname()).build();
+            msg += "닉네임, ";
+        }
+        if(dto.getPassword1() != null && dto.getPassword2()!=null){
+            member.toBuilder().password(encoder.encode(dto.getPassword1())).build();
+            msg += "비밀번호 ";
+        }
+        memberRepository.save(member);
+        return GlobalResponse.of("200",msg + "변경완료");
+    }
 }

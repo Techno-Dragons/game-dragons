@@ -3,7 +3,9 @@ package com.example.techit7.article.entity;
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.global.entity.BaseEntity;
-import com.example.techit7.user.entity.SiteUser;
+import com.example.techit7.user.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,9 +36,9 @@ public class Article extends BaseEntity {
     @Column(name = "article_id")
     private Long id;
 
-    @ManyToOne(targetEntity = SiteUser.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Member.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private SiteUser author;
+    private Member author;
 
     @Column(columnDefinition = "TEXT", length = 20)
     private String title;
@@ -53,7 +55,8 @@ public class Article extends BaseEntity {
     @Column
     private String category;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Comment> commentList = new ArrayList<>();
 
