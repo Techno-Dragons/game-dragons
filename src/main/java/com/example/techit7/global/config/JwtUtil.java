@@ -3,14 +3,25 @@ package com.example.techit7.global.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.Map;
 
-public class JwtUtil {
-    private static final String SECRET_KEY = "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890";
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
-        public static String encode(long expirationSeconds, Map<String, Object> data) {
+@Configuration
+@ConfigurationProperties(prefix = "jwt")
+public class JwtUtil {
+    @Setter
+    private static String SECRET_KEY;
+
+    public static String encode(long expirationSeconds, Map<String, Object> data) {
         Claims claims = Jwts
                 .claims()
                 .setSubject("sb-23-11-30 jwt")
