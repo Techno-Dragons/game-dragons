@@ -8,7 +8,7 @@ on:
       - 'demo-repository/package-json'
       - 'demo-repository/Dockerfile'
     branches:
-      - ci_cd
+      - main
 jobs:
   makeTagAndRelease:
     runs-on: ubuntu-latest
