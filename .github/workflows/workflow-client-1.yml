@@ -1,12 +1,8 @@
-name: workflow-1
+name: workflow-client-1
 on:
   push: # 해당 경로의 파일이 변경되었을 때만 워크플로우가 실행
     paths:
       - '.github/workflows/**'
-      # back
-      - 'src/**'
-      - 'build.gradle'
-      - 'Dockerfile'
       # front
       - 'demo-repository/src/**'
       - 'demo-repository/package-json'
@@ -58,21 +54,6 @@ jobs:
           echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
         env:
           OWNER: '${{ github.repository_owner }}'
-      - name: application-secret.properties 생성
-        env:
-          ACTIONS_STEP_DEBUG: true
-          APPLICATION_SECRET: ${{ secrets.APPLICATION_SECRET_PROPERTIES }}
-        run: echo "$APPLICATION_SECRET" > ./src/main/resources/application-secret.yml
-      - name: 빌드 앤 푸시(Server)
-        uses: docker/build-push-action@v3
-        with:
-          # 빌드시 사용할 도커파일 경로와 컨텍스트 지정
-          context: ./
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ghcr.io/${{ env.OWNER_LC }}/gamedragons-server-deploy:${{ needs.makeTagAndRelease.outputs.tag_name }},
-            ghcr.io/${{ env.OWNER_LC }}/gamedragons-server-deploy:latest
       - name: 빌드 앤 푸시(Client)
         uses: docker/build-push-action@v3
         with:
