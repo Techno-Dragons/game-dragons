@@ -23,7 +23,7 @@ RUN ./gradlew dependencies --no-daemon
 COPY src src
 
 # 애플리케이션 빌드
-RUN ./gradlew clean build
+RUN ./gradlew clean build --no-daemon
 
 # 멀티 스테이지 2 : 실행 스테이지
 FROM ghcr.io/graalvm/graalvm-community:17
