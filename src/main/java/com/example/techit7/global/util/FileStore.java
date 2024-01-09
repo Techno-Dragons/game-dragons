@@ -20,7 +20,6 @@ public class FileStore {
     private final String DIR_PATH;
 
     public String getFullPath(String filename) {
-
         return DIR_PATH + filename;
     }
 

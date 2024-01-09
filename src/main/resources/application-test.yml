@@ -7,7 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-custom:
-  tempDirPath: c:/gamedragons/gamedragons_test/temp
-  genFile:
-    dirPath: c:/gamedragons/demo_test
+site:
+  temp-dir-path: c:/gamedragons/gamedragons_test/temp
+  gen-file:
+    dir-path: c:/gamedragons/demo_test
