@@ -1,5 +1,6 @@
 server:
   shutdown: graceful
+  port: ${port}
 spring:
   servlet:
     multipart:
