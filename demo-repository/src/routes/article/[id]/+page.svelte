@@ -17,7 +17,7 @@
 	let isModify = $state(false);
 	let isCommentModify = $state([{}]);
 	let isArticleAuthor = $state(false);
-	let imageUri = $state(null);
+	let imageUrl = $state();
 	let imageFile;
 	let username = $state(null);
 
@@ -59,7 +59,6 @@
 				article.authorId = res.data.data.article.author.id;
 				article.authorname = res.data.data.article.author.nickname;
 				article.authorUsername = res.data.data.article.author.username;
-				imageUri = res.data.data.image.storeFilename;
 				article.createdTime = formatDateTime(res.data.data.article.createdTime);
 				article.modifiedTime = formatDateTime(res.data.data.article.modifiedTime);
 				article.image = res.data.data.article.image;
@@ -84,7 +83,7 @@
 			const res = await axios.get(path + `/article/image?articleId=${id}`, {
 				responseType: 'blob'
 			});
-			imageUri = URL.createObjectURL(res.data);
+			imageUrl = URL.createObjectURL(res.data);
 		} catch (error) {}
 	}
 
@@ -145,7 +144,7 @@
 	onMount(async () => {
 		id = await $page.params['id'];
 		promise = await loadArticle();
-		// await loadImage();
+		await loadImage();
 		username = localStorage.getItem('username');
 	});
 </script>
@@ -245,8 +244,8 @@
 				<p class="ml-2 font-sans">{article.comments.length}</p>
 			</div>
 			<div class="divider divider-Neutral mt-1" />
-			{#if imageUri}
-				<img src={'https://storage.googleapis.com/kissshot1104_bucket/' + imageUri} alt="이미지" />
+			{#if imageUrl}
+				<img src={imageUrl} alt="이미지" />
 			{/if}
 
 			<div class="mt-8">
