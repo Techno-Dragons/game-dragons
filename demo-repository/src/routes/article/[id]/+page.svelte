@@ -17,7 +17,7 @@
 	let isModify = $state(false);
 	let isCommentModify = $state([{}]);
 	let isArticleAuthor = $state(false);
-	let imageUrl = $state();
+	let imageUri = $state(null);
 	let imageFile;
 	let username = $state(null);
 
@@ -244,8 +244,8 @@
 				<p class="ml-2 font-sans">{article.comments.length}</p>
 			</div>
 			<div class="divider divider-Neutral mt-1" />
-			{#if imageUrl}
-				<img src={imageUrl} alt="이미지" />
+			{#if imageUri}
+				<img src={'https://storage.googleapis.com/kissshot1104_bucket/' + imageUri} alt="이미지" />
 			{/if}
 
 			<div class="mt-8">
