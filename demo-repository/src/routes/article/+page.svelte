@@ -19,7 +19,7 @@
 		return new Promise(async (resolve, reject) => {
 			try {
 				let res = await axios.post(
-					`http://localhost:8090/member/login`,
+					`https://gamedragons.api.bi3a.app/member/login`,
 					{ username: '123', password: '123' },
 					{ withCredentials: true }
 				);
@@ -55,7 +55,7 @@
 	function loadArticleList(page) {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const res = await axios.get(`http://localhost:8090/article?page=${page}`);
+				const res = await axios.get(`https://gamedragons.api.bi3a.app/article?page=${page}`);
 				console.log(res);
 				pageList.articles = res.data.data.content;
 				pageList.totalPages = res.data.data.totalPages;
@@ -75,14 +75,14 @@
 
 	async function postArticle() {
 		const res = await axios.post(
-			`http://localhost:8090/article`,
+			`https://gamedragons.api.bi3a.app/article`,
 			{ title: inputTitle, content: inputContent },
 			{ withCredentials: true }
 		);
 		console.log(res);
 		console.log(inputTitle);
 		console.log(inputContent);
-		window.location.href = `http://localhost:5173/article/${res.data.data}`;
+		window.location.href = `/article/${res.data.data}`;
 	}
 
 	function changePage(page) {
@@ -138,7 +138,7 @@
 			{#each pageList.articles as article}
 				<div class="rounded-lg border bg-card text-card-foreground shadow-sm mb-6" data-v0-t="card">
 					<div class="flex flex-col space-y-1.5 p-6">
-						<a href="http://localhost:5173/article/{article.id}">
+						<a href="/article/{article.id}">
 							<h3 class="text-2xl font-semibold leading-none tracking-tight">
 								{article.title}
 							</h3>

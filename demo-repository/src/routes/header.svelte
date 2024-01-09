@@ -36,9 +36,5 @@
     <a class="btn btn-ghost text-xl" href="/">Game Dragons</a>
   </div>
   <div class="navbar-end">
-    <input type="text" placeholder="Type here" class="input input-bordered max-w-xs me-3" />
-    <button class="btn btn-ghost btn-circle me-3">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
   </div>
 </div>

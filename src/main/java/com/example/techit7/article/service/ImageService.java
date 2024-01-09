@@ -27,11 +27,11 @@ public class ImageService {
     @Transactional
     public void save(MultipartFile multipartFile, Long articleId) throws IOException {
 
-        if (multipartFile == null || multipartFile.isEmpty()) {
-            return;
+        String storeFilename = "";
+        if (multipartFile == null) {
+            storeFilename = fileStore.storeFile(multipartFile);
         }
 
-        String storeFilename = fileStore.storeFile(multipartFile);
         Optional<Article> article = articleRepository.findById(articleId);
         if (article.isEmpty()) {
             throw new EntityNotFoundException(ErrorMessage.ENTITY_NOT_FOUND);

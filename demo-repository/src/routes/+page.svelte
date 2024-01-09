@@ -4,18 +4,18 @@
 	import {logout} from "./member/login_check.js";
 	import {toastNotice} from "../app.js";
 
-	let loginUsername = $state({});
+	let loginNickname = $state({});
 
 	async function logoutProcess() {
 		await logout();
 		toastNotice("로그아웃 되었습니다.");
 
-		loginUsername = '';
+		loginNickname = '';
 	}
 
 	onMount(() => {
 		if (localStorage.getItem('nickname')){
-			loginUsername = localStorage.getItem('nickname');
+			loginNickname = localStorage.getItem('nickname');
 			isLogin.set(true);
 		} else {
 			isLogin.set(false);
@@ -43,7 +43,7 @@
 				<div class="card-body flex flex-col">
 					{#if $isLogin}
 						<div class="items-start">
-							<p>{loginUsername} 님, 환영합니다!</p>
+							<p>{loginNickname} 님, 환영합니다!</p>
 						</div>
 						<div class="items-center">
 							<div class="card-actions justify-center">

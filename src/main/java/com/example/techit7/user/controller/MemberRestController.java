@@ -1,5 +1,6 @@
 package com.example.techit7.user.controller;
 
+import com.example.techit7.global.config.JwtProperties;
 import com.example.techit7.global.config.JwtUtil;
 import com.example.techit7.global.response.GlobalResponse;
 import com.example.techit7.user.dto.*;
@@ -26,6 +27,7 @@ public class MemberRestController {
     private final MemberRestServiceImpl memberRestService;
     private final HttpServletResponse response;
     private final HttpServletRequest request;
+    private final JwtProperties jwtProperties;
 
     @PostMapping("/signup")
     public GlobalResponse signup(@RequestBody UserCreateRequestDto userCreateRequestDto) {
@@ -47,6 +49,7 @@ public class MemberRestController {
                         "username", member.getUsername(),
                         "authorities", member.getAuthoritiesAsStrList()
                 )
+            , jwtProperties.getSECRET_KEY()
         );
         String refreshToken = JwtUtil.encode(
                 60 * 60 * 24, //1 day
@@ -54,6 +57,7 @@ public class MemberRestController {
                         "id", member.getId().toString(),
                         "username", member.getUsername()
                 )
+            , jwtProperties.getSECRET_KEY()
         );
         memberRestService.setRefreshToken(member, refreshToken);
 
@@ -83,7 +87,8 @@ public class MemberRestController {
                         "id", member.getId().toString(),
                         "username", member.getUsername(),
                         "authorities", member.getAuthoritiesAsStrList()
-                )
+                ),
+            jwtProperties.getSECRET_KEY()
         );
         ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")

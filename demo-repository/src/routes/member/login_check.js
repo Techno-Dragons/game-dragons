@@ -27,7 +27,7 @@ export function checkLogin(msg){
 }
 
 export async function logout(){
-    await fetch(`http://localhost:8090/member/logout`,{
+    await fetch(`https://gamedragons.api.bi3a.app/member/logout`,{
         headers: {
             'Content-Type': 'application/json'
         },
