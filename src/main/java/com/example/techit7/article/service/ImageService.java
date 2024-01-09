@@ -28,7 +28,7 @@ public class ImageService {
     public void save(MultipartFile multipartFile, Long articleId) throws IOException {
 
         String storeFilename = "";
-        if (multipartFile == null) {
+        if (multipartFile != null) {
             storeFilename = fileStore.storeFile(multipartFile);
         }
 
