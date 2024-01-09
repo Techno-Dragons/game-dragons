@@ -10,7 +10,7 @@
         password2: '',
     }
     onMount(async () => {
-        let response = await fetch(`http://localhost:8090/member/mypage`, {
+        let response = await fetch(`https://gamedragons.api.bi3a.app/member/mypage`, {
             credentials: 'include'
         }).then((res) => res.json());
         userData2 = response.data;
@@ -25,7 +25,7 @@
         userData3.password1 = userData3.password1.trim();
         userData3.password2 = userData3.password2.trim();
         if (passwordCheck()) {
-            await fetch(`http://localhost:8090/member/mypage`, {
+            await fetch(`https://gamedragons.api.bi3a.app/member/mypage`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },

@@ -51,7 +51,7 @@
 	function loadArticle() {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const res = await axios.get(`http://localhost:8090/article/${id}`);
+				const res = await axios.get(`https://gamedragons.api.bi3a.app/article/${id}`);
 				article.title = res.data.data.article.title;
 				article.content = res.data.data.article.content;
 				article.authorId = res.data.data.article.author.id;
@@ -78,7 +78,7 @@
 
 	async function loadImage() {
 		try {
-			const res = await axios.get(`http://localhost:8090/article/image?articleId=${id}`, {
+			const res = await axios.get(`https://gamedragons.api.bi3a.app/article/image?articleId=${id}`, {
 				responseType: 'blob'
 			});
 			imageUrl = URL.createObjectURL(res.data);
@@ -104,7 +104,7 @@
 				formData.append('articleRequestDto', new Blob([articleData], { type: 'application/json' }));
 				formData.append('imageFile', imageFile);
 
-				const res = await axios.put(`http://localhost:8090/article/${id}`, formData, {
+				const res = await axios.put(`https://gamedragons.api.bi3a.app/article/${id}`, formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -124,7 +124,7 @@
 		return new Promise(async (resolve, reject) => {
 			try {
 				let res = await axios.post(
-					`http://localhost:8090/member/login`,
+					`https://gamedragons.api.bi3a.app/member/login`,
 					{
 						username: '123',
 						password: '123'
@@ -143,7 +143,7 @@
 		return new Promise(async (resolve, reject) => {
 			try {
 				let res = await axios.post(
-					`http://localhost:8090/article/${id}/comment`,
+					`https://gamedragons.api.bi3a.app/article/${id}/comment`,
 					{
 						content: commentContent
 					},
@@ -153,7 +153,7 @@
 				);
 
 				commentContent = '';
-				window.location.href = `http://localhost:5173/article/${id}`;
+				window.location.href = `/article/${id}`;
 			} catch (error) {
 				reject(error);
 			}
@@ -204,7 +204,7 @@
 						modifyForm.title = '';
 						modifyForm.content = '';
 						isModify = !isModify;
-						window.location.href = `http://localhost:5173/article/${id}`;
+						window.location.href = `/article/${id}`;
 					}}
 				>
 					수정 완료
@@ -243,8 +243,8 @@
 									class="btn border-gray-600 btn-ghost"
 									style="color: red;"
 									on:click={() => {
-										axios.delete(`http://localhost:8090/article/${id}`, { withCredentials: true });
-										window.location.href = `http://localhost:5173/article`;
+										axios.delete(`https://gamedragons.api.bi3a.app/article/${id}`, { withCredentials: true });
+										window.location.href = `/article`;
 									}}>게시글 삭제</button
 								>
 								<button
@@ -305,13 +305,13 @@
 													return;
 												}
 												axios.put(
-													`http://localhost:8090/article/${id}/comment/${comment.id}`,
+													`https://gamedragons.api.bi3a.app/article/${id}/comment/${comment.id}`,
 													{ content: modifyCommentContent },
 													{ withCredentials: true }
 												);
 												modifyCommentContent = '';
 												isCommentModify[comment.id] = !isCommentModify[comment.id];
-												window.location.href = `http://localhost:5173/article/${id}`;
+												window.location.href = `/article/${id}`;
 											}}>수정 완료</button
 										>
 										<button
@@ -327,10 +327,10 @@
 										>
 										<button
 											on:click={() => {
-												axios.delete(`http://localhost:8090/article/${id}/comment/${comment.id}`, {
+												axios.delete(`https://gamedragons.api.bi3a.app/article/${id}/comment/${comment.id}`, {
 													withCredentials: true
 												});
-												window.location.href = `http://localhost:5173/article/${id}`;
+												window.location.href = `/article/${id}`;
 											}}
 											style="color: red;">댓글 삭제</button
 										>
@@ -356,13 +356,13 @@
 												return;
 											}
 											axios.put(
-												`http://localhost:8090/article/${id}/comment/${comment.id}`,
+												`https://gamedragons.api.bi3a.app/${id}/comment/${comment.id}`,
 												{ content: modifyCommentContent },
 												{ withCredentials: true }
 											);
 											modifyCommentContent = '';
 											isCommentModify[comment.id] = !isCommentModify[comment.id];
-											window.location.href = `http://localhost:5173/article/${id}`;
+											window.location.href = `/article/${id}`;
 										}}>수정 완료</button
 									>
 									<button
@@ -376,10 +376,10 @@
 									>
 									<button
 										on:click={() => {
-											axios.delete(`http://localhost:8090/article/${id}/comment/${comment.id}`, {
+											axios.delete(`https://gamedragons.api.bi3a.app/article/${id}/comment/${comment.id}`, {
 												withCredentials: true
 											});
-											window.location.href = `http://localhost:5173/article/${id}`;
+											window.location.href = `/article/${id}`;
 										}}
 										style="color: red;">댓글 삭제</button
 									>
@@ -405,7 +405,7 @@
 				type="button"
 				class="btn border-gray-600 btn-ghost ml-1 mt-10"
 				value="뒤로가기"
-				on:click={() => (window.location.href = 'http://localhost:5173/article')}
+				on:click={() => (window.location.href = '/article')}
 			/>
 		</div>
 	{/await}

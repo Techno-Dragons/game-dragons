@@ -9,7 +9,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/demo/": {
-				target: "http://localhost:8090",
+				target: "https://gamedragons.api.bi3a.app",
 				rewrite: (path) => path.replace(/^\/demo/, ""),
 			},
 		},

@@ -1,18 +1,19 @@
 server:
   shutdown: graceful
+  port: ${port}
 spring:
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
   datasource:
-    url: jdbc:mysql://172.17.0.1:3306/demo_prod
-    username: lldjlocal
-    password: 1234
+    url: ${database.url}
+    username: ${database.username}
+    password: ${database.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 logging:
   level:
     com.ll.medium: INFO
