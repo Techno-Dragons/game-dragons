@@ -2,7 +2,7 @@ name: workflow-client-1
 on:
   push: # 해당 경로의 파일이 변경되었을 때만 워크플로우가 실행
     paths:
-      - '.github/workflows/**'
+      - '.github/workflows/workflow-client-1.yml'
       # front
       - 'demo-repository/src/**'
       - 'demo-repository/package-json'
