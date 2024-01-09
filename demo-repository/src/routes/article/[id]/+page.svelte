@@ -3,11 +3,12 @@
 	import '../../../app.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { stringify } from 'postcss';
 	import Icon from '@iconify/svelte';
-	// import memberInfo from "../../../lib/user_store.js"
 
-	// export let data;
+	let testPath = 'http://localhost:5173';
+	let deployPath = 'https://gamedragons.api.bi3a.app';
+
+	let path = deployPath;
 
 	let promise = Promise.resolve([]);
 	let id = $state();
@@ -16,7 +17,7 @@
 	let isModify = $state(false);
 	let isCommentModify = $state([{}]);
 	let isArticleAuthor = $state(false);
-	let imageUrl = $state();
+	let imageUri = $state(null);
 	let imageFile;
 	let username = $state(null);
 
@@ -28,6 +29,7 @@
 	let article = $state({
 		authorId: 0,
 		authorname: '',
+		authorUsername: '',
 		title: '',
 		content: '',
 		createdTime: '',
@@ -51,17 +53,18 @@
 	function loadArticle() {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const res = await axios.get(`https://gamedragons.api.bi3a.app/article/${id}`);
+				const res = await axios.get(path + `/article/${id}`);
 				article.title = res.data.data.article.title;
 				article.content = res.data.data.article.content;
 				article.authorId = res.data.data.article.author.id;
 				article.authorname = res.data.data.article.author.nickname;
+				article.authorUsername = res.data.data.article.author.username;
+				imageUri = res.data.data.image.storeFilename;
 				article.createdTime = formatDateTime(res.data.data.article.createdTime);
 				article.modifiedTime = formatDateTime(res.data.data.article.modifiedTime);
 				article.image = res.data.data.article.image;
 				article.comments = await res.data.data.article.commentList;
 				resolve(article);
-
 				for (let i = 0; i < article.comments.length; i++) {
 					isCommentModify.push({
 						[article.comments[i].id]: false
@@ -78,13 +81,11 @@
 
 	async function loadImage() {
 		try {
-			const res = await axios.get(`https://gamedragons.api.bi3a.app/article/image?articleId=${id}`, {
+			const res = await axios.get(path + `/article/image?articleId=${id}`, {
 				responseType: 'blob'
 			});
-			imageUrl = URL.createObjectURL(res.data);
-		} catch (error) {
-			
-		}
+			imageUri = URL.createObjectURL(res.data);
+		} catch (error) {}
 	}
 
 	function handleFileChange(event) {
@@ -104,7 +105,7 @@
 				formData.append('articleRequestDto', new Blob([articleData], { type: 'application/json' }));
 				formData.append('imageFile', imageFile);
 
-				const res = await axios.put(`https://gamedragons.api.bi3a.app/article/${id}`, formData, {
+				const res = await axios.put(path + `/article/${id}`, formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					},
@@ -120,30 +121,11 @@
 		});
 	}
 
-	function login() {
-		return new Promise(async (resolve, reject) => {
-			try {
-				let res = await axios.post(
-					`https://gamedragons.api.bi3a.app/member/login`,
-					{
-						username: '123',
-						password: '123'
-					},
-					{
-						withCredentials: true
-					}
-				);
-			} catch (error) {
-				reject(error);
-			}
-		});
-	}
-
 	function postComment() {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let res = await axios.post(
-					`https://gamedragons.api.bi3a.app/article/${id}/comment`,
+					path + `/article/${id}/comment`,
 					{
 						content: commentContent
 					},
@@ -160,21 +142,16 @@
 		});
 	}
 
-	$effect(() => {
-		username = localStorage.getItem('username');
-		console.log("username : ", username);
-	})
 	onMount(async () => {
 		id = await $page.params['id'];
 		promise = await loadArticle();
-		await loadImage();
-		
+		// await loadImage();
+		username = localStorage.getItem('username');
 	});
-
 </script>
 
 {#if isModify}
-	<div class="width-45 mr-auto ml-auto">
+	<div class="width-60 mr-auto ml-auto">
 		<textarea
 			class="textarea textarea-ghost text-4xl w-full"
 			placeholder="제목을 입력해주세요."
@@ -215,7 +192,8 @@
 						modifyForm.title = '';
 						modifyForm.content = '';
 						isModify = !isModify;
-					}}>
+					}}
+				>
 					취소
 				</button>
 			</div>
@@ -227,23 +205,23 @@
 	{#await promise}
 		<span class="loading loading-bars loading-lg"></span>
 	{:then ard}
-		<div class="width-45 mr-auto ml-auto">
+		<div class="width-60 mr-auto ml-auto">
 			<h1 class="text-4xl font-bold">{article.title}</h1>
 			<div class="flex items-center space-x-2 mt-6">
-				<div class="flex-container">
-					<div>
+				<div class="flex-container w-full">
+					<div class="w-full">
 						<p class="text-sm font-semibold">{article.authorname}</p>
-						<p class="text-sm text-gray-500">발행 : {article.createdTime}</p>
+						<p class="text-sm text-gray-500 mt-2">발행 : {article.createdTime}</p>
 						<p class="text-sm text-gray-500 mt-2">수정 : {article.modifiedTime}</p>
 					</div>
 					<div class="flex space-x-4 mb-6 container flex-wrap flex-row-reverse">
 						<div class="flex-wrap">
-							{#if username === article.authorname}
+							{#if username === article.authorUsername}
 								<button
 									class="btn border-gray-600 btn-ghost"
 									style="color: red;"
 									on:click={() => {
-										axios.delete(`https://gamedragons.api.bi3a.app/article/${id}`, { withCredentials: true });
+										axios.delete(path + `/article/${id}`, { withCredentials: true });
 										window.location.href = `/article`;
 									}}>게시글 삭제</button
 								>
@@ -267,8 +245,8 @@
 				<p class="ml-2 font-sans">{article.comments.length}</p>
 			</div>
 			<div class="divider divider-Neutral mt-1" />
-			{#if imageUrl}
-				<img src={imageUrl} alt="이미지" />
+			{#if imageUri}
+				<img src={'https://storage.googleapis.com/kissshot1104_bucket/' + imageUri} alt="이미지" />
 			{/if}
 
 			<div class="mt-8">
@@ -281,14 +259,12 @@
 
 		<div class="grid place-items-center">
 			{#each article.comments as comment}
-				<div class="width-45">
+				<div class="width-60">
 					{#if comment.author && comment.author.username}
 						{#if article.authorId === comment.author.id}
-							{console.log(comment.author.id)}
-
 							<div class="chat chat-end">
 								<div class="chat-header">
-									{comment.author.nickname}
+									{comment.author.username}
 									<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
 								</div>
 								<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
@@ -305,7 +281,7 @@
 													return;
 												}
 												axios.put(
-													`https://gamedragons.api.bi3a.app/article/${id}/comment/${comment.id}`,
+													path + `/article/${id}/comment/${comment.id}`,
 													{ content: modifyCommentContent },
 													{ withCredentials: true }
 												);
@@ -327,7 +303,7 @@
 										>
 										<button
 											on:click={() => {
-												axios.delete(`https://gamedragons.api.bi3a.app/article/${id}/comment/${comment.id}`, {
+												axios.delete(path + `/article/${id}/comment/${comment.id}`, {
 													withCredentials: true
 												});
 												window.location.href = `/article/${id}`;
@@ -344,45 +320,52 @@
 									<time class="text-xs opacity-50">{formatDateTime(comment.createdTime)}</time>
 								</div>
 								<div class="chat-bubble chat-bubble-primary">{comment.content}</div>
-								{#if isCommentModify[comment.id]}
-									<textarea
-										class="textarea textarea-primary"
-										placeholder="댓글을 입력해주세요."
-										bind:value={modifyCommentContent}
-									></textarea>
-									<button
-										on:click={() => {
-											if (!modifyCommentContent.trim()) {
-												return;
-											}
-											axios.put(
-												`https://gamedragons.api.bi3a.app/${id}/comment/${comment.id}`,
-												{ content: modifyCommentContent },
-												{ withCredentials: true }
-											);
-											modifyCommentContent = '';
-											isCommentModify[comment.id] = !isCommentModify[comment.id];
-											window.location.href = `/article/${id}`;
-										}}>수정 완료</button
-									>
-									<button
-										on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
-										>취소</button
-									>
-								{:else}
-									<button
-										on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
-										>수정</button
-									>
-									<button
-										on:click={() => {
-											axios.delete(`https://gamedragons.api.bi3a.app/article/${id}/comment/${comment.id}`, {
-												withCredentials: true
-											});
-											window.location.href = `/article/${id}`;
-										}}
-										style="color: red;">댓글 삭제</button
-									>
+								{#if username === comment.author.username}
+									{#if isCommentModify[comment.id]}
+										<textarea
+											class="textarea textarea-primary"
+											placeholder="댓글을 입력해주세요."
+											bind:value={modifyCommentContent}
+										></textarea>
+										<button
+											on:click={() => {
+												if (!modifyCommentContent.trim()) {
+													return;
+												}
+												axios.put(
+													path + `/${id}/comment/${comment.id}`,
+													{ content: modifyCommentContent },
+													{ withCredentials: true }
+												);
+												modifyCommentContent = '';
+												isCommentModify[comment.id] = !isCommentModify[comment.id];
+												window.location.href = `/article/${id}`;
+											}}
+										>
+											수정 완료
+										</button>
+										<button
+											on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
+										>
+											취소
+										</button>
+									{:else}
+										<button
+											on:click={() => (isCommentModify[comment.id] = !isCommentModify[comment.id])}
+										>
+											수정
+										</button>
+										<button
+											on:click={async () => {
+												await axios.delete(path + `/article/${id}/comment/${comment.id}`, {
+													withCredentials: true
+												});
+												window.location.href = `/article/${id}`;
+											}}
+											style="color: red;"
+											>댓글 삭제
+										</button>
+									{/if}
 								{/if}
 							</div>
 						{/if}
@@ -390,16 +373,16 @@
 				</div>
 			{/each}
 
-			<div class="flex-container">
+			<div class="flex-container width-60 m-5">
 				<textarea
-					class="textarea textarea-primary row-span-auto"
+					class="textarea textarea-primary w-full"
 					placeholder="댓글을 입력해주세요."
 					bind:value={commentContent}
 					on:keydown={(e) => {
 						e.key === 'Enter' ? postComment() : undefined;
 					}}
 				/>
-				<button class="btn border-gray-600 btn-ghost ml-1" on:click={postComment}>등록</button>
+				<button class="btn border-gray-600 btn-ghost ml-3" on:click={postComment}>등록</button>
 			</div>
 			<input
 				type="button"
@@ -416,7 +399,7 @@
 		display: flex;
 		align-items: center; /* 요소들을 수직 중앙에 정렬 */
 	}
-	.width-45 {
-		width: 45%;
+	.width-60 {
+		width: 60%;
 	}
 </style>
