@@ -6,15 +6,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-@Component
+import lombok.RequiredArgsConstructor;
+
+@ConfigurationProperties(prefix = "site.gen-file")
+@RequiredArgsConstructor
 public class FileStore {
+    private final String DIR_PATH;
 
-    private final String DIR_PATH = System.getenv("userprofile") + "/images/";
     public String getFullPath(String filename) {
-
         return DIR_PATH + filename;
     }
 
