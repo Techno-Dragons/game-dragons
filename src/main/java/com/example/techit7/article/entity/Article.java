@@ -84,10 +84,10 @@ public class Article extends BaseEntity {
             this.title = articleRequestDto.getTitle();
         }
         if (StringUtils.hasText(articleRequestDto.getContent())) {
-            this.content = articleRequestDto.getContent();
+            this.title = this.content = articleRequestDto.getContent();
         }
         if (StringUtils.hasText(articleRequestDto.getCategory())) {
-            this.category = articleRequestDto.getCategory();
+            this.title = this.category = articleRequestDto.getCategory();
         }
 
     }
