@@ -8,7 +8,7 @@
     $: username = '';
     $: password = '';
     async function login() {
-        await fetch(`http://localhost:8090/member/login`, {
+        await fetch(`https://gamedragons.api.bi3a.app/member/login`, {
             headers: {
                 'Content-Type': 'application/json'
             },

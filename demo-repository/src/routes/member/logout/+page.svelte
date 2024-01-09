@@ -4,7 +4,7 @@
     import {checkLogout} from "../login_check.js";
 
     onMount(async () => {
-        await fetch(`http://localhost:8090/member/logout`,{
+        await fetch(`https://gamedragons.api.bi3a.app/member/logout`,{
             headers: {
                 'Content-Type': 'application/json'
             },

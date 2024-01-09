@@ -21,7 +21,7 @@
 		formData.append('articleRequestDto', new Blob([articleData], { type: 'application/json' }));
 		formData.append('imageFile', imageFile);
 
-		const res = await axios.post(`http://localhost:8090/article`, formData, {
+		const res = await axios.post(`https://gamedragons.api.bi3a.app/article`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data'
 			},
@@ -31,13 +31,13 @@
 		console.log(res);
 		console.log(inputTitle);
 		console.log(inputContent);
-		window.location.href = `http://localhost:5173/article/${res.data.data}`;
+		window.location.href = `/article/${res.data.data}`;
 	}
 
 	async function login() {
 		try {
 			let res = await axios.post(
-				`http://localhost:8090/member/login`,
+				`https://gamedragons.api.bi3a.app/member/login`,
 				{
 					username: '123',
 					password: '123'
