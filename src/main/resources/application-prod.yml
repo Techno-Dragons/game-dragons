@@ -24,4 +24,4 @@ logging:
 site:
   base-url: https://gamedragons.bi3a.app
   gen-file:
-    dir-path: /gamedragons/images
+    dir-path: /gamedragons/images/

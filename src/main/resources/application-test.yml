@@ -8,6 +8,6 @@ spring:
     hibernate:
       ddl-auto: create
 site:
-  temp-dir-path: c:/gamedragons/gamedragons_test/temp
+  temp-dir-path: c:/gamedragons/gamedragons_test/temp/
   gen-file:
-    dir-path: c:/gamedragons/demo_test
+    dir-path: c:/gamedragons/demo_test/

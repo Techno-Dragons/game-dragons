@@ -14,6 +14,6 @@ spring:
 site:
   name: gamedragons
   base-url: "http://localhost:${server.port}"
-  temp-dir-path: c:/gamedragons/gamedragons_dev/temp
+  temp-dir-path: c:/gamedragons/gamedragons_dev/temp/
   gen-file:
-    dir-path: c:/gamedragons/gamedragons_dev
+    dir-path: c:/gamedragons/gamedragons_dev/
