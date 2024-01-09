@@ -1,25 +1,24 @@
 <script>
 	import {onMount} from "svelte";
+	import {isLogin} from "$lib/login_stores.js";
 	import {logout} from "./member/login_check.js";
 	import {toastNotice} from "../app.js";
 
 	let loginUsername = $state({});
-	let isLogin = $state({});
 
 	async function logoutProcess() {
 		await logout();
 		toastNotice("로그아웃 되었습니다.");
 
-		isLogin = false;
 		loginUsername = '';
 	}
 
 	onMount(() => {
 		if (localStorage.getItem('nickname')){
 			loginUsername = localStorage.getItem('nickname');
-			isLogin = true;
+			isLogin.set(true);
 		} else {
-			isLogin = false;
+			isLogin.set(false);
 		}
 	});
 </script>
@@ -42,7 +41,7 @@
 		<div class="w-full lg:py-60 lg:px-60 md:py-32 md:px-32 sm:py-12 sm:px-12">
 			<div class="card bg-neutral text-neutral-content">
 				<div class="card-body flex flex-col">
-					{#if isLogin}
+					{#if $isLogin}
 						<div class="items-start">
 							<p>{loginUsername} 님, 환영합니다!</p>
 						</div>

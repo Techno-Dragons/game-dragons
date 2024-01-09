@@ -1,19 +1,16 @@
 <script>
   import {onMount} from "svelte";
+  import {isLogin} from "$lib/login_stores.js";
   import {logout} from "./member/login_check.js";
   import {toastNotice} from "../app.js";
-
-  let isLogin = false;
 
   async function logoutProcess() {
     await logout();
     toastNotice("로그아웃 되었습니다.");
-
-    isLogin = false;
   }
 
   onMount(() => {
-    isLogin = !!localStorage.getItem('nickname');
+    $isLogin = !!localStorage.getItem('nickname');
   });
 </script>
 
@@ -25,7 +22,7 @@
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
         <li><a href="/article"> <i class="fa-solid fa-rectangle-list"></i>글 목록</a></li>
-        {#if isLogin}
+        {#if $isLogin}
           <li><a class="nav-link" href="/member/mypage"> <i class="fa-solid fa-address-card"></i> 마이페이지</a></li>
           <li><a class="nav-link" on:click={logoutProcess}> <i class="fa-solid fa-door-closed"></i>로그아웃</a></li>
         {:else}

@@ -625,3 +625,4 @@ gradle-app.setting
 ### Custom ###
 demo_dev_mv.db
 demo_dev_trace.db
+application-secret.yml

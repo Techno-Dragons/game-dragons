@@ -41,6 +41,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@iconify/svelte": "^3.1.6",
 		"axios": "^1.6.3",
 		"toastr": "^2.1.4"
 	}

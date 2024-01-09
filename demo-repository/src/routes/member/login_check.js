@@ -1,4 +1,5 @@
 import { goto } from "$app/navigation";
+import {isLogin} from "$lib/login_stores.js";
 import {onMount} from "svelte";
 
 /**
@@ -35,5 +36,6 @@ export async function logout(){
     });
     localStorage.removeItem("username");
     localStorage.removeItem("nickname");
+    isLogin.set(false);
     await goto('/');
 }
