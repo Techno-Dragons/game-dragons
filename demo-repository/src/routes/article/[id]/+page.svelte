@@ -10,6 +10,7 @@
 
 	let path = deployPath;
 
+
 	let promise = Promise.resolve([]);
 	let id = $state();
 	let commentContent = $state();
@@ -17,7 +18,7 @@
 	let isModify = $state(false);
 	let isCommentModify = $state([{}]);
 	let isArticleAuthor = $state(false);
-	let imageUri = $state(null);
+	let imageUrl = $state();
 	let imageFile;
 	let username = $state(null);
 
@@ -64,6 +65,7 @@
 				article.image = res.data.data.article.image;
 				article.comments = await res.data.data.article.commentList;
 				resolve(article);
+        
 				for (let i = 0; i < article.comments.length; i++) {
 					isCommentModify.push({
 						[article.comments[i].id]: false
@@ -140,12 +142,15 @@
 			}
 		});
 	}
+  
+	$effect(() => {
+		username = localStorage.getItem('username');
+	})
 
 	onMount(async () => {
 		id = await $page.params['id'];
 		promise = await loadArticle();
-		await loadImage();
-		username = localStorage.getItem('username');
+		await loadImage();	
 	});
 </script>
 
@@ -191,6 +196,7 @@
 						modifyForm.title = '';
 						modifyForm.content = '';
 						isModify = !isModify;
+
 					}}
 				>
 					취소
@@ -204,6 +210,7 @@
 	{#await promise}
 		<span class="loading loading-bars loading-lg"></span>
 	{:then ard}
+
 		<div class="width-60 mr-auto ml-auto">
 			<h1 class="text-4xl font-bold">{article.title}</h1>
 			<div class="flex items-center space-x-2 mt-6">
@@ -244,8 +251,8 @@
 				<p class="ml-2 font-sans">{article.comments.length}</p>
 			</div>
 			<div class="divider divider-Neutral mt-1" />
-			{#if imageUri}
-				<img src={'https://storage.googleapis.com/kissshot1104_bucket/' + imageUri} alt="이미지" />
+			{#if imageUrl}
+				<img src={imageUrl} alt="이미지" />
 			{/if}
 
 			<div class="mt-8">
