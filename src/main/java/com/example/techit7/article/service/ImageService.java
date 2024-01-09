@@ -6,10 +6,13 @@ import com.example.techit7.article.entity.Image;
 import com.example.techit7.article.errormessage.ErrorMessage;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.article.repository.ImageRepository;
+import com.example.techit7.global.config.GoogleCloudStorageConfig;
 import com.example.techit7.global.util.FileStore;
+import com.google.cloud.storage.BlobInfo;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,9 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final ArticleRepository articleRepository;
     private final FileStore fileStore;
+    private final GoogleCloudStorageConfig googleCloudStorageConfig;
+
+    private final String BUCKET_NAME = "gamedragon";
 
     // 이미지 저장
     @Transactional
@@ -29,7 +35,7 @@ public class ImageService {
 
         String storeFilename = "";
         if (multipartFile != null) {
-            storeFilename = fileStore.storeFile(multipartFile);
+            storeFilename = uploadImage(multipartFile);
         }
 
         Optional<Article> article = articleRepository.findById(articleId);
@@ -42,6 +48,20 @@ public class ImageService {
                 .build();
 
         imageRepository.save(image);
+    }
+
+    public String uploadImage(MultipartFile image) throws IOException {
+
+        String storeFilename = UUID.randomUUID().toString();
+        String ext = image.getContentType();
+
+        BlobInfo blobInfo = googleCloudStorageConfig.googleCloudStorage().create(
+                BlobInfo.newBuilder(BUCKET_NAME, storeFilename)
+                        .setContentType(ext)
+                        .build(),
+                image.getInputStream());
+
+        return storeFilename;
     }
 
     @Transactional

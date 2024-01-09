@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "nifty-caster-410607",
+  "private_key_id": "011f76dc3df973ea760907688d0dad25eff9bdd7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCqKXZnpEjwDub8\nz79Ln/kl8iR3IsTFnGB+nPW7M4hQ8NMK1r4QC0DhiWTzPgIZxloozznbkw8/Qfdg\ntn+esS6DphWgcFnKGXHpYlFqqC69KBxivbWcl06l+SPyHG0a+yAvF/6Qf8KvvMwr\nMNlMhus9iHzlKvVrelAMml4YBjetAAiijtuGs3GvdfWh9xwAdzpi8HTsOPvnL2Lr\nzR6qLPstMA4FKv6E8rOnbTTZNwCE7zFUzYCC68oKheelzzty3vWqkbyA3CuaVDYj\nFH/kwGLPdIsISVjuxjLHfdN91JNpIhEcFP6h9OYfxIYkAl+GbEnkPalkgP/KnObP\nlYcfz/txAgMBAAECggEAAOQ7DfMXTUWdpkTXLXB9XLhd9a0q7LDtFjurbUHUGHFE\ns+5Vw7mOCSsjSCoKLC2IKsv4N5mo0FuZSbP/WC0SeTde2U217FJhm19TVSSwxO69\n95kBUlpX7Nh9ntKM+LkeCgRTmXs2rkgIHWo3RYI0p6ZgyN/K6XMlPRbdj2gyRAN3\neMBImvOqESpysXXLDK77HLcsYFF+FX/3K1s8DX6aW1eWPnvUi8LH7cnT74Ni5/8R\nVAGq7O7NJEKQkWZQd8BJB0DyQTIvDx9sGL0Y2LpVdoFBFRmHvISK0AJ3+sTDpv1V\nNJJnR0AQe0BVtNyrjclXsxYf+E2krlyc1bGb44VdKQKBgQDhKaSpg8+dpksb+vC9\n4rp4JE0OjqwvEZelxQuXHpy320ceJoci96igCopD2bLtxYAAP6I72389D4tyAVMy\n6YGMcHlM4yNGB7u7QMYWlb8+VhfM70bXuQyQBPWdzUPrI0YtogGZalzTgeFR/T3o\n0UfOAUS4vtjf+JEB6Kd8nBR0rQKBgQDBd3UATknhlR9TGQ5Jx6ChK10so/qYJ2Sw\n6Gyg31kA7n6OWQFg1u404zmVEJ9e+0wbexCtdE7yOzDqBqNZO1cDujOLEh/9xgc7\nEYebUSgEj2SnqnV3wVWiP8APY9B8hKVkWwd0MA6RbLGBpGlYOMLZ2ub0dArZEC5X\ncKB3XmP2VQKBgQC+iqMR4L29R5CgKQe5aTkrmmyrOQl0+4o9ejaIuBsfa60PUsNh\nT/ufE8xWBtBobo4Xp8H+rY1LevAilgR2PSyoUDYWXtDm3nx7xiDb0/V3JxwVDRgC\nTlLXPZss4xvqzHsC+uonjd7oDi1DWO8fKpt9NY2WWcrmHk94Mg4qYVreMQKBgQCl\nz+VGWtL1dSKAzQOy9lZUa98SiIQZbgHdoYagpmwY4U80X1JQFkXYrDrI6JM/C7Ai\nCWq0zu9uqo50tTXBH5unRSox8lna3aOK265Wzsq2hdNl5DGDbv8e7PaF+i1Q2zsJ\ndP9BdIK33umPzELBavyNTREOyHoXqceeB5hwVkTkdQKBgQCDkOnP6ofq89Z5jCs6\n7Blr5MH9jGaY17dx3JrQIrSeKjc5xkxwgIQau7JqyXfG4/GXpC83vLYwGpvO8MC9\ndpSuMk3Tfze70ml+lND13FCbHTnmx3b5lTjsrSG5+FHPs3WTv2pxFgYZvyK/hoON\nzrcxPLPhhaxi0zQ5NkuT7aLWxQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "gamedragon@nifty-caster-410607.iam.gserviceaccount.com",
+  "client_id": "109566693820981827842",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gamedragon%40nifty-caster-410607.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

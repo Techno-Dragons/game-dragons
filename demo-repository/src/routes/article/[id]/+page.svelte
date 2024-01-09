@@ -59,6 +59,7 @@
 				article.content = res.data.data.article.content;
 				article.authorId = res.data.data.article.author.id;
 				article.authorname = res.data.data.article.author.nickname;
+				imageUrl = res.data.data.image.storeFilename;
 				article.authorUsername = res.data.data.article.author.username;
 				article.createdTime = formatDateTime(res.data.data.article.createdTime);
 				article.modifiedTime = formatDateTime(res.data.data.article.modifiedTime);
@@ -150,7 +151,7 @@
 	onMount(async () => {
 		id = await $page.params['id'];
 		promise = await loadArticle();
-		await loadImage();	
+		// await loadImage();
 	});
 </script>
 
@@ -252,7 +253,7 @@
 			</div>
 			<div class="divider divider-Neutral mt-1" />
 			{#if imageUrl}
-				<img src={imageUrl} alt="이미지" />
+				<img src={'https://storage.googleapis.com/gamedragon/' + imageUrl} alt="이미지" />
 			{/if}
 
 			<div class="mt-8">
