@@ -1,27 +1,14 @@
 package com.example.techit7.global.config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Date;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
-@Configuration
-@ConfigurationProperties(prefix = "jwt")
 public class JwtUtil {
-    @Setter
-    private static String SECRET_KEY;
-
-    public static String encode(long expirationSeconds, Map<String, Object> data) {
+    public static String encode(long expirationSeconds, Map<String, Object> data, String secretKey) {
         Claims claims = Jwts
                 .claims()
                 .setSubject("sb-23-11-30 jwt")
@@ -35,14 +22,14 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
-    public static Claims decode(String token) {
+    public static Claims decode(String token, String secretKey) {
         return Jwts
                 .parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getPayload();

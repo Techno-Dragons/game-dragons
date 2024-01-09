@@ -1,6 +1,7 @@
 package com.example.techit7.user.service;
 
 
+import com.example.techit7.global.config.JwtProperties;
 import com.example.techit7.global.config.JwtUtil;
 import com.example.techit7.global.config.SecurityUser;
 import com.example.techit7.global.response.GlobalResponse;
@@ -25,7 +26,7 @@ public class MemberRestServiceImpl {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
-
+    private final JwtProperties jwtProperties;
 
     public GlobalResponse signup(UserCreateRequestDto dto) {
         if (!validDuplicationUsername(dto.getUsername())) {
@@ -67,8 +68,8 @@ public class MemberRestServiceImpl {
         return memberRepository.findByRefreshToken(refreshToken);
     }
 
-    public SecurityUser getUserFromApiKey(String apiKey) {
-        Claims claims = JwtUtil.decode(apiKey);
+    public SecurityUser getUserFromApiKey(String token) {
+        Claims claims = JwtUtil.decode(token, jwtProperties.getSECRET_KEY());
 
         Map<String, Object> data = (Map<String, Object>) claims.get("data");
         long id = Long.parseLong((String) data.get("id"));
