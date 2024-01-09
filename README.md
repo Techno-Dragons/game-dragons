@@ -220,3 +220,15 @@
                └─ techit7
                   └─ Techit7ApplicationTests.java
 ```
+
+## 4. 기능
+<hr>
+
+### 구현된 기능 
+
+
+## 5. 배포 
+<hr>
+
+
+
