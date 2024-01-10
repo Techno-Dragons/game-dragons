@@ -7,6 +7,7 @@ import com.example.techit7.article.errormessage.ErrorMessage;
 import com.example.techit7.article.repository.ArticleRepository;
 import com.example.techit7.article.repository.ImageRepository;
 import com.example.techit7.global.config.GoogleCloudStorageConfig;
+import com.example.techit7.global.config.GoogleCloudStorageProperties;
 import com.example.techit7.global.util.FileStore;
 import com.google.cloud.storage.BlobInfo;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,8 +27,7 @@ public class ImageService {
     private final ArticleRepository articleRepository;
     private final FileStore fileStore;
     private final GoogleCloudStorageConfig googleCloudStorageConfig;
-
-    private final String BUCKET_NAME = "gamedragon";
+    private final GoogleCloudStorageProperties googleCloudStorageProperties;
 
     // 이미지 저장
     @Transactional
@@ -56,7 +56,7 @@ public class ImageService {
         String ext = image.getContentType();
 
         BlobInfo blobInfo = googleCloudStorageConfig.googleCloudStorage().create(
-                BlobInfo.newBuilder(BUCKET_NAME, storeFilename)
+                BlobInfo.newBuilder(googleCloudStorageProperties.getBUCKET_NAME(), storeFilename)
                         .setContentType(ext)
                         .build(),
                 image.getInputStream());
