@@ -41,6 +41,9 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	// mysql db
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	// google cloud
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
