@@ -1,0 +1,23 @@
+<html layout:decorate="~{global/layout}">
+<div layout:fragment="content" class="container">
+    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
+    <form th:object="${articleRequestDto}" method="post" th:action="@{|/article/${articleResponseDto.data.id}|}"
+          enctype="multipart/form-data">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div th:replace="~{article/form_errors :: formErrorsFragment}"></div>
+        <div class="mb-3">
+            <label for="title" class="form-label">제목</label>
+            <input type="text" th:field="*{title}" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">이미지 파일</label>
+            <input type="file" th:field="*{multipartFile}" class="form-control" id="image">
+        </div>
+        <input type="submit" value="저장하기" class="btn btn-primary my-2">
+    </form>
+</div>
+</html>

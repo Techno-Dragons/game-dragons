@@ -1,0 +1,13 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    url: jdbc:h2:mem:demo_test;MODE=MYSQL
+  jpa:
+    hibernate:
+      ddl-auto: create
+site:
+  temp-dir-path: c:/gamedragons/gamedragons_test/temp/
+  gen-file:
+    dir-path: c:/gamedragons/demo_test/

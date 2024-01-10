@@ -1,0 +1,27 @@
+server:
+  shutdown: graceful
+  port: ${port}
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  datasource:
+    url: ${database.url}
+    username: ${database.username}
+    password: ${database.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+logging:
+  level:
+    com.ll.medium: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.orm.jdbc.bind: INFO
+    org.hibernate.orm.jdbc.extract: INFO
+    org.springframework.transaction.interceptor: INFO
+site:
+  base-url: https://gamedragons.bi3a.app
+  gen-file:
+    dir-path: /gamedragons/images/

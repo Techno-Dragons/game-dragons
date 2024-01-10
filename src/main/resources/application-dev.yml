@@ -1,0 +1,19 @@
+server:
+  port: 8090
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:h2:./demo_dev;MODE=MYSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  output:
+    ansi:
+      enabled: always
+site:
+  name: gamedragons
+  base-url: "http://localhost:${server.port}"
+  temp-dir-path: c:/gamedragons/gamedragons_dev/temp/
+  gen-file:
+    dir-path: c:/gamedragons/gamedragons_dev/
