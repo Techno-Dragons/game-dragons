@@ -1,11 +1,16 @@
 package com.example.techit7.article.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.util.StringUtils;
+
 import com.example.techit7.article.dto.ArticleRequestDto;
 import com.example.techit7.comment.entity.Comment;
 import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.entity.Member;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,14 +21,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -31,65 +33,65 @@ import org.springframework.util.StringUtils;
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class Article extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "article_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "article_id")
+	private Long id;
 
-    @ManyToOne(targetEntity = Member.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private Member author;
+	@ManyToOne(targetEntity = Member.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private Member author;
 
-    @Column(columnDefinition = "TEXT", length = 20)
-    private String title;
+	@Column(columnDefinition = "TEXT", length = 20)
+	private String title;
 
-    @Column(columnDefinition = "TEXT", length = 500)
-    private String content;
+	@Column(columnDefinition = "TEXT", length = 500)
+	private String content;
 
-    @Column
-    private Long viewCount;
+	@Column
+	private Long viewCount;
 
-    @Column
-    private Long likeCount;
+	@Column
+	private Long likeCount;
 
-    @Column
-    private String category;
+	@Column
+	private String category;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<Comment> commentList = new ArrayList<>();
+	@JsonManagedReference
+	@OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@Builder.Default
+	private List<Comment> commentList = new ArrayList<>();
 
-    //view카운트 증가
-    public void incrementViewCount() {
-        if (viewCount == null) {
-            viewCount = 0L;
-        }
-        
-        viewCount++;
-    }
+	//view카운트 증가
+	public void incrementViewCount() {
+		if (viewCount == null) {
+			viewCount = 0L;
+		}
 
-    //like카운트 증가
-    public void incrementLikeCount() {
-        if (likeCount == null) {
-            likeCount = 0L;
-        }
+		viewCount++;
+	}
 
-        likeCount++;
-    }
+	//like카운트 증가
+	public void incrementLikeCount() {
+		if (likeCount == null) {
+			likeCount = 0L;
+		}
 
-    //게시글 수정
-    public void modifyArticle(ArticleRequestDto articleRequestDto) {
-        if (StringUtils.hasText(articleRequestDto.getTitle())) {
-            this.title = articleRequestDto.getTitle();
-        }
-        if (StringUtils.hasText(articleRequestDto.getContent())) {
-            this.content = articleRequestDto.getContent();
-        }
-        if (StringUtils.hasText(articleRequestDto.getCategory())) {
-            this.category = articleRequestDto.getCategory();
-        }
+		likeCount++;
+	}
 
-    }
+	//게시글 수정
+	public void modifyArticle(ArticleRequestDto articleRequestDto) {
+		if (StringUtils.hasText(articleRequestDto.getTitle())) {
+			this.title = articleRequestDto.getTitle();
+		}
+		if (StringUtils.hasText(articleRequestDto.getContent())) {
+			this.content = articleRequestDto.getContent();
+		}
+		if (StringUtils.hasText(articleRequestDto.getCategory())) {
+			this.category = articleRequestDto.getCategory();
+		}
+
+	}
 
 }

@@ -9,5 +9,7 @@ import lombok.Getter;
 @Getter
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
+
 	private final String SECRET_KEY;
+
 }

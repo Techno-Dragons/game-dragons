@@ -2,7 +2,7 @@
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">질문등록</h5>
     <form th:object="${articleRequestDto}" method="post" action="/article" enctype="multipart/form-data">
-        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div th:replace="~{article/form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>

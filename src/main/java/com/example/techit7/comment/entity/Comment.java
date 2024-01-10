@@ -1,10 +1,10 @@
 package com.example.techit7.comment.entity;
 
-
 import com.example.techit7.article.entity.Article;
 import com.example.techit7.global.entity.BaseEntity;
 import com.example.techit7.user.entity.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,16 +22,16 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Comment extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private Member author;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private Member author;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
-    private Article article;
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "article_id")
+	private Article article;
 
-    @Column(columnDefinition = "TEXT", length = 500, name = "comment_content")
-    private String content;
+	@Column(columnDefinition = "TEXT", length = 500, name = "comment_content")
+	private String content;
 
 }

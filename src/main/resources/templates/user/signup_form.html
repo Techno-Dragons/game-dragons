@@ -1,10 +1,10 @@
 <html layout:decorate="~{/global/layout}">
 <div layout:fragment="content" class="container my-3">
-<body>
+    <body>
     <div>
         <h4>회원가입</h4>
     </div>
-    <form th:action="@{/member/signup}" th:object="${userCreateRequestDto}"  method="post">
+    <form th:action="@{/member/signup}" th:object="${userCreateRequestDto}" method="post">
         <div class="mb-3">
             <label for="username" class="form-label">사용자ID</label>
             <input type="text" class="form-control" th:field="*{username}">
@@ -27,5 +27,5 @@
         </div>
         <button type="submit" class="btn btn-primary">회원가입</button>
     </form>
-</body>
+    </body>
 </div>

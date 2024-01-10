@@ -9,11 +9,11 @@ import com.example.techit7.user.entity.Member;
 
 public interface CommentRestService {
 
-    Comment get(Long id);
+	Comment get(Long id);
 
-    CommentResponseDto post(Member member, Article article, CommentRequestDto req);
+	CommentResponseDto post(Member member, Article article, CommentRequestDto req);
 
-    CommentResponseDto update(Member member, Long id, CommentRequestDto req);
+	CommentResponseDto update(Member member, Long id, CommentRequestDto req);
 
-    void delete(Member member, Long id);
+	void delete(Member member, Long id);
 }

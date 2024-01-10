@@ -9,26 +9,26 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GlobalResponse<T> {
 
-    private String resultCode;
-    private String msg;
-    private T data;
+	private String resultCode;
+	private String msg;
+	private T data;
 
-    public static <T> GlobalResponse<T> of(String resultCode, String msg) {
-        GlobalResponse<T> globalResponse = new GlobalResponse<T>();
+	public static <T> GlobalResponse<T> of(String resultCode, String msg) {
+		GlobalResponse<T> globalResponse = new GlobalResponse<T>();
 
-        globalResponse.setResultCode(resultCode);
-        globalResponse.setMsg(msg);
+		globalResponse.setResultCode(resultCode);
+		globalResponse.setMsg(msg);
 
-        return globalResponse;
-    }
+		return globalResponse;
+	}
 
-    public static <T> GlobalResponse<T> of(String resultCode, String msg, T data) {
-        GlobalResponse<T> globalResponse = new GlobalResponse<T>();
+	public static <T> GlobalResponse<T> of(String resultCode, String msg, T data) {
+		GlobalResponse<T> globalResponse = new GlobalResponse<T>();
 
-        globalResponse.setResultCode(resultCode);
-        globalResponse.setMsg(msg);
-        globalResponse.setData(data);
+		globalResponse.setResultCode(resultCode);
+		globalResponse.setMsg(msg);
+		globalResponse.setData(data);
 
-        return globalResponse;
-    }
+		return globalResponse;
+	}
 }

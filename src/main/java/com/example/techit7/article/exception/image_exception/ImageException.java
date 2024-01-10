@@ -5,14 +5,14 @@ import com.example.techit7.article.exception.BaseExceptionType;
 
 public class ImageException extends BaseException {
 
-    private final ImageExceptionType exceptionType;
+	private final ImageExceptionType exceptionType;
 
-    ImageException(String message, ImageExceptionType exceptionType) {
-        super(message);
-        this.exceptionType = exceptionType;
-    }
+	ImageException(String message, ImageExceptionType exceptionType) {
+		super(message);
+		this.exceptionType = exceptionType;
+	}
 
-    public BaseExceptionType exceptionType() {
-        return exceptionType;
-    }
+	public BaseExceptionType exceptionType() {
+		return exceptionType;
+	}
 }

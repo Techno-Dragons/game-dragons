@@ -15,11 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-//뭘 보여줄 지 몰라서 골라내야함
 public class ArticleResponseDto extends GlobalResponse<ArticleResponseDto> {
 
     private Long id;
-    private Member author;    //글쓴이
+    private Member author;  //글쓴이
     private String title;   //제목
     private String content; //내용
     private Long viewCount; //조회수

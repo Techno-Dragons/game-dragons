@@ -11,7 +11,7 @@
     };
 
     async function signup() {
-        if(passwordCheck()){
+        if (passwordCheck()) {
             await fetch(`https://gamedragons.api.bi3a.app/member/signup`, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -21,7 +21,7 @@
             });
             toastNotice("회원가입 완료.");
             await goto('/');
-        }else{
+        } else {
             toastNotice("비밀번호가 일치하지 않습니다.");
         }
     }
@@ -32,7 +32,8 @@
         }
         return true;
     }
-    function blankCheck(){
+
+    function blankCheck() {
         if (signupData.password1 == '' || signupData.password2 == '') {
             return false;
         }
@@ -53,28 +54,28 @@
                 <div class="card-body p-1">
                     <label class="card-title" for="username">사용자ID</label>
                     <input
-                        type="text"
-                        class="textarea textarea-bordered card-actions justify-end"
-                        placeholder="username"
-                        bind:value={signupData.username}
+                            type="text"
+                            class="textarea textarea-bordered card-actions justify-end"
+                            placeholder="username"
+                            bind:value={signupData.username}
                     />
                 </div>
                 <div class="card-body p-1">
                     <label class="card-title" for="nickname">닉네임</label>
                     <input
-                        type="text"
-                        class="textarea textarea-bordered"
-                        placeholder="nickname"
-                        bind:value={signupData.nickname}
+                            type="text"
+                            class="textarea textarea-bordered"
+                            placeholder="nickname"
+                            bind:value={signupData.nickname}
                     />
                 </div>
                 <div class="card-body p-1">
                     <label class="card-title" for="password1">비밀번호</label>
                     <input
-                        type="password"
-                        class="textarea textarea-bordered"
-                        placeholder="password"
-                        bind:value={signupData.password1}
+                            type="password"
+                            class="textarea textarea-bordered"
+                            placeholder="password"
+                            bind:value={signupData.password1}
                     />
                 </div>
                 <div class="card-body p-1">
@@ -85,19 +86,19 @@
                         {/if}
                     </label>
                     <input
-                        type="password"
-                        class="textarea textarea-bordered"
-                        placeholder="password confirm"
-                        bind:value={signupData.password2}
+                            type="password"
+                            class="textarea textarea-bordered"
+                            placeholder="password confirm"
+                            bind:value={signupData.password2}
                     />
                 </div>
                 <div class="card-body p-1">
                     <label class="card-title" for="email">이메일</label>
                     <input
-                        type="email"
-                        class="textarea textarea-bordered"
-                        placeholder="email"
-                        bind:value={signupData.email}
+                            type="email"
+                            class="textarea textarea-bordered"
+                            placeholder="email"
+                            bind:value={signupData.email}
                     />
                 </div>
                 <button class="btn" type="submit" on:click={(event) => signup()}>회원가입</button>

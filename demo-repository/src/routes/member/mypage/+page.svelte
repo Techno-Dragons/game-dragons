@@ -18,7 +18,7 @@
     });
 
     async function postModifiedData() {
-        if(!blankCheck() && (userData2.nickname == userData3.nickname)){
+        if (!blankCheck() && (userData2.nickname == userData3.nickname)) {
             toastNotice("변경사항 입력해주세요.");
             return false;
         }
@@ -33,13 +33,13 @@
                 body: JSON.stringify(userData3),
                 credentials: 'include',
             })
-            .then((res)=> res.json())
-            .then((res)=>{
-                if(res.resultCode=="200" && userData3.nickname != ''){
-                    localStorage.setItem("nickname",userData3.nickname);
-                }
-                toastNotice(res.msg);
-            })
+                .then((res) => res.json())
+                .then((res) => {
+                    if (res.resultCode == "200" && userData3.nickname != '') {
+                        localStorage.setItem("nickname", userData3.nickname);
+                    }
+                    toastNotice(res.msg);
+                })
             await goto('/');
         } else {
             toastNotice("비밀번호가 일치하지 않습니다.")
@@ -53,7 +53,8 @@
         }
         return false;
     }
-    function blankCheck(){
+
+    function blankCheck() {
         if (userData3.password1.trim() == '' || userData3.password2.trim() == '') {
             return false;
         }
@@ -74,28 +75,28 @@
                 <div class="card-body p-1">
                     <label class="card-title" for="username">사용자ID</label>
                     <input
-                        type="text"
-                        class="textarea textarea-bordered card-actions justify-end"
-                        placeholder="{userData2.username}"
-                        disabled="disabled"
+                            type="text"
+                            class="textarea textarea-bordered card-actions justify-end"
+                            placeholder="{userData2.username}"
+                            disabled="disabled"
                     />
                 </div>
                 <div class="card-body p-1">
                     <label class="card-title" for="nickname">닉네임</label>
                     <input
-                        type="text"
-                        class="textarea textarea-bordered"
-                        placeholder="{userData2.nickname}"
-                        bind:value={userData3.nickname}
+                            type="text"
+                            class="textarea textarea-bordered"
+                            placeholder="{userData2.nickname}"
+                            bind:value={userData3.nickname}
                     />
                 </div>
                 <div class="card-body p-1">
                     <label class="card-title" for="password1">비밀번호</label>
                     <input
-                        type="password"
-                        class="textarea textarea-bordered"
-                        placeholder="new password"
-                        bind:value={userData3.password1}
+                            type="password"
+                            class="textarea textarea-bordered"
+                            placeholder="new password"
+                            bind:value={userData3.password1}
                     />
                 </div>
                 <div class="card-body p-1">
@@ -106,19 +107,19 @@
                         {/if}
                     </label>
                     <input
-                        type="password"
-                        class="textarea textarea-bordered"
-                        placeholder="password confirm"
-                        bind:value={userData3.password2}
+                            type="password"
+                            class="textarea textarea-bordered"
+                            placeholder="password confirm"
+                            bind:value={userData3.password2}
                     />
                 </div>
                 <div class="card-body p-1">
                     <label class="card-title" for="email">이메일</label>
                     <input
-                        type="email"
-                        class="textarea textarea-bordered"
-                        placeholder="{userData2.email}"
-                        disabled="disabled"
+                            type="email"
+                            class="textarea textarea-bordered"
+                            placeholder="{userData2.email}"
+                            disabled="disabled"
                     />
                 </div>
                 <button class="btn" type="submit" on:click={(event)=>postModifiedData()}>변경사항 저장</button>

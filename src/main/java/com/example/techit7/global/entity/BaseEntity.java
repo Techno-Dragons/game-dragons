@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,15 +28,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
+	private Long id;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
+	@CreatedDate
+	@Column(updatable = false)
+	private LocalDateTime createdTime;
 
-    @LastModifiedDate
-    private LocalDateTime modifiedTime;
+	@LastModifiedDate
+	private LocalDateTime modifiedTime;
 }

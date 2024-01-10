@@ -9,6 +9,9 @@ import lombok.Getter;
 @Getter
 @ConfigurationProperties(prefix = "gcp")
 public class GoogleCloudStorageProperties {
+
 	private final String BUCKET_NAME;
+
 	private final String PROJECT_ID;
+
 }

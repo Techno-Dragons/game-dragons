@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @ConfigurationPropertiesScan
 @EnableJpaAuditing
 public class Techit7Application {
-    public static void main(String[] args) {
-        SpringApplication.run(Techit7Application.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(Techit7Application.class, args);
+	}
 }
