@@ -59,6 +59,11 @@ jobs:
           ACTIONS_STEP_DEBUG: true
           APPLICATION_SECRET: ${{ secrets.APPLICATION_SECRET_YML }}
         run: echo "$APPLICATION_SECRET" > ./src/main/resources/application-secret.yml
+      - name: gcp.json 생성
+        env:
+          ACTIONS_STEP_DEBUG: true
+          APPLICATION_SECRET: ${{ secrets.GCP_BUCKET_NAME_JSON }}
+        run: echo "$APPLICATION_SECRET" > ./src/main/resources/gamedragon.json
       - name: 빌드 앤 푸시(Server)
         uses: docker/build-push-action@v3
         with:
