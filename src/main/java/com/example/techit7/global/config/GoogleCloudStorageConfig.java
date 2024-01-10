@@ -19,7 +19,7 @@ public class GoogleCloudStorageConfig {
 
 	@Bean
 	public Storage googleCloudStorage() throws IOException {
-		ClassPathResource resource = new ClassPathResource(googleCloudStorageProperties.getBUCKET_NAME() + "json");
+		ClassPathResource resource = new ClassPathResource(googleCloudStorageProperties.getBUCKET_NAME() + ".json");
 		GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
 		String projectId = googleCloudStorageProperties.getPROJECT_ID();
 		return StorageOptions.newBuilder()
