@@ -186,7 +186,7 @@
 						modifyForm.title = '';
 						modifyForm.content = '';
 						isModify = !isModify;
-						window.location.href = `/article/${id}`;
+						window.location.reload();
 					}}
 				>
 					수정 완료

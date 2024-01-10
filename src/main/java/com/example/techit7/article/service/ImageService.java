@@ -80,7 +80,7 @@ public class ImageService {
             throw new IllegalArgumentException("권한이 없는 유저입니다.");
         }
 
-        image.get().updateImage(fileStore.storeFile(multipartFile));
+        image.get().updateImage(uploadImage(multipartFile));
     }
 
     // 이미지 삭제
