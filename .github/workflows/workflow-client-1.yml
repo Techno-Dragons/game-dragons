@@ -9,7 +9,7 @@ on:
       - 'demo-repository/Dockerfile'
       - 'demo-repository/**.ts'
     branches:
-      - ci_cd
+      - main
 jobs:
   makeTagAndRelease:
     runs-on: ubuntu-latest
